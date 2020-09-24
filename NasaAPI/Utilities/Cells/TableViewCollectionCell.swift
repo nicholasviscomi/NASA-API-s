@@ -20,6 +20,7 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         field.translatesAutoresizingMaskIntoConstraints = false
         field.register(CollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         field.backgroundColor = .clear
+        field.showsHorizontalScrollIndicator = false
         return field
     }()
     
@@ -32,13 +33,11 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         collectionView.delegate = self
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            collectionView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
-        contentView.layer.borderColor = UIColor.black.cgColor
-        contentView.layer.borderWidth = 2
         contentView.layer.cornerRadius = 15
         contentView.clipsToBounds = true
         
@@ -51,7 +50,7 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.frame.width - 100, height: self.frame.height)
+        return CGSize(width: self.frame.width - 100, height: self.collectionView.frame.height)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -64,7 +63,7 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         
-        cell.configure(image: (indexPath.row % 2 == 0 ? UIImage(systemName: "sun.min") : UIImage(systemName: "moon"))!)
+        cell.configure(image: (indexPath.row % 2 == 0 ? UIImage(named: "photo") : UIImage(named: "photo2"))!)
         
         return cell
     }

@@ -8,4 +8,9 @@
 
 import UIKit
 
-
+public func blurBackground(for view: UIView, style: UIBlurEffect.Style = .extraLight) -> UIVisualEffectView{
+    let blurEffect = UIBlurEffect(style: style)
+    let blurEffectView = UIVisualEffectView(effect: blurEffect)
+    blurEffectView.frame = view.frame
+    return blurEffectView
+}
