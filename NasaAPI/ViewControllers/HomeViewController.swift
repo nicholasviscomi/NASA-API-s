@@ -12,7 +12,7 @@ class HomeViewController: UIViewController {
 
     fileprivate let tableView: UITableView = {
         let field = UITableView()
-        field.register(UITableViewCell.self, forCellReuseIdentifier: Constants.homeCellIdentifier)
+        field.register(TableViewCollectionCell.self, forCellReuseIdentifier: Constants.homeCellIdentifier)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = .clear
         field.separatorStyle = .none
@@ -60,7 +60,7 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -72,16 +72,15 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.homeCellIdentifier, for: indexPath)
-        cell.textLabel?.text = "Cell \(indexPath.row) Section \(indexPath.section)"
-        cell.accessoryType = .disclosureIndicator
-        cell.backgroundColor = indexPath.row % 2 == 0 ? .red : .blue
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.homeCellIdentifier, for: indexPath) as! TableViewCollectionCell
+//        cell.textLabel?.text = "Cell \(indexPath.row) Section \(indexPath.section)"
+//        cell.accessoryType = .disclosureIndicator
+//        cell.backgroundColor = indexPath.row % 2 == 0 ? .red : .blue
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return 200
     }
     
     
