@@ -19,6 +19,8 @@ class HomeViewController: UIViewController {
         return field
     }()
     
+    var data = [[UIImage]]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
@@ -26,6 +28,10 @@ class HomeViewController: UIViewController {
         conform()
         styleUI()
         
+        data = [
+            [UIImage(named: "photo")!, UIImage(named: "photo2")!,UIImage(named: "photo")!, UIImage(named: "photo2")!,UIImage(named: "photo")!, UIImage(named: "photo2")!],
+            [UIImage(named: "photo2")!, UIImage(named: "photo2")!,UIImage(named: "photo")!, UIImage(named: "photo2")!,UIImage(named: "photo")!, UIImage(named: "photo2")!]
+        ]
     }
     
     fileprivate func addViews() {
@@ -54,21 +60,57 @@ class HomeViewController: UIViewController {
         ])
     }
 
+}
 
-
+extension HomeViewController: DetailViewDelegate {
+    
+    func cellWasTapped(cell: CollectionViewCell) {
+        print(cell.titleLabel.center)
+        addLabel()
+    }
+ 
+    func addLabel() {
+        let label: UILabel = {
+            let field = UILabel()
+            field.translatesAutoresizingMaskIntoConstraints = false
+            field.font = .systemFont(ofSize: 18, weight: .semibold)
+            field.text = "    Aurora Borealis"
+            field.textColor = .label
+            field.backgroundColor = .tertiarySystemBackground
+            return field
+        }()
+        
+        view.addSubview(label)
+        
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            label.heightAnchor.constraint(equalToConstant: 100),
+            label.widthAnchor.constraint(equalToConstant: view.frame.width)
+        ])
+        
+        view.bringSubviewToFront(label)
+    }
+    
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return data.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return 1//data[section].count
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Section \(section)"
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { return nil }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -76,6 +118,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 //        cell.textLabel?.text = "Cell \(indexPath.row) Section \(indexPath.section)"
 //        cell.accessoryType = .disclosureIndicator
 //        cell.backgroundColor = indexPath.row % 2 == 0 ? .red : .blue
+        cell.configure(with: data[indexPath.section])
         return cell
     }
     

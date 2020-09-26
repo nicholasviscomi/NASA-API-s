@@ -10,8 +10,7 @@ import UIKit
 
 class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    
-    fileprivate let collectionView: UICollectionView = {
+    let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 15
@@ -21,14 +20,22 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         field.register(CollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         field.backgroundColor = .clear
         field.showsHorizontalScrollIndicator = false
+        field.clipsToBounds = false
         return field
     }()
     
+    var data = [UIImage]()
     
+    func configure(with data: [UIImage]) {
+        self.data = data
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(collectionView)
+        contentView.clipsToBounds = false
+        self.clipsToBounds = false
+        
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -38,11 +45,9 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
-        contentView.layer.cornerRadius = 15
-        contentView.clipsToBounds = true
         
-        backgroundColor = .clear
-        contentView.backgroundColor = .clear
+        backgroundColor = .quaternarySystemFill
+        contentView.backgroundColor = .quaternarySystemFill
     }
     
     required init?(coder: NSCoder) {
@@ -57,19 +62,20 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         return 1
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return data.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
-        
-        cell.configure(image: (indexPath.row % 2 == 0 ? UIImage(named: "photo") : UIImage(named: "photo2"))!)
+
+        cell.configure(image: data[indexPath.row])
+        cell.detailViewDelegate = HomeViewController()
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("tapped \(indexPath.row)")
+        collectionView.deselectItem(at: indexPath, animated: true)
     }
     
     

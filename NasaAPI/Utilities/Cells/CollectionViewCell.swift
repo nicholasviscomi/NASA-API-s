@@ -10,14 +10,14 @@ import UIKit
 
 class CollectionViewCell: UICollectionViewCell {
     
-    fileprivate let imageView: UIImageView = {
+    let imageView: UIImageView = {
         let field = UIImageView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFit
         return field
     }()
     
-    fileprivate let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 18, weight: .semibold)
@@ -27,13 +27,13 @@ class CollectionViewCell: UICollectionViewCell {
         return field
     }()
     
+    var detailViewDelegate: DetailViewDelegate?
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
 
         configureSelf()
         setFrames()
-        
-        contentView.insertSubview(blurBackground(for: contentView, style: .extraLight), at: 0)
         
     }
     
@@ -56,15 +56,22 @@ class CollectionViewCell: UICollectionViewCell {
     }
     
     fileprivate func configureSelf() {
+        self.clipsToBounds = false
+        
+        contentView.insertSubview(blurBackground(for: contentView, style: .extraLight), at: 0)
+        
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
-        
+        let press = UILongPressGestureRecognizer(target: self, action: #selector(wasPressed))
+        contentView.addGestureRecognizer(press)
+    
         contentView.layer.cornerRadius = 15
         contentView.clipsToBounds = true
-//        contentView.layer.borderWidth = 2
-//        contentView.layer.borderColor = UIColor.label.cgColor
         contentView.backgroundColor = .secondarySystemBackground
-//        contentView.alpha = 0.7
+    }
+    
+    @objc func wasPressed() {
+        detailViewDelegate?.cellWasTapped(cell: self)
     }
     
     func configure(image: UIImage) {
