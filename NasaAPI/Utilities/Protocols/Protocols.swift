@@ -9,5 +9,9 @@
 import UIKit
 
 protocol DetailViewDelegate {
-    func cellWasTapped(cell: CollectionViewCell)
+    func cellWasTapped(cell: CollectionViewCell, location: CGPoint)
+}
+
+protocol ReloadDelegate {
+    func shouldReloadCollection() 
 }

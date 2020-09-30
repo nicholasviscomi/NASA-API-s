@@ -21,7 +21,6 @@ class CollectionViewCell: UICollectionViewCell {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 18, weight: .semibold)
-        field.text = "    Aurora Borealis"
         field.textColor = .label
         field.backgroundColor = .tertiarySystemBackground
         return field
@@ -43,13 +42,11 @@ class CollectionViewCell: UICollectionViewCell {
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-//            imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-//            imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
         NSLayoutConstraint.activate([
             titleLabel.heightAnchor.constraint(equalToConstant: 40),
             titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         
@@ -57,25 +54,19 @@ class CollectionViewCell: UICollectionViewCell {
     
     fileprivate func configureSelf() {
         self.clipsToBounds = false
-        
-        contentView.insertSubview(blurBackground(for: contentView, style: .extraLight), at: 0)
-        
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
-        let press = UILongPressGestureRecognizer(target: self, action: #selector(wasPressed))
-        contentView.addGestureRecognizer(press)
     
         contentView.layer.cornerRadius = 15
         contentView.clipsToBounds = true
         contentView.backgroundColor = .secondarySystemBackground
     }
     
-    @objc func wasPressed() {
-        detailViewDelegate?.cellWasTapped(cell: self)
-    }
-    
-    func configure(image: UIImage) {
-        self.imageView.image = image
+    func configure(model: APOD) {
+        if model.media_type == "image" {
+            self.imageView.load(url: URL(string: model.url)!)
+        }
+        self.titleLabel.text = "    \(model.title)"
     }
     
     required init?(coder: NSCoder) {
@@ -84,13 +75,8 @@ class CollectionViewCell: UICollectionViewCell {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        
-//        guard UIApplication.shared.applicationState == .inactive else {
-//            return
-//        }
+    
         contentView.layer.cornerRadius = 15
         contentView.clipsToBounds = true
-//        contentView.layer.borderWidth = 2
-//        contentView.layer.borderColor = UIColor.label.cgColor
     }
 }

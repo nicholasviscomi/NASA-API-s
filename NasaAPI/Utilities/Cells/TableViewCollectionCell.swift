@@ -24,9 +24,10 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         return field
     }()
     
-    var data = [UIImage]()
+    var data = [APOD]()
+    var detailViewDelegate: DetailViewDelegate?
     
-    func configure(with data: [UIImage]) {
+    func configure(with data: [APOD]) {
         self.data = data
     }
     
@@ -36,18 +37,32 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         contentView.clipsToBounds = false
         self.clipsToBounds = false
         
-        collectionView.dataSource = self
-        collectionView.delegate = self
+        conform()
+        constrainViews()
         
+        backgroundColor = .clear
+        contentView.backgroundColor = .quaternaryLabel
+        
+    }
+        
+    fileprivate func constrainViews() {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
-        
-        backgroundColor = .quaternarySystemFill
-        contentView.backgroundColor = .quaternarySystemFill
+    }
+    
+    fileprivate func conform() {
+        collectionView.dataSource = self
+        collectionView.delegate = self
+//        CellLongPressViewController.reloadDelegate = self
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))
     }
     
     required init?(coder: NSCoder) {
@@ -55,7 +70,7 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.frame.width - 100, height: self.collectionView.frame.height)
+        return CGSize(width: contentView.frame.width - 130, height: contentView.frame.height - 30)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -68,15 +83,33 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
 
-        cell.configure(image: data[indexPath.row])
-        cell.detailViewDelegate = HomeViewController()
+        cell.configure(model: data[indexPath.row])
+//        cell.detailViewDelegate = HomeViewController()
+        self.detailViewDelegate = HomeViewController()
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
+        guard let cell = collectionView.cellForItem(at: indexPath) as? CollectionViewCell else { return }
+        guard let layoutAttributes = collectionView.layoutAttributesForItem(at: indexPath) else { return }
+        guard let window = UIApplication.shared.windows.first else { return }
+        
+        let touchedLocationInWindow = collectionView.convert(cell.center, to: window)
+        let cPoint = layoutAttributes.center
+//        let tappedLocationInWindow = collectionView.convert(cPoint, to: window)
+        print(cPoint, touchedLocationInWindow)
+        
+        detailViewDelegate?.cellWasTapped(cell: cell, location: touchedLocationInWindow)
     }
     
     
+}
+
+extension TableViewCollectionCell: ReloadDelegate {
+    func shouldReloadCollection() {
+        print("should reload")
+        collectionView.reloadData()
+    }
 }
