@@ -11,7 +11,7 @@ import UIKit
 //MARK: actually make this codable and finish api calls and the dtail view controller
 
 enum CodingKeys: String, CodingKey {
-    case copyright = "copyright"
+    case date = "date"
     case explanation = "explanation"
     case hdurl = "hdurl"
     case media_type = "media_type"
@@ -20,18 +20,19 @@ enum CodingKeys: String, CodingKey {
 }
 
 class APOD: Decodable {
-    var copyright: String?
+    var date: String = ""
     var explanation: String = ""
     var hdurl: String = ""
     var media_type: String = ""
     var title: String = ""
     var url: String = ""
+    var image: UIImage? = nil
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.copyright = try container.decode(String.self, forKey: .copyright)
-    
+        self.date = try container.decode(String.self, forKey: .date)
+        
         self.explanation = try container.decode(String.self, forKey: .explanation)
         
         self.hdurl = try container.decode(String.self, forKey: .hdurl)
@@ -41,5 +42,12 @@ class APOD: Decodable {
         self.title = try container.decode(String.self, forKey: .title)
         
         self.url = try container.decode(String.self, forKey: .url)
+        
+        if let url = URL(string: url), let data = dataFrom(url: url) {
+            self.image = UIImage(data: data)
+        } else {
+            print("no image sorry man")
+        }
+        
     }
 }

@@ -16,6 +16,7 @@ class HomeViewController: UIViewController {
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = .clear
         field.separatorStyle = .none
+        field.allowsSelection = false
         return field
     }()
     
@@ -29,15 +30,37 @@ class HomeViewController: UIViewController {
         conform()
         styleUI()
         
-        APICalls.getAPOD(date: "2020-9-25") { [self] (apod) in
-            guard let apod = apod else { return }
-            
-            data.append([apod])
-            DispatchQueue.main.async {
-                tableView.reloadData()
+        var row = [APOD]()
+        for date in APICalls.lastWeeksDates() {
+            APICalls.getAPOD(date: date) { [self] (apod) in
+                guard let apod = apod else { return }
+                
+                row.append(apod)
+                
+                if data.count == 0 {
+                    data.append([apod])
+                } else {
+                    data[0].append(apod)
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//                    data.append(row)
+                    if data.count != 0 {
+                        let formatter = DateFormatter()
+                        data[0].forEach { (apod) in
+                            
+                            formatter.dateFormat = "yyyy-MM-dd"
+                            let date = formatter.date(from: apod.date)
+                            print(date as Any)
+                        }
+                        
+                        data[0] = data[0].sorted(by: { $0.date > $1.date })
+                    }
+                    tableView.reloadData()
+                }
             }
         }
-       
+            
     }
     
     fileprivate func addViews() {
@@ -103,6 +126,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.homeCellIdentifier, for: indexPath) as! TableViewCollectionCell
         cell.configure(with: data[indexPath.section])
+        
         return cell
     }
     

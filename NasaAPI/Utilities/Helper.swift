@@ -29,3 +29,15 @@ extension UIImageView {
         }
     }
 }
+
+public func dataFrom(url: URL) -> Data? {
+    if let data = try? Data(contentsOf: url), UIImage(data: data) != nil {
+        return data
+    } else {
+        return nil
+    }
+}
+
+public func imageFrom(data: Data) -> UIImage? {
+    return UIImage(data: data)
+}

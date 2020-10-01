@@ -23,10 +23,32 @@ class CellLongPressViewController: UIViewController {
     let titleLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.font = .systemFont(ofSize: 18, weight: .semibold)
+        field.font = .systemFont(ofSize: 18, weight: .medium)
         field.textColor = .label
         field.backgroundColor = .tertiarySystemBackground
         field.textAlignment = .left
+        field.numberOfLines = 1
+        return field
+    }()
+    
+    let explanation: UILabel = {
+        let field = UILabel()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.font = .systemFont(ofSize: 16, weight: .regular)
+        field.textColor = .label
+        field.backgroundColor = .clear
+        field.textAlignment = .left
+        field.numberOfLines = 0
+        return field
+    }()
+    
+    let dateLabel: UILabel = {
+        let field = UILabel()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.font = .systemFont(ofSize: 24, weight: .bold)
+        field.textColor = .label
+        field.backgroundColor = UIColor(cgColor: UIColor.tertiarySystemBackground.cgColor).withAlphaComponent(0.7)
+        field.textAlignment = .center
         return field
     }()
     
@@ -47,6 +69,8 @@ class CellLongPressViewController: UIViewController {
         self.location = location
         self.imageView.image = cell.imageView.image
         self.titleLabel.text = cell.titleLabel.text
+        self.explanation.text = cell.model?.explanation
+        self.dateLabel.text = cell.model?.date
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -72,10 +96,10 @@ class CellLongPressViewController: UIViewController {
                     view.layoutIfNeeded()
                     
                     titleWidth.constant = container.frame.width
-                    titleHeight.constant = container.frame.height/3.5
+//                    titleHeight.constant = container.frame.height/3.5
                     
                     imageViewWidth.constant = container.frame.width
-                    imageViewHeight.constant = container.frame.height - titleHeight.constant
+                    imageViewHeight.constant = container.frame.height - titleHeight.constant - container.frame.height/3
                     
                     view.layoutIfNeeded()
                     
@@ -103,6 +127,8 @@ class CellLongPressViewController: UIViewController {
         view.addSubview(container)
         container.addSubview(imageView)
         container.addSubview(titleLabel)
+        container.addSubview(explanation)
+        container.addSubview(dateLabel)
     }
     
     @objc func tappedBackground() {
@@ -142,7 +168,7 @@ class CellLongPressViewController: UIViewController {
         
         container.frame = CGRect(origin: CGPoint(x: location.x - cell.frame.width/2, y: location.y - cell.frame.height/2), size: CGSize(width: cell.frame.width, height: cell.frame.height))
         
-        imageViewHeight = imageView.heightAnchor.constraint(equalToConstant: self.container.frame.height - 40)
+        imageViewHeight = imageView.heightAnchor.constraint(equalToConstant: self.container.frame.height - self.container.frame.height/3)
         imageViewWidth = imageView.widthAnchor.constraint(equalToConstant: self.container.frame.width)
 
         NSLayoutConstraint.activate([
@@ -156,9 +182,23 @@ class CellLongPressViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 0),
-            titleLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor),
 //            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
             titleHeight, titleWidth
+        ])
+        
+        NSLayoutConstraint.activate([
+            explanation.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 10),
+            explanation.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 45),
+            explanation.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10),
+            explanation.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -10)
+        ])
+        
+        NSLayoutConstraint.activate([
+            dateLabel.heightAnchor.constraint(equalToConstant: 30),
+            dateLabel.topAnchor.constraint(equalTo: container.topAnchor),
+            dateLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 0),
+            dateLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor)
         ])
     }
 }

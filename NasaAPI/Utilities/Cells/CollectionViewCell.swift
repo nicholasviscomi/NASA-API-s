@@ -14,6 +14,7 @@ class CollectionViewCell: UICollectionViewCell {
         let field = UIImageView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFit
+        field.image = UIImage(systemName: "i.circle")
         return field
     }()
     
@@ -26,14 +27,24 @@ class CollectionViewCell: UICollectionViewCell {
         return field
     }()
     
+    let dateLabel: UILabel = {
+        let field = UILabel()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.font = .systemFont(ofSize: 22, weight: .bold)
+        field.textColor = .label
+        field.backgroundColor = UIColor(cgColor: UIColor.tertiarySystemBackground.cgColor).withAlphaComponent(0.7)
+        field.textAlignment = .center
+        return field
+    }()
+    
     var detailViewDelegate: DetailViewDelegate?
+    
+    var model: APOD?
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
-
         configureSelf()
         setFrames()
-        
     }
     
     fileprivate func setFrames() {
@@ -49,6 +60,12 @@ class CollectionViewCell: UICollectionViewCell {
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
+        NSLayoutConstraint.activate([
+            dateLabel.heightAnchor.constraint(equalToConstant: 20),
+            dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
+            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        ])
         
     }
     
@@ -56,6 +73,7 @@ class CollectionViewCell: UICollectionViewCell {
         self.clipsToBounds = false
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
+        contentView.addSubview(dateLabel)
     
         contentView.layer.cornerRadius = 15
         contentView.clipsToBounds = true
@@ -63,10 +81,10 @@ class CollectionViewCell: UICollectionViewCell {
     }
     
     func configure(model: APOD) {
-        if model.media_type == "image" {
-            self.imageView.load(url: URL(string: model.url)!)
-        }
+        self.imageView.image = model.image
         self.titleLabel.text = "    \(model.title)"
+        self.model = model
+        self.dateLabel.text = model.date
     }
     
     required init?(coder: NSCoder) {

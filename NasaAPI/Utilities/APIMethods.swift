@@ -38,4 +38,25 @@ class APIMethods {
         }
         dataTask.resume()
     }
+    
+    public func lastWeeksDates() -> [String] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        
+        var result = [String]()
+        
+        let today = Date()
+        let two = Date().addingTimeInterval(TimeInterval(86400 * -1))
+        let three = Date().addingTimeInterval(TimeInterval(86400 * -2))
+        let four = Date().addingTimeInterval(TimeInterval(86400 * -3))
+        let five = Date().addingTimeInterval(TimeInterval(86400 * -4))
+        let six = Date().addingTimeInterval(TimeInterval(86400 * -5))
+        let seven = Date().addingTimeInterval(TimeInterval(86400 * -6))
+        let days = [today,two,three,four,five,six,seven]
+        
+        for day in days {
+            result.append(formatter.string(from: day))
+        }
+        return result
+    }
 }
