@@ -9,9 +9,14 @@
 import UIKit
 
 protocol DetailViewDelegate {
+    ///sends the selected cell to the long press controller
     func cellWasTapped(cell: CollectionViewCell, location: CGPoint)
 }
 
-protocol ReloadDelegate {
-    func shouldReloadCollection() 
+protocol DataDelegate {
+    
+    func isFinishedLoadingAPOD()
+    
+    ///notifies home vc that is got all the data it needs for APOD
+    func retrievedWeekOfAPOD(apods: [[APOD]])
 }

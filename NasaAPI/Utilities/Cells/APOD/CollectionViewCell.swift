@@ -14,7 +14,6 @@ class CollectionViewCell: UICollectionViewCell {
         let field = UIImageView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFit
-        field.image = UIImage(systemName: "i.circle")
         return field
     }()
     
@@ -30,9 +29,9 @@ class CollectionViewCell: UICollectionViewCell {
     let dateLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.font = .systemFont(ofSize: 22, weight: .bold)
+        field.font = .systemFont(ofSize: 20, weight: .bold)
         field.textColor = .label
-        field.backgroundColor = UIColor(cgColor: UIColor.tertiarySystemBackground.cgColor).withAlphaComponent(0.7)
+        field.backgroundColor = .tertiarySystemBackground
         field.textAlignment = .center
         return field
     }()
@@ -61,7 +60,7 @@ class CollectionViewCell: UICollectionViewCell {
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         NSLayoutConstraint.activate([
-            dateLabel.heightAnchor.constraint(equalToConstant: 20),
+            dateLabel.heightAnchor.constraint(equalToConstant: 25),
             dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)

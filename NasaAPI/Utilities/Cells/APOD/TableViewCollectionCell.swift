@@ -24,6 +24,15 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         return field
     }()
     
+    let backgroundImage: UIImageView = {
+        let field = UIImageView()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.contentMode = .scaleAspectFill
+        field.image = UIImage(named: "photo2")!
+        field.clipsToBounds = true
+        return field
+    }()
+    
     var data = [APOD]()
     var detailViewDelegate: DetailViewDelegate?
     
@@ -33,6 +42,7 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.addSubview(backgroundImage)
         contentView.addSubview(collectionView)
         contentView.clipsToBounds = false
         self.clipsToBounds = false
@@ -51,6 +61,13 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            backgroundImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
+            backgroundImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
+            backgroundImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            backgroundImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
     }
     
@@ -73,18 +90,14 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         return CGSize(width: contentView.frame.width - 130, height: contentView.frame.height - 30)
     }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data.count
-    }
+    func numberOfSections(in collectionView: UICollectionView) -> Int { return 1 }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { return data.count }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
-
+        
         cell.configure(model: data[indexPath.row])
-//        cell.detailViewDelegate = HomeViewController()
         self.detailViewDelegate = HomeViewController()
         
         return cell
@@ -105,11 +118,4 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     }
     
     
-}
-
-extension TableViewCollectionCell: ReloadDelegate {
-    func shouldReloadCollection() {
-        print("should reload")
-        collectionView.reloadData()
-    }
 }

@@ -45,9 +45,9 @@ class CellLongPressViewController: UIViewController {
     let dateLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.font = .systemFont(ofSize: 24, weight: .bold)
+        field.font = .systemFont(ofSize: 20, weight: .bold)
         field.textColor = .label
-        field.backgroundColor = UIColor(cgColor: UIColor.tertiarySystemBackground.cgColor).withAlphaComponent(0.7)
+        field.backgroundColor = UIColor(cgColor: UIColor.tertiarySystemBackground.cgColor)
         field.textAlignment = .center
         return field
     }()
@@ -62,6 +62,7 @@ class CellLongPressViewController: UIViewController {
     var titleHeight: NSLayoutConstraint!
     
     var cardIsOpen = false
+    
 //    static var reloadDelegate: ReloadDelegate?
     
     init(cell: CollectionViewCell, location: CGPoint) {
@@ -83,6 +84,7 @@ class CellLongPressViewController: UIViewController {
         addViews()
         styleViews()
         constrainViews()
+        
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             
@@ -118,9 +120,11 @@ class CellLongPressViewController: UIViewController {
         }
     }
     
+    var blur: UIVisualEffectView!
+    
     fileprivate func addViews() {
         let style: UIBlurEffect.Style = traitCollection.userInterfaceStyle == .dark ? .systemUltraThinMaterialLight : .systemUltraThinMaterialDark
-        let blur = blurBackground(for: self.view, style: style)
+        blur = blurBackground(for: self.view, style: style)
         blur.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedBackground)))
         blur.alpha = 0.6
         view.insertSubview(blur, at: 0)
@@ -134,6 +138,8 @@ class CellLongPressViewController: UIViewController {
     @objc func tappedBackground() {
         UIView.animate(withDuration: 0.7) { [self] in
             if cardIsOpen {
+                blur.alpha = 0
+                explanation.removeFromSuperview()
                 
                 container.frame = CGRect(origin: CGPoint(x: location.x - cell.frame.width/2, y: location.y - cell.frame.height/2), size: CGSize(width: cell.frame.width, height: cell.frame.height))
                 
@@ -143,6 +149,10 @@ class CellLongPressViewController: UIViewController {
                 titleWidth.constant = self.container.frame.width
                 titleHeight.constant = 40
                 
+                UIView.animate(withDuration: 0.45, delay: 0.25, options: .curveEaseIn) {
+                    self.view.alpha = 0
+                }
+
             }
             view.layoutIfNeeded()
         } completion: { [self] (_) in

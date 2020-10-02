@@ -21,7 +21,12 @@ class HomeViewController: UIViewController {
     }()
     
     var data = [[APOD]]()
+    var weekCount = 7
     let APICalls = APIMethods()
+    
+    var isFinishedLoading = false
+    
+    var navController: UINavigationController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,37 +34,40 @@ class HomeViewController: UIViewController {
         constrainViews()
         conform()
         styleUI()
+
+        APICalls.getWeekOfAPOD()
         
-        var row = [APOD]()
-        for date in APICalls.lastWeeksDates() {
-            APICalls.getAPOD(date: date) { [self] (apod) in
-                guard let apod = apod else { return }
-                
-                row.append(apod)
-                
-                if data.count == 0 {
-                    data.append([apod])
-                } else {
-                    data[0].append(apod)
-                }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                    data.append(row)
-                    if data.count != 0 {
-                        let formatter = DateFormatter()
-                        data[0].forEach { (apod) in
-                            
-                            formatter.dateFormat = "yyyy-MM-dd"
-                            let date = formatter.date(from: apod.date)
-                            print(date as Any)
-                        }
-                        
-                        data[0] = data[0].sorted(by: { $0.date > $1.date })
-                    }
-                    tableView.reloadData()
-                }
-            }
-        }
+//        for date in APICalls.lastWeeksDates() {
+//            APICalls.getAPOD(date: date) { [self] (apod) in
+//                guard let apod = apod else {
+//                    return
+//                }
+//
+//                print(apod.media_type)
+//
+//                if data.count == 0 {
+//                    data.append([apod])
+//                } else {
+//                    data[0].append(apod)
+//                }
+//
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+////                    data.append(row)
+//                    if data.count != 0 {
+////                        let formatter = DateFormatter()
+////                        data[0].forEach { (apod) in
+////
+////                            formatter.dateFormat = "yyyy-MM-dd"
+////                            let date = formatter.date(from: apod.date)
+////                            print(date as Any)
+////                        }
+//                        data[0] = data[0].sorted(by: { $0.date > $1.date })
+//                        weekCount = data[0].count
+//                    }
+//                    tableView.reloadData()
+//                }
+//            }
+//        }
             
     }
     
@@ -72,12 +80,14 @@ class HomeViewController: UIViewController {
         view.backgroundColor = .secondarySystemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "NASA API's"
-
+        
+        navController = navigationController
     }
     
     fileprivate func conform() {
         tableView.delegate = self
         tableView.dataSource = self
+        APICalls.dataDelegate = self
     }
     
     fileprivate func constrainViews() {
@@ -104,6 +114,20 @@ extension HomeViewController: DetailViewDelegate {
     
 }
 
+extension HomeViewController: DataDelegate {
+    func retrievedWeekOfAPOD(apods: [[APOD]]) {
+        data = apods
+    }
+    
+    func isFinishedLoadingAPOD() {
+        print("is finished loading")
+        DispatchQueue.main.async { [self] in
+            isFinishedLoading = true
+            tableView.reloadData()
+        }
+    }
+}
+
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return data.count
@@ -116,22 +140,67 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { return nil }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return nil
+        let container = UIView()
+        container.backgroundColor = .clear
+        container.clipsToBounds = true
+        
+        let label: UILabel = {
+            let field = UILabel()
+            field.translatesAutoresizingMaskIntoConstraints = false
+            field.font = .systemFont(ofSize: 30, weight: .bold)
+            field.textColor = .label
+            field.backgroundColor = .clear
+            field.textAlignment = .center
+            field.numberOfLines = 0
+            return field
+        }()
+        
+//        let imageView: UIImageView = {
+//            let field = UIImageView()
+//            field.translatesAutoresizingMaskIntoConstraints = false
+//            field.contentMode = .scaleAspectFill
+//            field.image = UIImage(named: "photo2")!
+//            return field
+//        }()
+        
+//        container.addSubview(imageView)
+        container.addSubview(label)
+        
+        label.text = "Last Week"
+        
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: container.centerYAnchor)
+        ])
+        
+//        NSLayoutConstraint.activate([
+//            imageView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+//            imageView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+//            imageView.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: 60),
+//            imageView.heightAnchor.constraint(equalToConstant: 45)
+//        ])
+        
+        
+        
+        return container
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
+        return 45
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.homeCellIdentifier, for: indexPath) as! TableViewCollectionCell
-        cell.configure(with: data[indexPath.section])
         
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.homeCellIdentifier, for: indexPath) as! TableViewCollectionCell
+        
+        cell.configure(with: data[indexPath.section])
+  
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return view.frame.height/4
+        return (view.frame.height/4) + 20
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
