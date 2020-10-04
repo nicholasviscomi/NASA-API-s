@@ -10,7 +10,7 @@ import UIKit
 
 protocol DetailViewDelegate {
     ///sends the selected cell to the long press controller
-    func cellWasTapped(cell: CollectionViewCell, location: CGPoint)
+    func cellWasTapped(cell: CollectionViewCell, location: CGPoint, model: APOD)
 }
 
 protocol DataDelegate {

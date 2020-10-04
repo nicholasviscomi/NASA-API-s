@@ -77,7 +77,7 @@ class HomeViewController: UIViewController {
     }
     
     fileprivate func styleUI() {
-        view.backgroundColor = .secondarySystemBackground
+        view.backgroundColor = .tertiarySystemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "NASA API's"
         
@@ -103,9 +103,10 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: DetailViewDelegate {
     
-    func cellWasTapped(cell: CollectionViewCell, location: CGPoint) {
+    func cellWasTapped(cell: CollectionViewCell, location: CGPoint, model: APOD) {
         let cellCopy = cell
-        let vc = CellLongPressViewController(cell: cellCopy, location: location)
+        
+        let vc = CellLongPressViewController(cell: cellCopy, location: location, model: model)
         vc.title = ""
         vc.modalPresentationStyle = .overCurrentContext
         UIApplication.shared.windows.first?.rootViewController?.present(vc, animated: false, completion: nil)
@@ -155,34 +156,43 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             return field
         }()
         
-//        let imageView: UIImageView = {
-//            let field = UIImageView()
-//            field.translatesAutoresizingMaskIntoConstraints = false
-//            field.contentMode = .scaleAspectFill
-//            field.image = UIImage(named: "photo2")!
-//            return field
-//        }()
+        let button: UIButton = {
+            let field = UIButton()
+            field.translatesAutoresizingMaskIntoConstraints = false
+            field.tintColor = .link
+            field.setTitleColor(UIColor(red: 0.34, green: 0.41, blue: 0.54, alpha: 1.00), for: .normal)
+            field.setTitle("View More", for: .normal)
+            field.titleLabel?.font = .systemFont(ofSize: 22, weight: .semibold)
+            field.titleLabel?.textAlignment = .left
+//            field.setImage(UIImage(systemName: "chevron.right.circle.fill"), for: .normal)
+            return field
+        }()
         
-//        container.addSubview(imageView)
         container.addSubview(label)
+        container.addSubview(button)
+        
+        button.addTarget(self, action: #selector(viewMore), for: .touchUpInside)
         
         label.text = "Last Week"
         
         NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            label.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
             label.centerYAnchor.constraint(equalTo: container.centerYAnchor)
         ])
         
-//        NSLayoutConstraint.activate([
-//            imageView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-//            imageView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-//            imageView.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: 60),
-//            imageView.heightAnchor.constraint(equalToConstant: 45)
-//        ])
-        
-        
+        NSLayoutConstraint.activate([
+            button.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10),
+            button.centerYAnchor.constraint(equalTo: container.centerYAnchor)
+        ])
         
         return container
+    }
+    
+    @objc func viewMore() {
+        let vc = BirthdayPictureViewController()
+        vc.title = "Birthday Picture"
+        vc.navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

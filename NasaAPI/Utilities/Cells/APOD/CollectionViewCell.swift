@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class CollectionViewCell: UICollectionViewCell {
     
@@ -80,10 +81,37 @@ class CollectionViewCell: UICollectionViewCell {
     }
     
     func configure(model: APOD) {
-        self.imageView.image = model.image
+        if model.media_type == "video" {
+            print("video type found")
+//            playVideo(model: model)
+            self.imageView.image = model.image
+        } else {
+            self.imageView.image = model.image
+        }
         self.titleLabel.text = "    \(model.title)"
         self.model = model
+        
         self.dateLabel.text = model.date
+    }
+    
+    func playVideo(model: APOD) {
+        if let url = URL(string: model.videoUrl ?? "") {
+            //2. Create AVPlayer object
+            let asset = AVAsset(url: url)
+            let playerItem = AVPlayerItem(asset: asset)
+            let player = AVPlayer(playerItem: playerItem)
+            
+            //3. Create AVPlayerLayer object
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = self.imageView.bounds //bounds of the view in which AVPlayer should be displayed
+            playerLayer.videoGravity = .resizeAspect
+            
+            //4. Add playerLayer to view's layer
+            self.contentView.layer.addSublayer(playerLayer)
+            
+            //5. Play Video
+            player.play()
+        }
     }
     
     required init?(coder: NSCoder) {

@@ -42,7 +42,7 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(backgroundImage)
+//        contentView.addSubview(backgroundImage)
         contentView.addSubview(collectionView)
         contentView.clipsToBounds = false
         self.clipsToBounds = false
@@ -50,8 +50,8 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         conform()
         constrainViews()
         
-        backgroundColor = .clear
-        contentView.backgroundColor = .quaternaryLabel
+        backgroundColor = UIColor(red: 0.34, green: 0.41, blue: 0.54, alpha: 1.00)
+        contentView.backgroundColor = UIColor(red: 0.34, green: 0.41, blue: 0.54, alpha: 1.00)
         
     }
         
@@ -63,12 +63,12 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
         
-        NSLayoutConstraint.activate([
-            backgroundImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-            backgroundImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
-            backgroundImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            backgroundImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-        ])
+//        NSLayoutConstraint.activate([
+//            backgroundImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
+//            backgroundImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
+//            backgroundImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+//            backgroundImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+//        ])
     }
     
     fileprivate func conform() {
@@ -114,7 +114,7 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
 //        let tappedLocationInWindow = collectionView.convert(cPoint, to: window)
         print(cPoint, touchedLocationInWindow)
         
-        detailViewDelegate?.cellWasTapped(cell: cell, location: touchedLocationInWindow)
+        detailViewDelegate?.cellWasTapped(cell: cell, location: touchedLocationInWindow, model: data[indexPath.row])
     }
     
     

@@ -27,6 +27,7 @@ class APOD: Decodable {
     var title: String = ""
     var url: String = ""
     var image: UIImage? = nil
+    var videoUrl: String? = nil
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -35,18 +36,30 @@ class APOD: Decodable {
         
         self.explanation = try container.decode(String.self, forKey: .explanation)
         
-        self.hdurl = try container.decode(String.self, forKey: .hdurl)
+        self.title = try container.decode(String.self, forKey: .title)
         
         self.media_type = try container.decode(String.self, forKey: .media_type)
         
-        self.title = try container.decode(String.self, forKey: .title)
-        
-        self.url = try container.decode(String.self, forKey: .url)
-        
-        if let url = URL(string: url), let data = dataFrom(url: url) {
-            self.image = UIImage(data: data)
-        } else {
-            print("no image sorry man")
+        if self.media_type == "image" {
+            self.url = try container.decode(String.self, forKey: .url)
+            self.hdurl = try container.decode(String.self, forKey: .hdurl)
+            
+            if let url = URL(string: url), let data = dataFrom(url: url) {
+                self.image = UIImage(data: data)
+            } else {
+                print("no image sorry man")
+            }
+            
+        } else if self.media_type == "video" {
+            self.videoUrl = try container.decode(String.self, forKey: .url)
+            let videoID = self.videoUrl?.split(separator: "/").last?.split(separator: "?").first
+            let videoURL = "https://img.youtube.com/vi/\(videoID!)/hqdefault.jpg"
+            print(videoURL)
+            if let videoThumbnailURL = URL(string: videoURL), let data = dataFrom(url: videoThumbnailURL) {
+                self.image = UIImage(data: data)
+            } else {
+                print("no image from YT sorry man")
+            }
         }
         
     }

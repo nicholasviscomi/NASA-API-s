@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SafariServices
+
 
 class CellLongPressViewController: UIViewController {
 
@@ -52,6 +54,14 @@ class CellLongPressViewController: UIViewController {
         return field
     }()
     
+    let playButton: UIButton = {
+        let field = UIButton()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
+        field.tintColor = .label
+        return field
+    }()
+    
     let container = UIView()
     let location: CGPoint
     
@@ -61,11 +71,15 @@ class CellLongPressViewController: UIViewController {
     var titleWidth: NSLayoutConstraint!
     var titleHeight: NSLayoutConstraint!
     
+    var dateLabelWidth: NSLayoutConstraint!
+    
     var cardIsOpen = false
     
 //    static var reloadDelegate: ReloadDelegate?
+    var model: APOD
     
-    init(cell: CollectionViewCell, location: CGPoint) {
+    init(cell: CollectionViewCell, location: CGPoint, model: APOD) {
+        self.model = model
         self.cell = cell
         self.location = location
         self.imageView.image = cell.imageView.image
@@ -85,9 +99,8 @@ class CellLongPressViewController: UIViewController {
         styleViews()
         constrainViews()
         
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            
+
             UIView.animate(withDuration: 0.3) { [self] in
                 container.center = view.center
                 view.layoutIfNeeded()
@@ -95,21 +108,31 @@ class CellLongPressViewController: UIViewController {
 
                 UIView.animate(withDuration: 0.8) { [self] in
                     container.frame = CGRect(x: 40, y: 125, width: view.frame.width - 80, height: view.frame.height - 250)
-                    view.layoutIfNeeded()
-                    
+//                    view.layoutIfNeeded()
+
+                    dateLabelWidth.constant = container.frame.width
+
                     titleWidth.constant = container.frame.width
 //                    titleHeight.constant = container.frame.height/3.5
-                    
+
                     imageViewWidth.constant = container.frame.width
                     imageViewHeight.constant = container.frame.height - titleHeight.constant - container.frame.height/3
-                    
+
                     view.layoutIfNeeded()
-                    
+
                     cardIsOpen = true
                 }
-                
+
             }
         }
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(openDetail))
+        container.addGestureRecognizer(tap)
+    }
+    
+    @objc func openDetail() {
+        let vc = DetailViewController(model: model)
+        present(vc, animated: true, completion: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -120,19 +143,42 @@ class CellLongPressViewController: UIViewController {
         }
     }
     
+    func checkForVideo() {
+        if model.media_type == "video" {
+            container.addSubview(playButton)
+            
+            NSLayoutConstraint.activate([
+                playButton.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+                playButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+                playButton.widthAnchor.constraint(equalToConstant: 50),
+                playButton.heightAnchor.constraint(equalToConstant: 50)
+            ])
+            
+            playButton.addTarget(self, action: #selector(videoTapped), for: .touchUpInside)
+        }
+    }
+    
+    @objc func videoTapped() {
+        if let videoUrl = model.videoUrl, let url = URL(string: videoUrl) {
+            let vc = SFSafariViewController(url: url)
+            present(vc, animated: true, completion: nil)
+        }
+    }
+    
     var blur: UIVisualEffectView!
     
     fileprivate func addViews() {
         let style: UIBlurEffect.Style = traitCollection.userInterfaceStyle == .dark ? .systemUltraThinMaterialLight : .systemUltraThinMaterialDark
         blur = blurBackground(for: self.view, style: style)
         blur.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedBackground)))
-        blur.alpha = 0.6
+        blur.alpha = 0.9
         view.insertSubview(blur, at: 0)
         view.addSubview(container)
         container.addSubview(imageView)
         container.addSubview(titleLabel)
         container.addSubview(explanation)
         container.addSubview(dateLabel)
+        checkForVideo()
     }
     
     @objc func tappedBackground() {
@@ -143,11 +189,13 @@ class CellLongPressViewController: UIViewController {
                 
                 container.frame = CGRect(origin: CGPoint(x: location.x - cell.frame.width/2, y: location.y - cell.frame.height/2), size: CGSize(width: cell.frame.width, height: cell.frame.height))
                 
-                imageViewHeight.constant = self.container.frame.height - 40
-                imageViewWidth.constant = self.container.frame.width
+                imageViewHeight.constant = container.frame.height - 40
+                imageViewWidth.constant = container.frame.width
                 
-                titleWidth.constant = self.container.frame.width
+                titleWidth.constant = container.frame.width
                 titleHeight.constant = 40
+                
+                dateLabelWidth.constant = container.frame.width
                 
                 UIView.animate(withDuration: 0.45, delay: 0.25, options: .curveEaseIn) {
                     self.view.alpha = 0
@@ -156,6 +204,7 @@ class CellLongPressViewController: UIViewController {
             }
             view.layoutIfNeeded()
         } completion: { [self] (_) in
+            
             UIView.animate(withDuration: 0.3) {
                 self.view.alpha = 0
 
@@ -188,7 +237,7 @@ class CellLongPressViewController: UIViewController {
         ])
         
         titleWidth = titleLabel.widthAnchor.constraint(equalToConstant: self.container.frame.width)
-        titleHeight = titleLabel.heightAnchor.constraint(equalToConstant: 40)
+        titleHeight = titleLabel.heightAnchor.constraint(equalToConstant: 30)
         
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 0),
@@ -199,16 +248,18 @@ class CellLongPressViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             explanation.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 10),
-            explanation.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 45),
+            explanation.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             explanation.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10),
             explanation.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -10)
         ])
         
+        dateLabelWidth = dateLabel.widthAnchor.constraint(equalToConstant: container.frame.width)
+        
         NSLayoutConstraint.activate([
-            dateLabel.heightAnchor.constraint(equalToConstant: 30),
+            dateLabel.heightAnchor.constraint(equalToConstant: 25),
             dateLabel.topAnchor.constraint(equalTo: container.topAnchor),
-            dateLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 0),
-            dateLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor)
+            dateLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            dateLabelWidth
         ])
     }
 }
