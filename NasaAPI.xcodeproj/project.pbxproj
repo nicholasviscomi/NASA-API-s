@@ -142,8 +142,8 @@
 			children = (
 				7B875CD125151BAE00CB2A6C /* HomeViewController.swift */,
 				7BA28D6125290FE800CADEC0 /* BirthdayPictureViewController.swift */,
-				7B8AB252252009220061AF7D /* CellLongPressViewController.swift */,
 				7B67A842252806E1006505C2 /* DetailViewController.swift */,
+				7B8AB252252009220061AF7D /* CellLongPressViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";

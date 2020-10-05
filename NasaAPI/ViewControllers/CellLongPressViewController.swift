@@ -25,11 +25,11 @@ class CellLongPressViewController: UIViewController {
     let titleLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.font = .systemFont(ofSize: 18, weight: .medium)
+        field.font = .systemFont(ofSize: 20, weight: .bold)
         field.textColor = .label
         field.backgroundColor = .tertiarySystemBackground
-        field.textAlignment = .left
-        field.numberOfLines = 1
+        field.textAlignment = .center
+        field.numberOfLines = 0
         return field
     }()
     
@@ -49,7 +49,7 @@ class CellLongPressViewController: UIViewController {
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 20, weight: .bold)
         field.textColor = .label
-        field.backgroundColor = UIColor(cgColor: UIColor.tertiarySystemBackground.cgColor)
+        field.backgroundColor = .tertiarySystemBackground
         field.textAlignment = .center
         return field
     }()
@@ -59,6 +59,15 @@ class CellLongPressViewController: UIViewController {
         field.translatesAutoresizingMaskIntoConstraints = false
         field.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
         field.tintColor = .label
+        return field
+    }()
+    
+    let readMore: UIButton = {
+        let field = UIButton()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.setTitle("Read More", for: .normal)
+        field.setTitleColor(.link, for: .normal)
+        field.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         return field
     }()
     
@@ -132,15 +141,17 @@ class CellLongPressViewController: UIViewController {
     
     @objc func openDetail() {
         let vc = DetailViewController(model: model)
+//        navigationController?.pushViewController(vc, animated: true)
+        vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true, completion: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.view.alpha = 0
-        UIView.animate(withDuration: 0.2) {
-            self.view.alpha = 1
-        }
+//        self.view.alpha = 0
+//        UIView.animate(withDuration: 0.2) {
+//            self.view.alpha = 1
+//        }
     }
     
     func checkForVideo() {
@@ -178,6 +189,8 @@ class CellLongPressViewController: UIViewController {
         container.addSubview(titleLabel)
         container.addSubview(explanation)
         container.addSubview(dateLabel)
+        container.addSubview(readMore)
+        readMore.addTarget(self, action: #selector(openDetail), for: .touchUpInside)
         checkForVideo()
     }
     
@@ -243,14 +256,14 @@ class CellLongPressViewController: UIViewController {
             titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 0),
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor),
 //            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
-            titleHeight, titleWidth
+            titleWidth
         ])
         
         NSLayoutConstraint.activate([
             explanation.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 10),
             explanation.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             explanation.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10),
-            explanation.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -10)
+            explanation.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -30)
         ])
         
         dateLabelWidth = dateLabel.widthAnchor.constraint(equalToConstant: container.frame.width)
@@ -260,6 +273,11 @@ class CellLongPressViewController: UIViewController {
             dateLabel.topAnchor.constraint(equalTo: container.topAnchor),
             dateLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
             dateLabelWidth
+        ])
+        
+        NSLayoutConstraint.activate([
+            readMore.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -5),
+            readMore.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10)
         ])
     }
 }

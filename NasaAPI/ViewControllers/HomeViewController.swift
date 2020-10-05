@@ -109,6 +109,8 @@ extension HomeViewController: DetailViewDelegate {
         let vc = CellLongPressViewController(cell: cellCopy, location: location, model: model)
         vc.title = ""
         vc.modalPresentationStyle = .overCurrentContext
+        vc.navigationController?.navigationBar.isHidden = true
+        
         UIApplication.shared.windows.first?.rootViewController?.present(vc, animated: false, completion: nil)
         
     }

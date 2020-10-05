@@ -52,6 +52,12 @@ class BirthdayPictureViewController: UIViewController {
         style()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        view.alpha = 1
+        view.isUserInteractionEnabled = true
+    }
+    
     fileprivate func addViews() {
         view.addSubview(picker)
         view.addSubview(getPhotoButton)
@@ -62,12 +68,13 @@ class BirthdayPictureViewController: UIViewController {
     @objc fileprivate func getPhoto() {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-       
+        view.isUserInteractionEnabled = false
+        view.alpha = 0.7
         APICalls.getAPOD(date: formatter.string(from: picker.date)) { [self] (apod) in
             if let apod = apod {
                 DispatchQueue.main.async {
                     let vc = DetailViewController(model: apod)
-                    vc.title = apod.date
+                    vc.navigationController?.navigationBar.isHidden = true
                     navigationController?.pushViewController(vc, animated: true)
                 }
             } else {
