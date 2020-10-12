@@ -16,7 +16,10 @@ class DetailViewController: UIViewController {
         let field = UIImageView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFit
-        field.backgroundColor = .black
+        field.backgroundColor = .secondaryLabel
+        field.clipsToBounds = true
+        field.isUserInteractionEnabled = true
+        field.alpha = 0
         return field
     }()
     
@@ -28,7 +31,8 @@ class DetailViewController: UIViewController {
         field.backgroundColor = .clear
         field.textAlignment = .center
         field.numberOfLines = 0
-        field.text = "Please Work"
+//        field.layer.borderWidth = 2
+//        field.layer.borderColor = UIColor.black.cgColor
         return field
     }()
     
@@ -39,15 +43,18 @@ class DetailViewController: UIViewController {
         field.textColor = .white
         field.textAlignment = .left
         field.numberOfLines = 0
+//        field.layer.borderWidth = 2
+//        field.layer.borderColor = UIColor.black.cgColor
         return field
     }()
 
     let exitButton: UIButton = {
         let field = UIButton(type: .close)
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = .white
-        field.backgroundColor = .black
-        field.layer.cornerRadius = 25
+        field.titleLabel?.textColor = .link
+        field.backgroundColor = .systemBackground
+//        field.setTitle("Close", for: .normal)
+        field.layer.cornerRadius = 20
         return field
     }()
     
@@ -73,24 +80,48 @@ class DetailViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        addViews()
+        constrainViews()
         
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+            imageView.bottomAnchor.constraint(equalTo: explanation.topAnchor, constant: -10),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
+        ])
+        
+        UIView.animate(withDuration: 0.3) {
+            self.imageView.alpha = 1
+        }
+
     }
     
     fileprivate func addViews() {
+        navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.isHidden = true
+        
         view.backgroundColor = UIColor(red: 0.34, green: 0.41, blue: 0.54, alpha: 1.00)
         view.addSubview(imageView)
         view.addSubview(titleLabel)
         view.addSubview(explanation)
         
-//        if navigationController == nil {
         view.addSubview(exitButton)
         exitButton.addTarget(self, action: #selector(tappedBackground), for: .touchUpInside)
-//        }
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPhoto))
+        tap.numberOfTapsRequired = 1
+        imageView.addGestureRecognizer(tap)
+    }
+    
+    @objc func didTapPhoto() {
+        print("was tapped")
+        if let image = model.image {
+            let vc = PhotoViewerViewController(image: image)
+            (navigationController != nil) ? navigationController?.pushViewController(vc, animated: true) : present(vc, animated: true, completion: nil)
+        }
     }
     
     @objc func tappedBackground() {
-//        self.dismiss(animated: true, completion: nil)
         if navigationController == nil {
             self.dismiss(animated: true, completion: nil)
         }
@@ -98,36 +129,24 @@ class DetailViewController: UIViewController {
     }
     
     fileprivate func constrainViews() {
-//        if navigationController == nil {
         NSLayoutConstraint.activate([
             exitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             exitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            exitButton.heightAnchor.constraint(equalToConstant: 50),
-            exitButton.widthAnchor.constraint(equalToConstant: 50)
+            exitButton.heightAnchor.constraint(equalToConstant: 40),
+            exitButton.widthAnchor.constraint(equalToConstant: 40)
         ])
-//        }
         
         NSLayoutConstraint.activate([
             explanation.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            explanation.widthAnchor.constraint(equalToConstant: view.frame.width - 20),
+            explanation.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             explanation.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)
         ])
         
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 20),
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60)
+            titleLabel.topAnchor.constraint(equalTo: exitButton.bottomAnchor, constant: 10)
         ])
-        
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            imageView.widthAnchor.constraint(equalToConstant: view.frame.width - 20),
-            imageView.bottomAnchor.constraint(equalTo: explanation.topAnchor, constant: -10)
-//            imageView.heightAnchor.constraint(equalToConstant: view.frame.height - explanation.frame.height)
-        ])
-//        imageView.frame = view.bounds
-
         
     }
 

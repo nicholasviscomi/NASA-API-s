@@ -108,14 +108,14 @@ class CellLongPressViewController: UIViewController {
         styleViews()
         constrainViews()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
 
-            UIView.animate(withDuration: 0.3) { [self] in
+            UIView.animate(withDuration: 0.25) { [self] in
                 container.center = view.center
                 view.layoutIfNeeded()
             } completion: { [self] (_) in
 
-                UIView.animate(withDuration: 0.8) { [self] in
+                UIView.animate(withDuration: 0.60) { [self] in
                     container.frame = CGRect(x: 40, y: 125, width: view.frame.width - 80, height: view.frame.height - 250)
 //                    view.layoutIfNeeded()
 
@@ -182,7 +182,10 @@ class CellLongPressViewController: UIViewController {
         let style: UIBlurEffect.Style = traitCollection.userInterfaceStyle == .dark ? .systemUltraThinMaterialLight : .systemUltraThinMaterialDark
         blur = blurBackground(for: self.view, style: style)
         blur.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedBackground)))
-        blur.alpha = 0.9
+        blur.alpha = 0
+        UIView.animate(withDuration: 0.5) {
+            self.blur.alpha = 0.9
+        }
         view.insertSubview(blur, at: 0)
         view.addSubview(container)
         container.addSubview(imageView)
@@ -195,7 +198,7 @@ class CellLongPressViewController: UIViewController {
     }
     
     @objc func tappedBackground() {
-        UIView.animate(withDuration: 0.7) { [self] in
+        UIView.animate(withDuration: 0.55) { [self] in
             if cardIsOpen {
                 blur.alpha = 0
                 explanation.removeFromSuperview()

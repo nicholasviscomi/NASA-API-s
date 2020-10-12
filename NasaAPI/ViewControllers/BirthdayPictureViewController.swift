@@ -56,6 +56,7 @@ class BirthdayPictureViewController: UIViewController {
         super.viewDidAppear(animated)
         view.alpha = 1
         view.isUserInteractionEnabled = true
+        navigationController?.navigationBar.isHidden = false
     }
     
     fileprivate func addViews() {

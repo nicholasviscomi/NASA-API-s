@@ -68,7 +68,12 @@ class HomeViewController: UIViewController {
 //                }
 //            }
 //        }
-            
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     fileprivate func addViews() {
