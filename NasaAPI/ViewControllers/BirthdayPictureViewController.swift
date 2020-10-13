@@ -16,14 +16,14 @@ class BirthdayPictureViewController: UIViewController {
         field.datePickerMode = .date
         field.maximumDate = Date()
         if #available(iOS 14.0, *) { field.preferredDatePickerStyle = .inline }
-        field.tintColor = UIColor(red: 0.34, green: 0.41, blue: 0.54, alpha: 1.00)
+        field.tintColor = Colors.NasaBlue
         return field
     }()
     
     let getPhotoButton: UIButton = {
         let field = UIButton()
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.backgroundColor = UIColor(red: 0.34, green: 0.41, blue: 0.54, alpha: 1.00)
+        field.backgroundColor = Colors.NasaBlue
         field.setTitle("Get Photo", for: .normal)
         field.setTitleColor(.secondarySystemBackground, for: .normal)
         field.titleLabel?.font = .systemFont(ofSize: 28, weight: .bold)
@@ -35,7 +35,7 @@ class BirthdayPictureViewController: UIViewController {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.numberOfLines = 1
-        field.textColor = UIColor(red: 0.34, green: 0.41, blue: 0.54, alpha: 1.00)
+        field.textColor = Colors.NasaBlue
         field.font = .systemFont(ofSize: 24, weight: .semibold)
         field.text = "Select your birthday below"
         return field

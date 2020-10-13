@@ -167,7 +167,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             let field = UIButton()
             field.translatesAutoresizingMaskIntoConstraints = false
             field.tintColor = .link
-            field.setTitleColor(UIColor(red: 0.34, green: 0.41, blue: 0.54, alpha: 1.00), for: .normal)
+            field.setTitleColor(Colors.NasaBlue, for: .normal)
             field.setTitle("View More", for: .normal)
             field.titleLabel?.font = .systemFont(ofSize: 22, weight: .semibold)
             field.titleLabel?.textAlignment = .left

@@ -50,8 +50,8 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         conform()
         constrainViews()
         
-        backgroundColor = UIColor(red: 0.34, green: 0.41, blue: 0.54, alpha: 1.00)
-        contentView.backgroundColor = UIColor(red: 0.34, green: 0.41, blue: 0.54, alpha: 1.00)
+        backgroundColor = Colors.NasaBlue
+        contentView.backgroundColor = Colors.NasaBlue
         
     }
         

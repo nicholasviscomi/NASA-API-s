@@ -11,6 +11,7 @@
 		7B1109A7251C3A1B008F11B2 /* TableViewCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1109A6251C3A1B008F11B2 /* TableViewCollectionCell.swift */; };
 		7B1109AB251C3AFF008F11B2 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1109AA251C3AFF008F11B2 /* Model.swift */; };
 		7B1109AF251C3D0B008F11B2 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1109AE251C3D0B008F11B2 /* CollectionViewCell.swift */; };
+		7B245C56253651BA008E2977 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B245C55253651BA008E2977 /* Colors.swift */; };
 		7B5B6D852532A956002DE605 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5B6D842532A956002DE605 /* PhotoViewerViewController.swift */; };
 		7B67A843252806E1006505C2 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B67A842252806E1006505C2 /* DetailViewController.swift */; };
 		7B875CCE25151BAE00CB2A6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CCD25151BAE00CB2A6C /* AppDelegate.swift */; };
@@ -32,6 +33,7 @@
 		7B1109A6251C3A1B008F11B2 /* TableViewCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCollectionCell.swift; sourceTree = "<group>"; };
 		7B1109AA251C3AFF008F11B2 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		7B1109AE251C3D0B008F11B2 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		7B245C55253651BA008E2977 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		7B5B6D842532A956002DE605 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
 		7B67A842252806E1006505C2 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		7B875CCA25151BAE00CB2A6C /* NasaAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NasaAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,11 +132,12 @@
 			isa = PBXGroup;
 			children = (
 				7B1109A5251C39F9008F11B2 /* Cells */,
+				7B8AB244251FF56E0061AF7D /* Protocols */,
 				7B875CE125151BDD00CB2A6C /* APIMethods.swift */,
 				7BCB85E8251994FE00311897 /* Constants.swift */,
 				7BCB85E625198CB900311897 /* Helper.swift */,
+				7B245C55253651BA008E2977 /* Colors.swift */,
 				7B09F48D2526BC1300434C6D /* ShimmerLayer.swift */,
-				7B8AB244251FF56E0061AF7D /* Protocols */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				7B875CD225151BAE00CB2A6C /* HomeViewController.swift in Sources */,
 				7BD3FEA12524342A009933D8 /* APOD.swift in Sources */,
 				7B875CE225151BDD00CB2A6C /* APIMethods.swift in Sources */,
+				7B245C56253651BA008E2977 /* Colors.swift in Sources */,
 				7B1109AF251C3D0B008F11B2 /* CollectionViewCell.swift in Sources */,
 				7BCB85E725198CB900311897 /* Helper.swift in Sources */,
 				7B5B6D852532A956002DE605 /* PhotoViewerViewController.swift in Sources */,

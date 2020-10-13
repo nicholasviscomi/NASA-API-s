@@ -58,6 +58,23 @@ class DetailViewController: UIViewController {
         return field
     }()
     
+    let playButton: UIButton = {
+        let field = UIButton()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
+        field.tintColor = .NasaBlue
+        field.backgroundColor = .clear
+        return field
+    }()
+    
+    let bgView: UIView = {
+        let field = UIView()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = .systemBackground
+        field.layer.cornerRadius = 25
+        return field
+    }()
+    
     let model: APOD
 
     init(model: APOD) {
@@ -81,6 +98,7 @@ class DetailViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         addViews()
+        checkForVideo()
         constrainViews()
         
         NSLayoutConstraint.activate([
@@ -100,7 +118,7 @@ class DetailViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.isHidden = true
         
-        view.backgroundColor = UIColor(red: 0.34, green: 0.41, blue: 0.54, alpha: 1.00)
+        view.backgroundColor = Colors.NasaBlue
         view.addSubview(imageView)
         view.addSubview(titleLabel)
         view.addSubview(explanation)
@@ -127,6 +145,32 @@ class DetailViewController: UIViewController {
         }
         navigationController?.popViewController(animated: true)
     }
+    
+    func checkForVideo() {
+        if model.media_type == "video" {
+            view.addSubview(bgView)
+            view.addSubview(playButton)
+            
+            NSLayoutConstraint.activate([
+                playButton.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+                playButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+                playButton.widthAnchor.constraint(equalToConstant: 30),
+                playButton.heightAnchor.constraint(equalToConstant: 30)
+            ])
+            
+            NSLayoutConstraint.activate([
+                bgView.centerXAnchor.constraint(equalTo: playButton.centerXAnchor),
+                bgView.centerYAnchor.constraint(equalTo: playButton.centerYAnchor),
+                bgView.widthAnchor.constraint(equalToConstant: 50),
+                bgView.heightAnchor.constraint(equalToConstant: 50)
+            ])
+            
+            playButton.addTarget(self, action: #selector(videoTapped), for: .touchUpInside)
+        }
+    }
+    
+    @objc func videoTapped() { openVideo(with: model, viewController: self) }
+
     
     fileprivate func constrainViews() {
         NSLayoutConstraint.activate([

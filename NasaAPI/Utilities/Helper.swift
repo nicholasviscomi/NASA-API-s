@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 public func blurBackground(for view: UIView, style: UIBlurEffect.Style) -> UIVisualEffectView {
     let blurEffect = UIBlurEffect(style: style)
@@ -42,20 +43,9 @@ public func imageFrom(data: Data) -> UIImage? {
     return UIImage(data: data)
 }
 
-extension UIImageView {
-    func enableZoom() {
-    let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(startZooming(_:)))
-    isUserInteractionEnabled = true
-    addGestureRecognizer(pinchGesture)
-  }
-
-  @objc
-  private func startZooming(_ sender: UIPinchGestureRecognizer) {
-    let scaleResult = sender.view?.transform.scaledBy(x: sender.scale, y: sender.scale)
-    guard let scale = scaleResult, scale.a > 1, scale.d > 1 else { return }
-    sender.view?.transform = scale
-    sender.scale = 1
-    
-  }
-
+func openVideo(with model: APOD, viewController: UIViewController) {
+    if let videoUrl = model.videoUrl, let url = URL(string: videoUrl) {
+        let vc = SFSafariViewController(url: url)
+        viewController.present(vc, animated: true, completion: nil)
+    }
 }

@@ -25,6 +25,7 @@ class PhotoViewerViewController: UIViewController {
         field.translatesAutoresizingMaskIntoConstraints = false
         field.minimumZoomScale = 1.0
         field.maximumZoomScale = 5.0
+        field.isScrollEnabled = true
         return field
     }()
     
@@ -39,20 +40,21 @@ class PhotoViewerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(scrollView)
+        scrollView.delegate = self
         scrollView.addSubview(imageView)
         
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            scrollView.heightAnchor.constraint(equalToConstant: 400)
+            scrollView.heightAnchor.constraint(equalToConstant: view.frame.height)
         ])
-        scrollView.delegate = self
+        
         NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            imageView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            imageView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor),
+            imageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: view.frame.width),
+            imageView.heightAnchor.constraint(equalToConstant: view.frame.height)
         ])
 //        scrollView.contentSize = CGSize(width: view.frame.width*4, height: view.frame.height)
         

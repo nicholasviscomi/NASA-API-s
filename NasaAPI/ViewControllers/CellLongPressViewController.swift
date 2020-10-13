@@ -58,7 +58,17 @@ class CellLongPressViewController: UIViewController {
         let field = UIButton()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
-        field.tintColor = .label
+        field.tintColor = .NasaBlue
+        field.backgroundColor = .clear
+//        field.layer.cornerRadius = 15
+        return field
+    }()
+    
+    let bgView: UIView = {
+        let field = UIView()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = .systemBackground
+        field.layer.cornerRadius = 25
         return field
     }()
     
@@ -156,25 +166,28 @@ class CellLongPressViewController: UIViewController {
     
     func checkForVideo() {
         if model.media_type == "video" {
+            container.addSubview(bgView)
             container.addSubview(playButton)
             
             NSLayoutConstraint.activate([
                 playButton.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
                 playButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-                playButton.widthAnchor.constraint(equalToConstant: 50),
-                playButton.heightAnchor.constraint(equalToConstant: 50)
+                playButton.widthAnchor.constraint(equalToConstant: 30),
+                playButton.heightAnchor.constraint(equalToConstant: 30)
+            ])
+            
+            NSLayoutConstraint.activate([
+                bgView.centerXAnchor.constraint(equalTo: playButton.centerXAnchor),
+                bgView.centerYAnchor.constraint(equalTo: playButton.centerYAnchor),
+                bgView.widthAnchor.constraint(equalToConstant: 50),
+                bgView.heightAnchor.constraint(equalToConstant: 50)
             ])
             
             playButton.addTarget(self, action: #selector(videoTapped), for: .touchUpInside)
         }
     }
     
-    @objc func videoTapped() {
-        if let videoUrl = model.videoUrl, let url = URL(string: videoUrl) {
-            let vc = SFSafariViewController(url: url)
-            present(vc, animated: true, completion: nil)
-        }
-    }
+    @objc func videoTapped() { openVideo(with: model, viewController: self) }
     
     var blur: UIVisualEffectView!
     
