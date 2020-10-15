@@ -80,7 +80,9 @@ class CollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = .secondarySystemBackground
     }
     
-    func configure(model: APOD) {
+    let days = ["Today", "Yesterday", "2 Days Ago", "3 Days Ago", "4 Days Ago", "5 Days Ago", "6 Days Ago"]
+    
+    func configure(model: APOD, indexPath: IndexPath) {
         if model.media_type == "video" {
             print("video type found")
 //            playVideo(model: model)
@@ -91,7 +93,7 @@ class CollectionViewCell: UICollectionViewCell {
         self.titleLabel.text = "    \(model.title)"
         self.model = model
         
-        self.dateLabel.text = model.date
+        self.dateLabel.text = days[indexPath.row]//model.date
     }
     
     func playVideo(model: APOD) {

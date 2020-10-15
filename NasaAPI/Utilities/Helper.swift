@@ -49,3 +49,9 @@ func openVideo(with model: APOD, viewController: UIViewController) {
         viewController.present(vc, animated: true, completion: nil)
     }
 }
+
+func currentDate() -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    return formatter.string(from: Date())
+}

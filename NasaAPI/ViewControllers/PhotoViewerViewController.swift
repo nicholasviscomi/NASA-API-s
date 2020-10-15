@@ -39,6 +39,10 @@ class PhotoViewerViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        let style: UIBlurEffect.Style = traitCollection.userInterfaceStyle == .dark ? .systemUltraThinMaterialLight : .systemUltraThinMaterialDark
+        let blur = blurBackground(for: view, style: style)
+        blur.alpha = 0.75
+        view.insertSubview(blur, at: 0)
         view.addSubview(scrollView)
         scrollView.delegate = self
         scrollView.addSubview(imageView)

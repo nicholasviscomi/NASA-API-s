@@ -34,6 +34,7 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     }()
     
     var data = [APOD]()
+    
     var detailViewDelegate: DetailViewDelegate?
     
     func configure(with data: [APOD]) {
@@ -60,7 +61,7 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
             collectionView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
         ])
         
 //        NSLayoutConstraint.activate([
@@ -91,13 +92,14 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int { return 1 }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { return data.count }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         
-        cell.configure(model: data[indexPath.row])
+        cell.configure(model: data[indexPath.row], indexPath: indexPath)
         self.detailViewDelegate = HomeViewController()
         
         return cell
@@ -118,4 +120,10 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     }
     
     
+}
+
+extension TableViewCollectionCell: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset)
+    }
 }

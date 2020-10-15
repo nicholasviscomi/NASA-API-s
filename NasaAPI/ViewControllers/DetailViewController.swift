@@ -135,7 +135,9 @@ class DetailViewController: UIViewController {
         print("was tapped")
         if let image = model.image {
             let vc = PhotoViewerViewController(image: image)
-            (navigationController != nil) ? navigationController?.pushViewController(vc, animated: true) : present(vc, animated: true, completion: nil)
+            vc.modalPresentationStyle = .overCurrentContext
+//            (navigationController != nil) ? navigationController?.pushViewController(vc, animated: true) : present(vc, animated: true, completion: nil)
+            present(vc, animated: true, completion: nil)
         }
     }
     

@@ -7,11 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7B09F48E2526BC1300434C6D /* ShimmerLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B09F48D2526BC1300434C6D /* ShimmerLayer.swift */; };
 		7B1109A7251C3A1B008F11B2 /* TableViewCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1109A6251C3A1B008F11B2 /* TableViewCollectionCell.swift */; };
 		7B1109AB251C3AFF008F11B2 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1109AA251C3AFF008F11B2 /* Model.swift */; };
 		7B1109AF251C3D0B008F11B2 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1109AE251C3D0B008F11B2 /* CollectionViewCell.swift */; };
 		7B245C56253651BA008E2977 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B245C55253651BA008E2977 /* Colors.swift */; };
+		7B245C80253688A1008E2977 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B245C7F253688A1008E2977 /* WidgetKit.framework */; };
+		7B245C82253688A1008E2977 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B245C81253688A1008E2977 /* SwiftUI.framework */; };
+		7B245C85253688A1008E2977 /* nasaAPIWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B245C84253688A1008E2977 /* nasaAPIWidget.swift */; };
+		7B245C88253688A5008E2977 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B245C87253688A5008E2977 /* Assets.xcassets */; };
+		7B245C8A253688A5008E2977 /* nasaAPIWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7B245C86253688A1008E2977 /* nasaAPIWidget.intentdefinition */; };
+		7B245C8B253688A5008E2977 /* nasaAPIWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7B245C86253688A1008E2977 /* nasaAPIWidget.intentdefinition */; };
+		7B245C8E253688A5008E2977 /* nasaAPIWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7B245C7D253688A1008E2977 /* nasaAPIWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7B5B6D852532A956002DE605 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5B6D842532A956002DE605 /* PhotoViewerViewController.swift */; };
 		7B67A843252806E1006505C2 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B67A842252806E1006505C2 /* DetailViewController.swift */; };
 		7B875CCE25151BAE00CB2A6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CCD25151BAE00CB2A6C /* AppDelegate.swift */; };
@@ -22,18 +28,54 @@
 		7B875CE225151BDD00CB2A6C /* APIMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CE125151BDD00CB2A6C /* APIMethods.swift */; };
 		7B8AB246251FF57B0061AF7D /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8AB245251FF57B0061AF7D /* Protocols.swift */; };
 		7B8AB253252009220061AF7D /* CellLongPressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8AB252252009220061AF7D /* CellLongPressViewController.swift */; };
+		7B9034B9253773D200688117 /* APOD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD3FEA02524342A009933D8 /* APOD.swift */; };
+		7B9034BF253775A200688117 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCB85E625198CB900311897 /* Helper.swift */; };
+		7B9034C32537762300688117 /* WidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9034C22537762300688117 /* WidgetModel.swift */; };
+		7B9034C62537762500688117 /* WidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9034C22537762300688117 /* WidgetModel.swift */; };
 		7BA28D6225290FE800CADEC0 /* BirthdayPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA28D6125290FE800CADEC0 /* BirthdayPictureViewController.swift */; };
 		7BCB85E725198CB900311897 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCB85E625198CB900311897 /* Helper.swift */; };
 		7BCB85E9251994FE00311897 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCB85E8251994FE00311897 /* Constants.swift */; };
 		7BD3FEA12524342A009933D8 /* APOD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD3FEA02524342A009933D8 /* APOD.swift */; };
+		7BED4A982538EF2900E7107A /* WidgetAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BED4A972538EF1400E7107A /* WidgetAPI.swift */; };
+		7BED4A9B2538EF2A00E7107A /* WidgetAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BED4A972538EF1400E7107A /* WidgetAPI.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7B245C8C253688A5008E2977 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B875CC225151BAE00CB2A6C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7B245C7C253688A1008E2977;
+			remoteInfo = nasaAPIWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7B245C92253688A5008E2977 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7B245C8E253688A5008E2977 /* nasaAPIWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		7B09F48D2526BC1300434C6D /* ShimmerLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerLayer.swift; sourceTree = "<group>"; };
 		7B1109A6251C3A1B008F11B2 /* TableViewCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCollectionCell.swift; sourceTree = "<group>"; };
 		7B1109AA251C3AFF008F11B2 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		7B1109AE251C3D0B008F11B2 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		7B245C55253651BA008E2977 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		7B245C7D253688A1008E2977 /* nasaAPIWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = nasaAPIWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B245C7F253688A1008E2977 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		7B245C81253688A1008E2977 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		7B245C84253688A1008E2977 /* nasaAPIWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nasaAPIWidget.swift; sourceTree = "<group>"; };
+		7B245C86253688A1008E2977 /* nasaAPIWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = nasaAPIWidget.intentdefinition; sourceTree = "<group>"; };
+		7B245C87253688A5008E2977 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7B245C89253688A5008E2977 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7B5B6D842532A956002DE605 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
 		7B67A842252806E1006505C2 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		7B875CCA25151BAE00CB2A6C /* NasaAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NasaAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,13 +88,24 @@
 		7B875CE125151BDD00CB2A6C /* APIMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIMethods.swift; sourceTree = "<group>"; };
 		7B8AB245251FF57B0061AF7D /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		7B8AB252252009220061AF7D /* CellLongPressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellLongPressViewController.swift; sourceTree = "<group>"; };
+		7B9034C22537762300688117 /* WidgetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetModel.swift; sourceTree = "<group>"; };
 		7BA28D6125290FE800CADEC0 /* BirthdayPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayPictureViewController.swift; sourceTree = "<group>"; };
 		7BCB85E625198CB900311897 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		7BCB85E8251994FE00311897 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7BD3FEA02524342A009933D8 /* APOD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APOD.swift; sourceTree = "<group>"; };
+		7BED4A972538EF1400E7107A /* WidgetAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7B245C7A253688A1008E2977 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B245C82253688A1008E2977 /* SwiftUI.framework in Frameworks */,
+				7B245C80253688A1008E2977 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B875CC725151BAE00CB2A6C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -90,10 +143,34 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		7B245C7E253688A1008E2977 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7B245C7F253688A1008E2977 /* WidgetKit.framework */,
+				7B245C81253688A1008E2977 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7B245C83253688A1008E2977 /* nasaAPIWidget */ = {
+			isa = PBXGroup;
+			children = (
+				7B9034C22537762300688117 /* WidgetModel.swift */,
+				7BED4A972538EF1400E7107A /* WidgetAPI.swift */,
+				7B245C84253688A1008E2977 /* nasaAPIWidget.swift */,
+				7B245C86253688A1008E2977 /* nasaAPIWidget.intentdefinition */,
+				7B245C87253688A5008E2977 /* Assets.xcassets */,
+				7B245C89253688A5008E2977 /* Info.plist */,
+			);
+			path = nasaAPIWidget;
+			sourceTree = "<group>";
+		};
 		7B875CC125151BAE00CB2A6C = {
 			isa = PBXGroup;
 			children = (
 				7B875CCC25151BAE00CB2A6C /* NasaAPI */,
+				7B245C83253688A1008E2977 /* nasaAPIWidget */,
+				7B245C7E253688A1008E2977 /* Frameworks */,
 				7B875CCB25151BAE00CB2A6C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -102,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				7B875CCA25151BAE00CB2A6C /* NasaAPI.app */,
+				7B245C7D253688A1008E2977 /* nasaAPIWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -137,7 +215,6 @@
 				7BCB85E8251994FE00311897 /* Constants.swift */,
 				7BCB85E625198CB900311897 /* Helper.swift */,
 				7B245C55253651BA008E2977 /* Colors.swift */,
-				7B09F48D2526BC1300434C6D /* ShimmerLayer.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -157,6 +234,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7B245C7C253688A1008E2977 /* nasaAPIWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B245C8F253688A5008E2977 /* Build configuration list for PBXNativeTarget "nasaAPIWidgetExtension" */;
+			buildPhases = (
+				7B245C79253688A1008E2977 /* Sources */,
+				7B245C7A253688A1008E2977 /* Frameworks */,
+				7B245C7B253688A1008E2977 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = nasaAPIWidgetExtension;
+			productName = nasaAPIWidgetExtension;
+			productReference = 7B245C7D253688A1008E2977 /* nasaAPIWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		7B875CC925151BAE00CB2A6C /* NasaAPI */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7B875CDE25151BAF00CB2A6C /* Build configuration list for PBXNativeTarget "NasaAPI" */;
@@ -164,10 +258,12 @@
 				7B875CC625151BAE00CB2A6C /* Sources */,
 				7B875CC725151BAE00CB2A6C /* Frameworks */,
 				7B875CC825151BAE00CB2A6C /* Resources */,
+				7B245C92253688A5008E2977 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7B245C8D253688A5008E2977 /* PBXTargetDependency */,
 			);
 			name = NasaAPI;
 			productName = NasaAPI;
@@ -180,10 +276,13 @@
 		7B875CC225151BAE00CB2A6C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1170;
+				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Nick Viscomi";
 				TargetAttributes = {
+					7B245C7C253688A1008E2977 = {
+						CreatedOnToolsVersion = 12.0;
+					};
 					7B875CC925151BAE00CB2A6C = {
 						CreatedOnToolsVersion = 11.7;
 					};
@@ -203,11 +302,20 @@
 			projectRoot = "";
 			targets = (
 				7B875CC925151BAE00CB2A6C /* NasaAPI */,
+				7B245C7C253688A1008E2977 /* nasaAPIWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7B245C7B253688A1008E2977 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B245C88253688A5008E2977 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B875CC825151BAE00CB2A6C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -220,20 +328,35 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7B245C79253688A1008E2977 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B245C8A253688A5008E2977 /* nasaAPIWidget.intentdefinition in Sources */,
+				7B9034BF253775A200688117 /* Helper.swift in Sources */,
+				7B9034C62537762500688117 /* WidgetModel.swift in Sources */,
+				7B9034B9253773D200688117 /* APOD.swift in Sources */,
+				7BED4A9B2538EF2A00E7107A /* WidgetAPI.swift in Sources */,
+				7B245C85253688A1008E2977 /* nasaAPIWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B875CC625151BAE00CB2A6C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				7B875CD225151BAE00CB2A6C /* HomeViewController.swift in Sources */,
+				7B245C8B253688A5008E2977 /* nasaAPIWidget.intentdefinition in Sources */,
 				7BD3FEA12524342A009933D8 /* APOD.swift in Sources */,
 				7B875CE225151BDD00CB2A6C /* APIMethods.swift in Sources */,
 				7B245C56253651BA008E2977 /* Colors.swift in Sources */,
 				7B1109AF251C3D0B008F11B2 /* CollectionViewCell.swift in Sources */,
 				7BCB85E725198CB900311897 /* Helper.swift in Sources */,
+				7BED4A982538EF2900E7107A /* WidgetAPI.swift in Sources */,
 				7B5B6D852532A956002DE605 /* PhotoViewerViewController.swift in Sources */,
 				7B8AB253252009220061AF7D /* CellLongPressViewController.swift in Sources */,
+				7B9034C32537762300688117 /* WidgetModel.swift in Sources */,
 				7B1109A7251C3A1B008F11B2 /* TableViewCollectionCell.swift in Sources */,
-				7B09F48E2526BC1300434C6D /* ShimmerLayer.swift in Sources */,
 				7BA28D6225290FE800CADEC0 /* BirthdayPictureViewController.swift in Sources */,
 				7B8AB246251FF57B0061AF7D /* Protocols.swift in Sources */,
 				7B875CCE25151BAE00CB2A6C /* AppDelegate.swift in Sources */,
@@ -245,6 +368,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7B245C8D253688A5008E2977 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7B245C7C253688A1008E2977 /* nasaAPIWidgetExtension */;
+			targetProxy = 7B245C8C253688A5008E2977 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7B875CD825151BAF00CB2A6C /* LaunchScreen.storyboard */ = {
@@ -258,6 +389,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		7B245C90253688A5008E2977 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XRWZR9H6VF;
+				INFOPLIST_FILE = nasaAPIWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.NickViscomi.NasaAPI.nasaAPIWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7B245C91253688A5008E2977 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XRWZR9H6VF;
+				INFOPLIST_FILE = nasaAPIWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.NickViscomi.NasaAPI.nasaAPIWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		7B875CDC25151BAF00CB2A6C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -377,6 +550,7 @@
 		7B875CDF25151BAF00CB2A6C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XRWZR9H6VF;
@@ -396,6 +570,7 @@
 		7B875CE025151BAF00CB2A6C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XRWZR9H6VF;
@@ -415,6 +590,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7B245C8F253688A5008E2977 /* Build configuration list for PBXNativeTarget "nasaAPIWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B245C90253688A5008E2977 /* Debug */,
+				7B245C91253688A5008E2977 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7B875CC525151BAE00CB2A6C /* Build configuration list for PBXProject "NasaAPI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
