@@ -104,7 +104,7 @@ class CellLongPressViewController: UIViewController {
         self.imageView.image = cell.imageView.image
         self.titleLabel.text = cell.titleLabel.text
         self.explanation.text = cell.model?.explanation
-        self.dateLabel.text = cell.model?.date
+        self.dateLabel.text = cell.dateLabel.text
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -151,7 +151,6 @@ class CellLongPressViewController: UIViewController {
     
     @objc func openDetail() {
         let vc = DetailViewController(model: model)
-//        navigationController?.pushViewController(vc, animated: true)
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true, completion: nil)
     }

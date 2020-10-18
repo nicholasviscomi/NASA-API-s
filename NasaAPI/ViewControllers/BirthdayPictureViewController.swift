@@ -37,13 +37,14 @@ class BirthdayPictureViewController: UIViewController {
         field.numberOfLines = 1
         field.textColor = Colors.NasaBlue
         field.font = .systemFont(ofSize: 24, weight: .semibold)
-        field.text = "Select your birthday below"
+        field.text = "Select a date below"
         return field
     }()
     
     var selectedDate: Date?
     
     let APICalls = APIMethods()
+    let cache = CacheManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,6 +72,19 @@ class BirthdayPictureViewController: UIViewController {
         formatter.dateFormat = "yyyy-MM-dd"
         view.isUserInteractionEnabled = false
         view.alpha = 0.7
+        
+        if cache.isCached(date: formatter.string(from: picker.date)) {
+            if let apod = cache.retrieveCachedAPOD(date: formatter.string(from: picker.date)) {
+                DispatchQueue.main.async { [self] in
+                    let vc = DetailViewController(model: apod)
+                    vc.navigationController?.navigationBar.isHidden = true
+                    navigationController?.pushViewController(vc, animated: true)
+                    return
+                }
+            }
+        }
+        
+        guard !cache.isCached(date: formatter.string(from: picker.date)) else { return }
         APICalls.getAPOD(date: formatter.string(from: picker.date)) { [self] (apod) in
             if let apod = apod {
                 DispatchQueue.main.async {

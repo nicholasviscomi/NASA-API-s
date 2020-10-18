@@ -133,12 +133,10 @@ class DetailViewController: UIViewController {
     
     @objc func didTapPhoto() {
         print("was tapped")
-        if let image = model.image {
-            let vc = PhotoViewerViewController(image: image)
-            vc.modalPresentationStyle = .overCurrentContext
-//            (navigationController != nil) ? navigationController?.pushViewController(vc, animated: true) : present(vc, animated: true, completion: nil)
-            present(vc, animated: true, completion: nil)
-        }
+        let vc = PhotoViewerViewController(model: model)
+        let navVc = UINavigationController(rootViewController: vc)
+        navVc.modalPresentationStyle = .fullScreen
+        present(navVc, animated: true, completion: nil)
     }
     
     @objc func tappedBackground() {

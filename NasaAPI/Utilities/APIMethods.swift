@@ -8,9 +8,10 @@
 
 import UIKit
 
-class APIMethods {
+final class APIMethods {
     
     var dataDelegate: DataDelegate?
+    let cache = CacheManager()
     
     public func getAPOD(date: String, completion: @escaping (APOD?) -> Void) {
         let key = "W3O3phtX3OakhV5sLHZarWTYsjFUJFGcK8iKzd5o"
@@ -25,7 +26,7 @@ class APIMethods {
         
         
         let session = URLSession.shared
-        let dataTask = session.dataTask(with: url!) { (data, response, error) in
+        let dataTask = session.dataTask(with: url!) { [self] (data, response, error) in
 
             if error == nil && data != nil {
                 //parse json
@@ -33,6 +34,14 @@ class APIMethods {
                 
                 do {
                     let apod = try decoder.decode(APOD.self, from: data!)
+                    
+                    let isCached = cache.isCached(date: apod.date)
+                    print("is cached = \(isCached)")
+                    if !isCached {
+                        cache.cache(apod: apod, date: apod.date)
+                        print("caching \(apod.date)")
+                    }
+                    
                     completion(apod)
                     return
                 } catch {
@@ -67,11 +76,13 @@ class APIMethods {
                 if data.count == 0 {
                     data.append([apod])
                 } else {
-                    data[0].append(apod)
-                    data[0] = data[0].sorted(by: { $0.date > $1.date })
+                    if !(data[0].contains(apod)) {
+                        data[0].append(apod)
+                    }
                 }
                 
                 if data.first?.count == count {
+                    data[0] = data[0].sorted(by: { $0.date > $1.date })
                     dataDelegate?.retrievedWeekOfAPOD(apods: data)
                     dataDelegate?.isFinishedLoadingAPOD()
                 }

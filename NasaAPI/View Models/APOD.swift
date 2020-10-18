@@ -19,7 +19,12 @@ enum CodingKeys: String, CodingKey {
     case url = "url"
 }
 
-class APOD: Decodable {
+class APOD: Decodable, Equatable {
+    
+    static func == (lhs: APOD, rhs: APOD) -> Bool {
+        return lhs.date == rhs.date
+    }
+    
     var date: String = ""
     var explanation: String = ""
     var hdurl: String = ""
@@ -28,6 +33,17 @@ class APOD: Decodable {
     var url: String = ""
     var image: UIImage? = nil
     var videoUrl: String? = nil
+    
+    init(date: String, explanation: String, hdurl: String, media_type: String, title: String, url: String, image: UIImage, videoUrl: String?) {
+        self.date = date
+        self.explanation = explanation
+        self.hdurl = hdurl
+        self.media_type = media_type
+        self.title = title
+        self.url = url
+        self.image = image
+        self.videoUrl = videoUrl
+    }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

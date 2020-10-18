@@ -12,6 +12,8 @@ import Intents
 
 
 struct Provider: IntentTimelineProvider {
+    typealias Entry = SimpleEntry
+    
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(date: Date(), configuration: ConfigurationIntent(), model: WidgetModel(date: "", title: "", image: UIImage(named: "Image")!))
     }
@@ -52,40 +54,20 @@ struct SimpleEntry: TimelineEntry {
 struct nasaAPIWidgetEntryView : View {
     var entry: Provider.Entry
     
-    var body: some View {
-        MainView(entry: entry)
-    }
-}
-
-struct MainView: View {
-    var entry: Provider.Entry
+    @Environment(\.widgetFamily) var family
     
     var body: some View {
-        ZStack {
-            Image(uiImage: (entry.model.image))
-                .resizable()
-            
-            VStack {
-                Text(entry.model.title)
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color(.label))
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(nil)
-                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
-                    .background(Color(.secondarySystemBackground).opacity(0.65))
-                    .foregroundColor(Color(.secondarySystemBackground))
-                    .cornerRadius(15)
-
-                    
-//                Text(Date(), style: .date)
-//                    .font(.title3)
-//                    .fontWeight(.bold)
-//                    .foregroundColor(.white)
-//                    .lineLimit(0)
-            }
-            
+        switch family {
+        case .systemSmall:
+            SystemSmallView(entry: entry)
+        case .systemMedium:
+            SystemMediumView(entry: entry)
+        case .systemLarge:
+            SystemLargeView(entry: entry)
+        default:
+            SystemSmallView(entry: entry)
         }
+        
     }
 }
 
@@ -97,9 +79,9 @@ struct nasaAPIWidget: Widget {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
             nasaAPIWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("My Widget")
+        .configurationDisplayName("Space Flix Widget")
         .description("This is an example widget.")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
 

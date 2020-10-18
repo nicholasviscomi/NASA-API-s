@@ -9,7 +9,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    //MARK: Add in Cache
     fileprivate let tableView: UITableView = {
         let field = UITableView()
         field.register(TableViewCollectionCell.self, forCellReuseIdentifier: Constants.homeCellIdentifier)
@@ -22,7 +22,9 @@ class HomeViewController: UIViewController {
     
     var data = [[APOD]]()
     var weekCount = 7
+    
     let APICalls = APIMethods()
+    let cache = CacheManager()
     
     var isFinishedLoading = false
     
@@ -35,39 +37,21 @@ class HomeViewController: UIViewController {
         conform()
         styleUI()
 
-        APICalls.getWeekOfAPOD()
+        for date in APICalls.lastWeeksDates() {
+            if cache.isCached(date: date) {
+                if let apod = cache.retrieveCachedAPOD(date: date) {
+                    if data.count == 0 {
+                        data.append([apod])
+                    } else {
+                        data[0].append(apod)
+                    }
+                }
+            }
+        }
         
-//        for date in APICalls.lastWeeksDates() {
-//            APICalls.getAPOD(date: date) { [self] (apod) in
-//                guard let apod = apod else {
-//                    return
-//                }
-//
-//                print(apod.media_type)
-//
-//                if data.count == 0 {
-//                    data.append([apod])
-//                } else {
-//                    data[0].append(apod)
-//                }
-//
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-////                    data.append(row)
-//                    if data.count != 0 {
-////                        let formatter = DateFormatter()
-////                        data[0].forEach { (apod) in
-////
-////                            formatter.dateFormat = "yyyy-MM-dd"
-////                            let date = formatter.date(from: apod.date)
-////                            print(date as Any)
-////                        }
-//                        data[0] = data[0].sorted(by: { $0.date > $1.date })
-//                        weekCount = data[0].count
-//                    }
-//                    tableView.reloadData()
-//                }
-//            }
-//        }
+        if data.count == 0 || data[0].count != 7 {
+            APICalls.getWeekOfAPOD()
+        }
         
     }
     
@@ -84,7 +68,7 @@ class HomeViewController: UIViewController {
     fileprivate func styleUI() {
         view.backgroundColor = .tertiarySystemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
-        title = "NASA API's"
+        title = "Space Flix"
         
         navController = navigationController
     }
@@ -131,6 +115,7 @@ extension HomeViewController: DataDelegate {
         print("is finished loading")
         DispatchQueue.main.async { [self] in
             isFinishedLoading = true
+//            data[0].removeAll(where: {data[0].contains($0)})
             tableView.reloadData()
         }
     }
@@ -155,7 +140,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         let label: UILabel = {
             let field = UILabel()
             field.translatesAutoresizingMaskIntoConstraints = false
-            field.font = .systemFont(ofSize: 30, weight: .bold)
+            field.font = .systemFont(ofSize: 28, weight: .bold)
             field.textColor = .label
             field.backgroundColor = .clear
             field.textAlignment = .center

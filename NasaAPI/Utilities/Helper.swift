@@ -55,3 +55,7 @@ func currentDate() -> String {
     formatter.dateFormat = "yyyy-MM-dd"
     return formatter.string(from: Date())
 }
+
+func imageData(from image: UIImage) -> Data? {
+    if let data = image.pngData() { return data } else { return nil }
+}

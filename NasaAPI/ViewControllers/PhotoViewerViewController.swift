@@ -29,8 +29,15 @@ class PhotoViewerViewController: UIViewController {
         return field
     }()
     
-    init(image: UIImage) {
-        self.imageView.image = image
+    let model: APOD
+    var image: UIImage
+    
+    init(model: APOD) {
+        self.imageView.image = model.image!
+        self.image = model.image!
+        
+        self.model = model
+
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -39,10 +46,18 @@ class PhotoViewerViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        configure()
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(sharePhoto))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(close))
+    }
+    
+    func configure() {
         let style: UIBlurEffect.Style = traitCollection.userInterfaceStyle == .dark ? .systemUltraThinMaterialLight : .systemUltraThinMaterialDark
         let blur = blurBackground(for: view, style: style)
-        blur.alpha = 0.75
+        blur.alpha = 1
         view.insertSubview(blur, at: 0)
+        view.backgroundColor = .secondarySystemBackground
         view.addSubview(scrollView)
         scrollView.delegate = self
         scrollView.addSubview(imageView)
@@ -62,12 +77,12 @@ class PhotoViewerViewController: UIViewController {
         ])
 //        scrollView.contentSize = CGSize(width: view.frame.width*4, height: view.frame.height)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tappedBackground))
-        tap.numberOfTapsRequired = 1
-        view.addGestureRecognizer(tap)
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(close))
+//        tap.numberOfTapsRequired = 1
+//        view.addGestureRecognizer(tap)
     }
     
-    @objc func tappedBackground() {
+    @objc func close() {
         self.dismiss(animated: true, completion: nil)
     }
 
@@ -76,5 +91,28 @@ class PhotoViewerViewController: UIViewController {
 extension PhotoViewerViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
+    }
+}
+
+extension PhotoViewerViewController: UIActivityItemSource {
+    
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return UIImage(named: "Image")!
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        if activityType == .postToTwitter {
+            
+        }
+        return image
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
+        return model.title
+    }
+    
+    @objc func sharePhoto() {
+        let shareSheet = UIActivityViewController(activityItems: [imageView.image!], applicationActivities: nil)
+        present(shareSheet, animated: true, completion: nil)
     }
 }
