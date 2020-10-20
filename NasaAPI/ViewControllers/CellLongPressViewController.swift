@@ -81,6 +81,13 @@ class CellLongPressViewController: UIViewController {
         return field
     }()
     
+    let scrollView: UIScrollView = {
+        let field = UIScrollView()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.isScrollEnabled = true
+        return field
+    }()
+    
     let container = UIView()
     let location: CGPoint
     
@@ -202,7 +209,10 @@ class CellLongPressViewController: UIViewController {
         view.addSubview(container)
         container.addSubview(imageView)
         container.addSubview(titleLabel)
-        container.addSubview(explanation)
+        
+        container.addSubview(scrollView)
+        scrollView.addSubview(explanation)
+        
         container.addSubview(dateLabel)
         container.addSubview(readMore)
         readMore.addTarget(self, action: #selector(openDetail), for: .touchUpInside)
@@ -249,6 +259,8 @@ class CellLongPressViewController: UIViewController {
         container.layer.cornerRadius = 15
         container.clipsToBounds = true
         container.backgroundColor = .secondarySystemBackground
+        
+        scrollView.delegate = self
     }
     
     fileprivate func constrainViews() {
@@ -275,10 +287,18 @@ class CellLongPressViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            explanation.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 10),
-            explanation.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            explanation.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10),
-            explanation.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -30)
+            scrollView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 10),
+            scrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+            scrollView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10),
+            scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -30)
+        ])
+        
+        NSLayoutConstraint.activate([
+            explanation.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            explanation.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
+            explanation.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            explanation.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            explanation.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0)
         ])
         
         dateLabelWidth = dateLabel.widthAnchor.constraint(equalToConstant: container.frame.width)
@@ -295,4 +315,8 @@ class CellLongPressViewController: UIViewController {
             readMore.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10)
         ])
     }
+}
+
+extension CellLongPressViewController: UIScrollViewDelegate {
+    
 }

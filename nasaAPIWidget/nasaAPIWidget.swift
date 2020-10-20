@@ -19,7 +19,7 @@ struct Provider: IntentTimelineProvider {
     }
 
     func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), configuration: configuration, model: WidgetModel(date: "2020-10-15", title: "Today", image: UIImage(named: "photo2")!))
+        let entry = SimpleEntry(date: Date(), configuration: configuration, model: WidgetModel(date: "2020-10-15", title: "Young Stars in the Ophiuch Cloud", image: UIImage(named: "photo2")!))
         completion(entry)
     }
 
@@ -80,7 +80,7 @@ struct nasaAPIWidget: Widget {
             nasaAPIWidgetEntryView(entry: entry)
         }
         .configurationDisplayName("Space Flix Widget")
-        .description("This is an example widget.")
+        .description("See the astronomy picture of the day provided by NASA")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

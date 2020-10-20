@@ -124,6 +124,6 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
 
 extension TableViewCollectionCell: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset)
+//        print(scrollView.contentOffset)
     }
 }

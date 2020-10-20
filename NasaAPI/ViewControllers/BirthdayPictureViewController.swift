@@ -35,7 +35,7 @@ class BirthdayPictureViewController: UIViewController {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.numberOfLines = 1
-        field.textColor = Colors.NasaBlue
+        field.textColor = Colors.textNasaBlue
         field.font = .systemFont(ofSize: 24, weight: .semibold)
         field.text = "Select a date below"
         return field

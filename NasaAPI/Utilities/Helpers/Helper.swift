@@ -43,13 +43,6 @@ public func imageFrom(data: Data) -> UIImage? {
     return UIImage(data: data)
 }
 
-func openVideo(with model: APOD, viewController: UIViewController) {
-    if let videoUrl = model.videoUrl, let url = URL(string: videoUrl) {
-        let vc = SFSafariViewController(url: url)
-        viewController.present(vc, animated: true, completion: nil)
-    }
-}
-
 func currentDate() -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd"
@@ -58,4 +51,15 @@ func currentDate() -> String {
 
 func imageData(from image: UIImage) -> Data? {
     if let data = image.pngData() { return data } else { return nil }
+}
+
+func numOfDaysInCurrentMonth() -> Int {
+//    let dateComponents = DateComponents(year: 2015, month: 7)
+//    let calendar = Calendar.current
+//    let date = calendar.date(from: dateComponents)!
+//
+//    let range = calendar.range(of: .day, in: .month, for: date)!
+//    let numDays = range.count
+//
+    return 7//numDays
 }

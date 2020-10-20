@@ -23,7 +23,8 @@ class CollectionViewCell: UICollectionViewCell {
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 18, weight: .semibold)
         field.textColor = .label
-        field.backgroundColor = .tertiarySystemBackground
+        field.numberOfLines = 0
+        field.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(1)
         return field
     }()
     
@@ -32,8 +33,15 @@ class CollectionViewCell: UICollectionViewCell {
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 20, weight: .bold)
         field.textColor = .label
-        field.backgroundColor = .tertiarySystemBackground
+        field.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(1)
         field.textAlignment = .center
+        return field
+    }()
+    
+    let bg: UIView = {
+        let field = UIView()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = .tertiarySystemBackground
         return field
     }()
     
@@ -49,16 +57,22 @@ class CollectionViewCell: UICollectionViewCell {
     
     fileprivate func setFrames() {
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40),
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+//            titleLabel.heightAnchor.constraint(equalToConstant: 40),
+            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
         ])
         NSLayoutConstraint.activate([
-            titleLabel.heightAnchor.constraint(equalToConstant: 40),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            bg.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -5),
+            bg.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
+            bg.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
+            bg.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0)
+        ])
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: bg.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         NSLayoutConstraint.activate([
             dateLabel.heightAnchor.constraint(equalToConstant: 25),
@@ -72,6 +86,7 @@ class CollectionViewCell: UICollectionViewCell {
     fileprivate func configureSelf() {
         self.clipsToBounds = false
         contentView.addSubview(imageView)
+        contentView.addSubview(bg)
         contentView.addSubview(titleLabel)
         contentView.addSubview(dateLabel)
     

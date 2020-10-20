@@ -36,8 +36,10 @@ class HomeViewController: UIViewController {
         constrainViews()
         conform()
         styleUI()
+        
+//        APICalls.testCall()
 
-        for date in APICalls.lastWeeksDates() {
+        for date in APICalls.datesFor(count: numOfDaysInCurrentMonth()) {
             if cache.isCached(date: date) {
                 if let apod = cache.retrieveCachedAPOD(date: date) {
                     if data.count == 0 {
@@ -50,7 +52,7 @@ class HomeViewController: UIViewController {
         }
         
         if data.count == 0 || data[0].count != 7 {
-            APICalls.getWeekOfAPOD()
+            APICalls.getMultipleAPOD()
         }
         
     }
@@ -150,9 +152,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         
         let button: UIButton = {
             let field = UIButton()
+            
             field.translatesAutoresizingMaskIntoConstraints = false
             field.tintColor = .link
-            field.setTitleColor(Colors.NasaBlue, for: .normal)
+            field.setTitleColor(Colors.textNasaBlue, for: .normal)
             field.setTitle("View More", for: .normal)
             field.titleLabel?.font = .systemFont(ofSize: 22, weight: .semibold)
             field.titleLabel?.textAlignment = .left

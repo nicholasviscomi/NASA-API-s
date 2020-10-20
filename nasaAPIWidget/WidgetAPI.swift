@@ -10,7 +10,14 @@ import SwiftUI
 
 class WidgetAPI {
     public func getCurrentWidgetModel(completion: @escaping (WidgetModel?) -> Void) {
-        
+        let cache = CacheManager()
+        if let apod = cache.retrieveCachedAPOD(date: currentDate()), let image = apod.image {
+            print("got the cache from swiftUI whoop whoop")
+            completion(WidgetModel(date: apod.date, title: apod.title, image: image))
+            return
+        } else {
+            print("not found sadly")
+        }
         let date = currentDate()
         let key = "W3O3phtX3OakhV5sLHZarWTYsjFUJFGcK8iKzd5o"
         let urlString = "https://api.nasa.gov/planetary/apod?api_key=\(key)&date=\(date)"
@@ -31,6 +38,7 @@ class WidgetAPI {
                 do {
                     let apod = try decoder.decode(APOD.self, from: data!)
                     guard let image = apod.image else { completion(nil); return }
+                    print("getting widgetmodel from API")
                     completion(WidgetModel(date: apod.date, title: apod.title, image: image))
                     return
                 } catch {

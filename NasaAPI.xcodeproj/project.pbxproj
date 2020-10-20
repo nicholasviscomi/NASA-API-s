@@ -18,10 +18,14 @@
 		7B245C8A253688A5008E2977 /* nasaAPIWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7B245C86253688A1008E2977 /* nasaAPIWidget.intentdefinition */; };
 		7B245C8B253688A5008E2977 /* nasaAPIWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7B245C86253688A1008E2977 /* nasaAPIWidget.intentdefinition */; };
 		7B245C8E253688A5008E2977 /* nasaAPIWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7B245C7D253688A1008E2977 /* nasaAPIWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7B28C6FD253E45C100CF2529 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAAF667253A953F00FA5CB3 /* CacheManager.swift */; };
+		7B28C708253E77C500CF2529 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCB85E625198CB900311897 /* Helper.swift */; };
+		7B28C70D253E77ED00CF2529 /* UIKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B28C70C253E77ED00CF2529 /* UIKitHelper.swift */; };
 		7B2D115D25393EB40096A3CE /* SystemSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2D115C25393EB40096A3CE /* SystemSmallView.swift */; };
 		7B2D116225393ED00096A3CE /* SystemMediumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2D116125393ED00096A3CE /* SystemMediumView.swift */; };
 		7B2D116825393EDA0096A3CE /* SystemLargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2D116725393EDA0096A3CE /* SystemLargeView.swift */; };
 		7B5B6D852532A956002DE605 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5B6D842532A956002DE605 /* PhotoViewerViewController.swift */; };
+		7B641694253CF8670041018D /* APOD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD3FEA02524342A009933D8 /* APOD.swift */; };
 		7B67A843252806E1006505C2 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B67A842252806E1006505C2 /* DetailViewController.swift */; };
 		7B875CCE25151BAE00CB2A6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CCD25151BAE00CB2A6C /* AppDelegate.swift */; };
 		7B875CD025151BAE00CB2A6C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CCF25151BAE00CB2A6C /* SceneDelegate.swift */; };
@@ -31,7 +35,6 @@
 		7B875CE225151BDD00CB2A6C /* APIMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CE125151BDD00CB2A6C /* APIMethods.swift */; };
 		7B8AB246251FF57B0061AF7D /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8AB245251FF57B0061AF7D /* Protocols.swift */; };
 		7B8AB253252009220061AF7D /* CellLongPressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8AB252252009220061AF7D /* CellLongPressViewController.swift */; };
-		7B9034BF253775A200688117 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCB85E625198CB900311897 /* Helper.swift */; };
 		7B9034C32537762300688117 /* WidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9034C22537762300688117 /* WidgetModel.swift */; };
 		7B9034C62537762500688117 /* WidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9034C22537762300688117 /* WidgetModel.swift */; };
 		7BA28D6225290FE800CADEC0 /* BirthdayPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA28D6125290FE800CADEC0 /* BirthdayPictureViewController.swift */; };
@@ -79,6 +82,7 @@
 		7B245C86253688A1008E2977 /* nasaAPIWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = nasaAPIWidget.intentdefinition; sourceTree = "<group>"; };
 		7B245C87253688A5008E2977 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7B245C89253688A5008E2977 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7B28C70C253E77ED00CF2529 /* UIKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitHelper.swift; sourceTree = "<group>"; };
 		7B2D115C25393EB40096A3CE /* SystemSmallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSmallView.swift; sourceTree = "<group>"; };
 		7B2D116125393ED00096A3CE /* SystemMediumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMediumView.swift; sourceTree = "<group>"; };
 		7B2D116725393EDA0096A3CE /* SystemLargeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemLargeView.swift; sourceTree = "<group>"; };
@@ -146,13 +150,22 @@
 			children = (
 				7B2D116025393EBA0096A3CE /* SystemViews */,
 				7B245C84253688A1008E2977 /* nasaAPIWidget.swift */,
-				7B9034C22537762300688117 /* WidgetModel.swift */,
 				7BED4A972538EF1400E7107A /* WidgetAPI.swift */,
+				7B9034C22537762300688117 /* WidgetModel.swift */,
 				7B245C86253688A1008E2977 /* nasaAPIWidget.intentdefinition */,
 				7B245C87253688A5008E2977 /* Assets.xcassets */,
 				7B245C89253688A5008E2977 /* Info.plist */,
 			);
 			path = nasaAPIWidget;
+			sourceTree = "<group>";
+		};
+		7B28C70B253E77D500CF2529 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				7BCB85E625198CB900311897 /* Helper.swift */,
+				7B28C70C253E77ED00CF2529 /* UIKitHelper.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		7B2D116025393EBA0096A3CE /* SystemViews */ = {
@@ -232,7 +245,7 @@
 				7B875CE125151BDD00CB2A6C /* APIMethods.swift */,
 				7BAAF667253A953F00FA5CB3 /* CacheManager.swift */,
 				7BCB85E8251994FE00311897 /* Constants.swift */,
-				7BCB85E625198CB900311897 /* Helper.swift */,
+				7B28C70B253E77D500CF2529 /* Helpers */,
 				7B245C55253651BA008E2977 /* Colors.swift */,
 			);
 			path = Utilities;
@@ -352,12 +365,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B245C8A253688A5008E2977 /* nasaAPIWidget.intentdefinition in Sources */,
-				7B9034BF253775A200688117 /* Helper.swift in Sources */,
 				7B2D116225393ED00096A3CE /* SystemMediumView.swift in Sources */,
 				7B9034C62537762500688117 /* WidgetModel.swift in Sources */,
 				7B2D116825393EDA0096A3CE /* SystemLargeView.swift in Sources */,
 				7B2D115D25393EB40096A3CE /* SystemSmallView.swift in Sources */,
+				7B28C6FD253E45C100CF2529 /* CacheManager.swift in Sources */,
 				7BED4A9B2538EF2A00E7107A /* WidgetAPI.swift in Sources */,
+				7B28C708253E77C500CF2529 /* Helper.swift in Sources */,
+				7B641694253CF8670041018D /* APOD.swift in Sources */,
 				7B245C85253688A1008E2977 /* nasaAPIWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -386,6 +401,7 @@
 				7BCB85E9251994FE00311897 /* Constants.swift in Sources */,
 				7B1109AB251C3AFF008F11B2 /* Model.swift in Sources */,
 				7B67A843252806E1006505C2 /* DetailViewController.swift in Sources */,
+				7B28C70D253E77ED00CF2529 /* UIKitHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,6 +589,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XRWZR9H6VF;
@@ -593,6 +610,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XRWZR9H6VF;
