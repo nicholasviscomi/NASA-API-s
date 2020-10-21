@@ -159,6 +159,7 @@ class CellLongPressViewController: UIViewController {
     @objc func openDetail() {
         let vc = DetailViewController(model: model)
         vc.modalPresentationStyle = .fullScreen
+        vc.closer = self
         present(vc, animated: true, completion: nil)
     }
     
@@ -288,16 +289,17 @@ class CellLongPressViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 10),
-            scrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            scrollView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10),
+            scrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0),
+            scrollView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
             scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -30)
         ])
         
         NSLayoutConstraint.activate([
-            explanation.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+//            explanation.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             explanation.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
-            explanation.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+//            explanation.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             explanation.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            explanation.widthAnchor.constraint(equalToConstant: container.frame.width - 10),
             explanation.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0)
         ])
         
@@ -311,12 +313,17 @@ class CellLongPressViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            readMore.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -5),
+            readMore.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: 0),
             readMore.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10)
         ])
     }
 }
 
-extension CellLongPressViewController: UIScrollViewDelegate {
-    
+extension CellLongPressViewController: CloserDelegate, UIScrollViewDelegate {
+    func shouldClose() {
+        UIView.animate(withDuration: 0.5) {
+            self.view.alpha = 0
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
 }

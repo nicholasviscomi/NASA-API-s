@@ -26,3 +26,17 @@ func showAlert(title: String, message: String, view: UIViewController) {
     
     view.present(alert, animated: true, completion: nil)
 }
+
+func canOpenUrl(url: URL) -> Bool {
+    return UIApplication.shared.canOpenURL(url)
+}
+
+func reverseArray(array: [APOD]) -> [APOD] {
+    var arr = [APOD]()
+    
+    for apod in array {
+        arr.insert(apod, at: 0)
+    }
+    
+    return arr
+}

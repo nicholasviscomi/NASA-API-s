@@ -50,7 +50,7 @@ func currentDate() -> String {
 }
 
 func imageData(from image: UIImage) -> Data? {
-    if let data = image.pngData() { return data } else { return nil }
+    if let data = image.jpegData(compressionQuality: 0.5) { return data } else { return nil }
 }
 
 func numOfDaysInCurrentMonth() -> Int {

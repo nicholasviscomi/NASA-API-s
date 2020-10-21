@@ -12,9 +12,12 @@ final class APIMethods {
     
     var dataDelegate: DataDelegate?
     let cache = CacheManager()
+    let dispatch = DispatchGroup()
+    
+    let key = "W3O3phtX3OakhV5sLHZarWTYsjFUJFGcK8iKzd5o"
     
     public func getAPOD(date: String, completion: @escaping (APOD?) -> Void) {
-        let key = "W3O3phtX3OakhV5sLHZarWTYsjFUJFGcK8iKzd5o"
+        
         let date = date
         let urlString = "https://api.nasa.gov/planetary/apod?api_key=\(key)&date=\(date)"
         let url = URL(string: urlString)
@@ -59,82 +62,94 @@ final class APIMethods {
         dataTask.resume()
     }
     
-    public func getMultipleAPOD(/*date: String, completion: @escaping (APOD?) -> Void*/) {
-        var data = [[APOD]]()
-        var count = datesFor(count: numOfDaysInCurrentMonth()).count
-        for date in datesFor(count: numOfDaysInCurrentMonth()) {
-            getAPOD(date: date) { [self] (apod) in
-//                print("count", count)
-                if apod == nil {
-                    count -= 1
+    //make start and end date and count parameters; when checking cache for apods if you find one remove it from array of dates and then send those dates in this funciton below
+    public func getMultipleAPOD() {
+        var start = datesFor(count: 7).last!
+        var end = currentDate()
+        var dates = datesFor(count: 7)
+//        print("original \(dates)")
+        
+        var apods = [APOD]()
+        var cachedApods =  [APOD]()
+        
+        dispatch.enter()
+        for date in dates {
+            if cache.isCached(date: date) {
+                if let apod = cache.retrieveCachedAPOD(date: date) {
+                    cachedApods.append(apod)
+                    //remove the date that was found
+                    dates = dates.filter { $0 != apod.date }
                 }
-                guard let apod = apod else {
-                    return
-                }
-
-                
-                if data.count == 0 {
-                    data.append([apod])
-                } else {
-                    if !(data[0].contains(apod)) {
-                        data[0].append(apod)
-                    }
-                }
-                
-                if data.first?.count == count {
-                    data[0] = data[0].sorted(by: { $0.date > $1.date })
-                    dataDelegate?.retrievedWeekOfAPOD(apods: data)
-                    dataDelegate?.isFinishedLoadingAPOD()
-                }
-                
             }
         }
-    
-    }
-    
-    public func testCall() {
-        let key = "W3O3phtX3OakhV5sLHZarWTYsjFUJFGcK8iKzd5o"
-//        let date = "2020-10-11"
-        let start = datesFor(count: 7).last!
-        let urlString = "https://api.nasa.gov/planetary/apod?api_key=\(key)&start_date=\(start)&end_date=\(currentDate())"
-        let url = URL(string: urlString)
-        guard url != nil else {
-            print("url was nil")
+//        print("After filter\(dates)")
+//        print("Cached apods: \(cachedApods)")
+        
+        guard cachedApods.count != 7 else {
+            //cached apods is full (count == 7)
+            print("fully cached apods")
+            dataDelegate?.isFinishedLoadingAPOD()
+            dataDelegate?.retrievedWeekOfAPOD(apods: [cachedApods])
             return
         }
         
+        start = dates.last ?? datesFor(count: 7).last!
+        end = dates.first ?? currentDate()
         
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: url!) { (data, response, error) in
-
+        let urlString = "https://api.nasa.gov/planetary/apod?api_key=\(key)&start_date=\(start)&end_date=\(end)"
+        guard let url = URL(string: urlString), canOpenUrl(url: url) else { return }
+        
+        URLSession.shared.dataTask(with: url) { [self] (data, response, error) in
             if error == nil && data != nil {
-                //parse json
-                let decoder = JSONDecoder()
-                
+                getNumOfCallsLeft(response: response) { (callsLeft) in
+                    print(callsLeft)
+                    //enter group before and when the calls left is checked if there is enough left leave group and continue else up api key array counter +1 and then leave group
+                }
                 do {
-                    let apods = try decoder.decode([APOD].self, from: data!)
-                    for apod in apods {
-                        print("here is the title: \(apod.title)")
-                    }
-//                    let isCached = cache.isCached(date: apod.date)
-//                    print("is cached = \(isCached)")
-//                    if !isCached {
-//                        cache.cache(apod: apod, date: apod.date)
-//                        print("caching \(apod.date)")
-//                    }
+                    let decoder = JSONDecoder()
+                    apods = try decoder.decode([APOD].self, from: data!)
+                    dispatch.leave()
+                    print("just left")
                     
-                    return
+                    for apod in apods {
+                        if !cache.isCached(date: apod.date) {
+                            cache.cache(apod: apod, date: apod.date)
+                        }
+                    }
+                    
                 } catch {
                     print("error parsing")
-                    return
                 }
-                
-                
             }
-            print("error or data was nil")
+        }.resume()
+    
+        dispatch.notify(queue: .main) { [self] in
+            dataDelegate?.isFinishedLoadingAPOD()
+            if apods.count == 7 {
+                //cache was empty && apods are full (count == 7)
+                print("cache was empty: got all the stuff")
+                dataDelegate?.retrievedWeekOfAPOD(apods: [reverseArray(array: apods)])
+            } else {
+                let combined = apods + cachedApods
+                let filtered = Array(Set(combined))
+                let sorted = filtered.sorted(by: { $0.date > $1.date })
+                print("some of it was cached")
+                dataDelegate?.retrievedWeekOfAPOD(apods: [sorted])
+            }
             
         }
-        dataTask.resume()
+    }
+    
+    
+    public func getNumOfCallsLeft(response: URLResponse?, completion: @escaping (Int) -> Void) {
+        if let httpResponse = response as? HTTPURLResponse {
+            if let callsLeft = httpResponse.allHeaderFields["X-RateLimit-Remaining"] as? String {
+//                print(callsLeft)
+                completion(Int(callsLeft) ?? 0)
+            }
+        } else {
+            print("failed to make http resoponse")
+        }
     }
     
     public func datesFor(count: Int) -> [String] {
@@ -147,18 +162,40 @@ final class APIMethods {
             let date = Date().addingTimeInterval(TimeInterval(86400 * (i * -1)))
             result.append(formatter.string(from: date))
         }
-//        let today = Date()
-//        let two = Date().addingTimeInterval(TimeInterval(86400 * -1))
-//        let three = Date().addingTimeInterval(TimeInterval(86400 * -2))
-//        let four = Date().addingTimeInterval(TimeInterval(86400 * -3))
-//        let five = Date().addingTimeInterval(TimeInterval(86400 * -4))
-//        let six = Date().addingTimeInterval(TimeInterval(86400 * -5))
-//        let seven = Date().addingTimeInterval(TimeInterval(86400 * -6))
-//        let days = [today,two,three,four,five,six,seven]
-//
-//        for day in days {
-//            result.append(formatter.string(from: day))
-//        }
+        
         return result
     }
 }
+
+
+//var data = [[APOD]]()
+//        var count = datesFor(count: numOfDaysInCurrentMonth()).count
+//        for date in datesFor(count: numOfDaysInCurrentMonth()) {
+//            getAPOD(date: date) { [self] (apod) in
+////                print("count", count)
+//                if apod == nil {
+//                    count -= 1
+//                }
+//                guard let apod = apod else {
+//                    return
+//                }
+//
+//
+//                if data.count == 0 {
+//                    data.append([apod])
+//                } else {
+//                    if !(data[0].contains(apod)) {
+//                        data[0].append(apod)
+//                    }
+//                }
+//
+//                if data.first?.count == count {
+//                    data[0] = data[0].sorted(by: { $0.date > $1.date })
+//                    dataDelegate?.retrievedWeekOfAPOD(apods: data)
+//                    dataDelegate?.isFinishedLoadingAPOD()
+//                }
+//
+//            }
+//        }
+
+

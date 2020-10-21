@@ -14,13 +14,16 @@ struct SystemLargeView: View {
     
     var body: some View {
         ZStack {
+            Image(uiImage: (entry.model.image))
+                .resizable()
             
             VStack(spacing: 0) {
-                Image(uiImage: (entry.model.image))
-                    .resizable()
-                Image(uiImage: (entry.model.image))
-                    .resizable()
+                Rectangle()
+                    .opacity(0)
+                Rectangle()
+                    .foregroundColor(Color(.secondaryLabel))
             }
+            
             
             VStack {
                 Text(entry.model.title)

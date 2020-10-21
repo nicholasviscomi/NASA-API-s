@@ -19,7 +19,11 @@ enum CodingKeys: String, CodingKey {
     case url = "url"
 }
 
-class APOD: Decodable, Equatable {
+class APOD: Decodable, Equatable, Hashable {
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+    }
     
     static func == (lhs: APOD, rhs: APOD) -> Bool {
         return lhs.date == rhs.date

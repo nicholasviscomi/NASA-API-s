@@ -18,35 +18,36 @@ struct SystemMediumView: View {
             Image(uiImage: (entry.model.image))
                 .resizable()
             
-            
-            HStack(alignment: .center, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/) {
-                Text(entry.model.title)
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color(.label))
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(nil)
-                    .padding(EdgeInsets(top: 10, leading: 5, bottom: 10, trailing: 5))
-                    .background(Color(.secondarySystemBackground).opacity(0.45))
-                    .foregroundColor(Color(.secondarySystemBackground))
-                    .cornerRadius(15)
-                
-                Text(Date(), style: .date)
-                    .font(.subheadline)
-                    .foregroundColor(Color(.secondarySystemBackground))
-                    .fontWeight(.bold)
-                    .padding(EdgeInsets(top: 10, leading: 5, bottom: 10, trailing: 5))
-                    .background(Color(.label).opacity(0.45))
-                    .foregroundColor(Color(.secondarySystemBackground))
-                    .cornerRadius(15)
+            ZStack {
+                HStack(alignment: .center, spacing: nil) {
+                    Text(entry.model.title)
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color(.label))
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(nil)
+                        .padding(EdgeInsets(top: 10, leading: 5, bottom: 10, trailing: 5))
+                        .background(Color(.secondarySystemBackground).opacity(0.45))
+                        .foregroundColor(Color(.secondarySystemBackground))
+                        .cornerRadius(15)
+                    
+                    Text(Date(), style: .date)
+                        .font(.subheadline)
+                        .foregroundColor(Color(.secondarySystemBackground))
+                        .fontWeight(.bold)
+                        .padding(EdgeInsets(top: 10, leading: 5, bottom: 10, trailing: 5))
+                        .background(Color(.label).opacity(0.45))
+                        .foregroundColor(Color(.secondarySystemBackground))
+                        .cornerRadius(15)
+                }
+                .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
+                .background(Color(.tertiarySystemBackground).opacity(0.6))
+                .foregroundColor(Color(.tertiarySystemBackground))
+                .cornerRadius(15)
             }
-            .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
-            .background(Color(.tertiarySystemBackground).opacity(0.6))
-            .foregroundColor(Color(.tertiarySystemBackground))
-            .cornerRadius(15)
-            
-    
+            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
         }
+        
     }
 }
 

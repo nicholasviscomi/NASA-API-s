@@ -37,24 +37,12 @@ class HomeViewController: UIViewController {
         conform()
         styleUI()
         
-//        APICalls.testCall()
-
-        for date in APICalls.datesFor(count: numOfDaysInCurrentMonth()) {
-            if cache.isCached(date: date) {
-                if let apod = cache.retrieveCachedAPOD(date: date) {
-                    if data.count == 0 {
-                        data.append([apod])
-                    } else {
-                        data[0].append(apod)
-                    }
-                }
-            }
-        }
-        
-        if data.count == 0 || data[0].count != 7 {
-            APICalls.getMultipleAPOD()
-        }
-        
+//        cache.clearCache { (done) in
+//            if done {
+//                APICalls.getMultipleAPOD()
+//            }
+//        }
+        APICalls.getMultipleAPOD()
     }
     
     override func viewDidAppear(_ animated: Bool) {

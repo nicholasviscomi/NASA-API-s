@@ -25,6 +25,7 @@ class CollectionViewCell: UICollectionViewCell {
         field.textColor = .label
         field.numberOfLines = 0
         field.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(1)
+        field.textAlignment = .center
         return field
     }()
     
@@ -99,7 +100,7 @@ class CollectionViewCell: UICollectionViewCell {
     
     func configure(model: APOD, indexPath: IndexPath) {
         if model.media_type == "video" {
-            print("video type found")
+//            print("video type found")
 //            playVideo(model: model)
             self.imageView.image = model.image
         } else {

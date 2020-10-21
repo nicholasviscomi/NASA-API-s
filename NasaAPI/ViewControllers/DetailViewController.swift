@@ -36,6 +36,19 @@ class DetailViewController: UIViewController {
         return field
     }()
     
+    let dateLabel: UILabel = {
+        let field = UILabel()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.font = .systemFont(ofSize: 24, weight: .semibold)
+        field.textColor = .white
+        field.backgroundColor = .clear
+        field.textAlignment = .center
+        field.numberOfLines = 0
+//        field.layer.borderWidth = 2
+//        field.layer.borderColor = UIColor.black.cgColor
+        return field
+    }()
+    
     let explanation: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -77,11 +90,14 @@ class DetailViewController: UIViewController {
     
     let model: APOD
 
+    var closer: CloserDelegate?
+    
     init(model: APOD) {
         self.model = model
         self.imageView.image = model.image
         self.titleLabel.text = model.title
         self.explanation.text = model.explanation
+        self.dateLabel.text = model.date
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -93,6 +109,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         addViews()
         constrainViews()
+        closer?.shouldClose()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -121,6 +138,7 @@ class DetailViewController: UIViewController {
         view.backgroundColor = Colors.NasaBlue
         view.addSubview(imageView)
         view.addSubview(titleLabel)
+        view.addSubview(dateLabel)
         view.addSubview(explanation)
         
         view.addSubview(exitButton)
@@ -190,6 +208,11 @@ class DetailViewController: UIViewController {
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 20),
             titleLabel.topAnchor.constraint(equalTo: exitButton.bottomAnchor, constant: 10)
+        ])
+        
+        NSLayoutConstraint.activate([
+            dateLabel.centerXAnchor.constraint(equalTo: titleLabel.centerXAnchor),
+            dateLabel.centerYAnchor.constraint(equalTo: exitButton.centerYAnchor, constant: 0)
         ])
         
     }

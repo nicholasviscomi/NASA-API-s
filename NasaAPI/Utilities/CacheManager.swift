@@ -27,7 +27,6 @@ final class CacheManager {
     ///check for cached item
     public func isCached(date: String) -> Bool {
         let result = defaults.string(forKey: date + Extensions.title.rawValue)
-        print(result ?? "none")
         return result != nil
     }
     

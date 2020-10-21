@@ -35,9 +35,7 @@ class PhotoViewerViewController: UIViewController {
     init(model: APOD) {
         self.imageView.image = model.image!
         self.image = model.image!
-        
         self.model = model
-
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -47,6 +45,7 @@ class PhotoViewerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        configureRotation()
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(sharePhoto))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(close))
@@ -75,11 +74,12 @@ class PhotoViewerViewController: UIViewController {
             imageView.widthAnchor.constraint(equalToConstant: view.frame.width),
             imageView.heightAnchor.constraint(equalToConstant: view.frame.height)
         ])
-//        scrollView.contentSize = CGSize(width: view.frame.width*4, height: view.frame.height)
-        
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(close))
-//        tap.numberOfTapsRequired = 1
-//        view.addGestureRecognizer(tap)
+    }
+    
+    fileprivate func configureRotation() {
+        if imageView.frame.width > imageView.frame.height {
+            imageView.transform = CGAffineTransform(rotationAngle: .pi)
+        }
     }
     
     @objc func close() {
