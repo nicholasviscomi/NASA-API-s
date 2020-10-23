@@ -38,7 +38,9 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     var detailViewDelegate: DetailViewDelegate?
     
     func configure(with data: [APOD]) {
+        print(data.count, self.data.count)
         self.data = data
+        collectionView.reloadData()
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -93,13 +95,19 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     
     func numberOfSections(in collectionView: UICollectionView) -> Int { return 1 }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { return data.count }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 7 //data.count
+    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         
-        cell.configure(model: data[indexPath.row], indexPath: indexPath)
+        if data.count == 0 {
+            cell.configureSkeletonLoading()
+        } else {
+            cell.configure(model: data[indexPath.row], indexPath: indexPath)
+        }
+        
         self.detailViewDelegate = HomeViewController()
         
         return cell

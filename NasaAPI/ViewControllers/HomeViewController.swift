@@ -9,7 +9,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    //MARK: Add in Cache
+    
     fileprivate let tableView: UITableView = {
         let field = UITableView()
         field.register(TableViewCollectionCell.self, forCellReuseIdentifier: Constants.homeCellIdentifier)
@@ -32,9 +32,9 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        conform()
         addViews()
         constrainViews()
-        conform()
         styleUI()
         
 //        cache.clearCache { (done) in
@@ -109,11 +109,17 @@ extension HomeViewController: DataDelegate {
             tableView.reloadData()
         }
     }
+    
+    func noDataReceived() {
+        print("no data received sadly")
+        
+        showAlert(title: "No Photos Found", message: "There was an error with the database. We apologize for the inconvenience", view: self)
+    }
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return data.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -121,6 +127,40 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { return nil }
+
+    
+    @objc func viewMore() {
+        let vc = BirthdayPictureViewController()
+        vc.title = "Birthday Picture"
+        vc.navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 45
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.homeCellIdentifier, for: indexPath) as! TableViewCollectionCell
+        
+        if data.isEmpty {
+            cell.configure(with: [APOD]())
+        } else {
+            cell.configure(with: data[indexPath.section])
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return (view.frame.height/4) + 20
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let container = UIView()
@@ -170,36 +210,5 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         
         return container
     }
-    
-    @objc func viewMore() {
-        let vc = BirthdayPictureViewController()
-        vc.title = "Birthday Picture"
-        vc.navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 45
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.homeCellIdentifier, for: indexPath) as! TableViewCollectionCell
-        
-        cell.configure(with: data[indexPath.section])
-  
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (view.frame.height/4) + 20
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    
 }
 

@@ -85,7 +85,7 @@ final class APIMethods {
 //        print("After filter\(dates)")
 //        print("Cached apods: \(cachedApods)")
         
-        guard cachedApods.count != 7 else {
+        if cachedApods.count == 7 {
             //cached apods is full (count == 7)
             print("fully cached apods")
             dataDelegate?.isFinishedLoadingAPOD()
@@ -95,8 +95,11 @@ final class APIMethods {
         
         start = dates.last ?? datesFor(count: 7).last!
         end = dates.first ?? currentDate()
+        print("new start: \(start)")
+        print("new end: \(end)")
         
         let urlString = "https://api.nasa.gov/planetary/apod?api_key=\(key)&start_date=\(start)&end_date=\(end)"
+        print(urlString)
         guard let url = URL(string: urlString), canOpenUrl(url: url) else { return }
         
         URLSession.shared.dataTask(with: url) { [self] (data, response, error) in
@@ -119,27 +122,32 @@ final class APIMethods {
                     
                 } catch {
                     print("error parsing")
+                    dispatch.leave()
                 }
             }
         }.resume()
     
         dispatch.notify(queue: .main) { [self] in
-            dataDelegate?.isFinishedLoadingAPOD()
-            if apods.count == 7 {
-                //cache was empty && apods are full (count == 7)
-                print("cache was empty: got all the stuff")
-                dataDelegate?.retrievedWeekOfAPOD(apods: [reverseArray(array: apods)])
-            } else {
-                let combined = apods + cachedApods
-                let filtered = Array(Set(combined))
-                let sorted = filtered.sorted(by: { $0.date > $1.date })
-                print("some of it was cached")
-                dataDelegate?.retrievedWeekOfAPOD(apods: [sorted])
-            }
-            
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                if apods.count == 7 {
+                    //cache was empty && apods are full (count == 7)
+                    print("cache was empty: got all the stuff")
+                    dataDelegate?.retrievedWeekOfAPOD(apods: [reverseArray(array: apods)])
+                    dataDelegate?.isFinishedLoadingAPOD()
+                } else if apods.count == 0 && cachedApods.count == 0 {
+                    print("got nothing from cache nor api")
+                    dataDelegate?.noDataReceived()
+                } else {
+                    let combined = apods + cachedApods
+                    let filtered = Array(Set(combined))
+                    let sorted = filtered.sorted(by: { $0.date > $1.date })
+                    print("some of it was cached")
+                    dataDelegate?.retrievedWeekOfAPOD(apods: [sorted])
+                    dataDelegate?.isFinishedLoadingAPOD()
+                }
+//            }
         }
     }
-    
     
     public func getNumOfCallsLeft(response: URLResponse?, completion: @escaping (Int) -> Void) {
         if let httpResponse = response as? HTTPURLResponse {

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AVFoundation
 
 class CollectionViewCell: UICollectionViewCell {
     
@@ -15,6 +14,7 @@ class CollectionViewCell: UICollectionViewCell {
         let field = UIImageView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFit
+        field.image = nil
         return field
     }()
     
@@ -26,6 +26,7 @@ class CollectionViewCell: UICollectionViewCell {
         field.numberOfLines = 0
         field.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(1)
         field.textAlignment = .center
+        field.text = "        "
         return field
     }()
     
@@ -36,6 +37,7 @@ class CollectionViewCell: UICollectionViewCell {
         field.textColor = .label
         field.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(1)
         field.textAlignment = .center
+        field.text = "          "
         return field
     }()
     
@@ -99,9 +101,11 @@ class CollectionViewCell: UICollectionViewCell {
     let days = ["Today", "Yesterday", "2 Days Ago", "3 Days Ago", "4 Days Ago", "5 Days Ago", "6 Days Ago"]
     
     func configure(model: APOD, indexPath: IndexPath) {
+//        contentView.isUserInteractionEnabled = true
+        isUserInteractionEnabled = true
         if model.media_type == "video" {
-//            print("video type found")
-//            playVideo(model: model)
+            //            print("video type found")
+            //            playVideo(model: model)
             self.imageView.image = model.image
         } else {
             self.imageView.image = model.image
@@ -112,24 +116,10 @@ class CollectionViewCell: UICollectionViewCell {
         self.dateLabel.text = days[indexPath.row]//model.date
     }
     
-    func playVideo(model: APOD) {
-        if let url = URL(string: model.videoUrl ?? "") {
-            //2. Create AVPlayer object
-            let asset = AVAsset(url: url)
-            let playerItem = AVPlayerItem(asset: asset)
-            let player = AVPlayer(playerItem: playerItem)
-            
-            //3. Create AVPlayerLayer object
-            let playerLayer = AVPlayerLayer(player: player)
-            playerLayer.frame = self.imageView.bounds //bounds of the view in which AVPlayer should be displayed
-            playerLayer.videoGravity = .resizeAspect
-            
-            //4. Add playerLayer to view's layer
-            self.contentView.layer.addSublayer(playerLayer)
-            
-            //5. Play Video
-            player.play()
-        }
+    func configureSkeletonLoading() {
+//        contentView.isUserInteractionEnabled = false
+        isUserInteractionEnabled = false
+        print("skeleton laoding needs to be implemented")
     }
     
     required init?(coder: NSCoder) {
