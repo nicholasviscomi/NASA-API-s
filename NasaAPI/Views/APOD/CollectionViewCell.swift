@@ -52,11 +52,33 @@ class CollectionViewCell: UICollectionViewCell {
     
     var model: APOD?
     
+    var shimmer = ShimmerLayer()
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         configureSelf()
         setFrames()
     }
+    
+    func setShimmer() {
+        DispatchQueue.main.async { [unowned self] in
+            shimmer.removeLayerIfExists(self)
+            shimmer = ShimmerLayer(for: self.contentView, cornerRadius: 12)
+            self.layer.addSublayer(shimmer)
+        }
+    }
+    
+    func removeShimmer() {
+        contentView.alpha = 0
+        shimmer.removeFromSuperlayer()
+        
+        DispatchQueue.main.async { [self] in
+            UIView.animate(withDuration: 0.4) {
+                contentView.alpha = 1
+            }
+        }
+    }
+    
     
     fileprivate func setFrames() {
         NSLayoutConstraint.activate([
@@ -92,6 +114,7 @@ class CollectionViewCell: UICollectionViewCell {
         contentView.addSubview(bg)
         contentView.addSubview(titleLabel)
         contentView.addSubview(dateLabel)
+//        setShimmer()
     
         contentView.layer.cornerRadius = 15
         contentView.clipsToBounds = true
@@ -120,6 +143,7 @@ class CollectionViewCell: UICollectionViewCell {
 //        contentView.isUserInteractionEnabled = false
         isUserInteractionEnabled = false
         print("skeleton laoding needs to be implemented")
+        setShimmer()
     }
     
     required init?(coder: NSCoder) {

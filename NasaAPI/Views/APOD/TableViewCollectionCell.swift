@@ -106,6 +106,7 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
             cell.configureSkeletonLoading()
         } else {
             cell.configure(model: data[indexPath.row], indexPath: indexPath)
+            cell.removeShimmer()
         }
         
         self.detailViewDelegate = HomeViewController()
@@ -124,7 +125,9 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
 //        let tappedLocationInWindow = collectionView.convert(cPoint, to: window)
         print(cPoint, touchedLocationInWindow)
         
-        detailViewDelegate?.cellWasTapped(cell: cell, location: touchedLocationInWindow, model: data[indexPath.row])
+        if cell.imageView.image != nil {
+            detailViewDelegate?.cellWasTapped(cell: cell, location: touchedLocationInWindow, model: data[indexPath.row])
+        }
     }
     
     

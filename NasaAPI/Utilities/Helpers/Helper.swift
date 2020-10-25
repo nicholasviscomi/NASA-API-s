@@ -43,10 +43,26 @@ public func imageFrom(data: Data) -> UIImage? {
     return UIImage(data: data)
 }
 
-func currentDate() -> String {
+func currentDateString() -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd"
     return formatter.string(from: Date())
+}
+
+func currentDate() -> Date {
+    return Date()
+}
+
+func convert(string: String) -> Date? {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    return formatter.date(from: string)
+}
+
+func string(from: Date) -> String? {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    return formatter.string(from: from)
 }
 
 func imageData(from image: UIImage) -> Data? {

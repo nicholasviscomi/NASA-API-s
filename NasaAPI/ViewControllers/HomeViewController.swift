@@ -10,7 +10,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    fileprivate let tableView: UITableView = {
+    fileprivate lazy var tableView: UITableView = {
         let field = UITableView()
         field.register(TableViewCollectionCell.self, forCellReuseIdentifier: Constants.homeCellIdentifier)
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -85,7 +85,7 @@ extension HomeViewController: DetailViewDelegate {
     func cellWasTapped(cell: CollectionViewCell, location: CGPoint, model: APOD) {
         let cellCopy = cell
         
-        let vc = CellLongPressViewController(cell: cellCopy, location: location, model: model)
+        let vc = FloatingDetailViewController(cell: cellCopy, location: location, model: model)
         vc.title = ""
         vc.modalPresentationStyle = .overCurrentContext
         vc.navigationController?.navigationBar.isHidden = true

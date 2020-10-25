@@ -33,8 +33,9 @@
 		7B875CD725151BAF00CB2A6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B875CD625151BAF00CB2A6C /* Assets.xcassets */; };
 		7B875CDA25151BAF00CB2A6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B875CD825151BAF00CB2A6C /* LaunchScreen.storyboard */; };
 		7B875CE225151BDD00CB2A6C /* APIMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CE125151BDD00CB2A6C /* APIMethods.swift */; };
+		7B8817042545191A001EA066 /* ShimmerLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8817032545191A001EA066 /* ShimmerLayer.swift */; };
 		7B8AB246251FF57B0061AF7D /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8AB245251FF57B0061AF7D /* Protocols.swift */; };
-		7B8AB253252009220061AF7D /* CellLongPressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8AB252252009220061AF7D /* CellLongPressViewController.swift */; };
+		7B8AB253252009220061AF7D /* FloatingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8AB252252009220061AF7D /* FloatingDetailViewController.swift */; };
 		7B9034C32537762300688117 /* WidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9034C22537762300688117 /* WidgetModel.swift */; };
 		7B9034C62537762500688117 /* WidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9034C22537762300688117 /* WidgetModel.swift */; };
 		7BA28D6225290FE800CADEC0 /* BirthdayPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA28D6125290FE800CADEC0 /* BirthdayPictureViewController.swift */; };
@@ -96,8 +97,9 @@
 		7B875CD925151BAF00CB2A6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7B875CDB25151BAF00CB2A6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7B875CE125151BDD00CB2A6C /* APIMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIMethods.swift; sourceTree = "<group>"; };
+		7B8817032545191A001EA066 /* ShimmerLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerLayer.swift; sourceTree = "<group>"; };
 		7B8AB245251FF57B0061AF7D /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
-		7B8AB252252009220061AF7D /* CellLongPressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellLongPressViewController.swift; sourceTree = "<group>"; };
+		7B8AB252252009220061AF7D /* FloatingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingDetailViewController.swift; sourceTree = "<group>"; };
 		7B9034C22537762300688117 /* WidgetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetModel.swift; sourceTree = "<group>"; };
 		7BA28D6125290FE800CADEC0 /* BirthdayPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayPictureViewController.swift; sourceTree = "<group>"; };
 		7BAAF667253A953F00FA5CB3 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 			children = (
 				7BCB85E625198CB900311897 /* Helper.swift */,
 				7B28C70C253E77ED00CF2529 /* UIKitHelper.swift */,
+				7B8817032545191A001EA066 /* ShimmerLayer.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -255,7 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				7B875CD125151BAE00CB2A6C /* HomeViewController.swift */,
-				7B8AB252252009220061AF7D /* CellLongPressViewController.swift */,
+				7B8AB252252009220061AF7D /* FloatingDetailViewController.swift */,
 				7B67A842252806E1006505C2 /* DetailViewController.swift */,
 				7BA28D6125290FE800CADEC0 /* BirthdayPictureViewController.swift */,
 				7B5B6D842532A956002DE605 /* PhotoViewerViewController.swift */,
@@ -390,7 +393,7 @@
 				7BCB85E725198CB900311897 /* Helper.swift in Sources */,
 				7BED4A982538EF2900E7107A /* WidgetAPI.swift in Sources */,
 				7B5B6D852532A956002DE605 /* PhotoViewerViewController.swift in Sources */,
-				7B8AB253252009220061AF7D /* CellLongPressViewController.swift in Sources */,
+				7B8AB253252009220061AF7D /* FloatingDetailViewController.swift in Sources */,
 				7B9034C32537762300688117 /* WidgetModel.swift in Sources */,
 				7B1109A7251C3A1B008F11B2 /* TableViewCollectionCell.swift in Sources */,
 				7BA28D6225290FE800CADEC0 /* BirthdayPictureViewController.swift in Sources */,
@@ -402,6 +405,7 @@
 				7B1109AB251C3AFF008F11B2 /* Model.swift in Sources */,
 				7B67A843252806E1006505C2 /* DetailViewController.swift in Sources */,
 				7B28C70D253E77ED00CF2529 /* UIKitHelper.swift in Sources */,
+				7B8817042545191A001EA066 /* ShimmerLayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

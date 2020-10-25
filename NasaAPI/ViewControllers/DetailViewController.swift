@@ -16,7 +16,7 @@ class DetailViewController: UIViewController {
         let field = UIImageView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFit
-        field.backgroundColor = .secondaryLabel
+        field.backgroundColor = UIColor.quaternaryLabel.withAlphaComponent(0.2)
         field.clipsToBounds = true
         field.isUserInteractionEnabled = true
         field.alpha = 0
@@ -88,6 +88,34 @@ class DetailViewController: UIViewController {
         return field
     }()
     
+//    let sidebar: UIView = {
+//        let field = UIView()
+//        field.translatesAutoresizingMaskIntoConstraints = false
+//        field.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.6)
+//        field.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+//        return field
+//    }()
+//
+//    lazy var share: UIButton = {
+//        let field = UIButton()
+//        field.translatesAutoresizingMaskIntoConstraints = false
+//        field.setBackgroundImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+//        field.tintColor = .link
+//        field.backgroundColor = .clear
+//        field.layer.cornerRadius = 15
+//        return field
+//    }()
+//
+//    lazy var download: UIButton = {
+//        let field = UIButton()
+//        field.translatesAutoresizingMaskIntoConstraints = false
+//        field.setBackgroundImage(UIImage(named: "downlaodIcon"), for: .normal)
+//        field.tintColor = .link
+//        field.backgroundColor = .clear
+//        field.layer.cornerRadius = 15
+//        return field
+//    }()
+    
     let model: APOD
 
     var closer: CloserDelegate?
@@ -118,35 +146,10 @@ class DetailViewController: UIViewController {
         checkForVideo()
         constrainViews()
         
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            imageView.bottomAnchor.constraint(equalTo: explanation.topAnchor, constant: -10),
-            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
-        ])
-        
         UIView.animate(withDuration: 0.3) {
             self.imageView.alpha = 1
         }
 
-    }
-    
-    fileprivate func addViews() {
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.isHidden = true
-        
-        view.backgroundColor = Colors.NasaBlue
-        view.addSubview(imageView)
-        view.addSubview(titleLabel)
-        view.addSubview(dateLabel)
-        view.addSubview(explanation)
-        
-        view.addSubview(exitButton)
-        exitButton.addTarget(self, action: #selector(tappedBackground), for: .touchUpInside)
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPhoto))
-        tap.numberOfTapsRequired = 1
-        imageView.addGestureRecognizer(tap)
     }
     
     @objc func didTapPhoto() {
@@ -189,6 +192,31 @@ class DetailViewController: UIViewController {
     
     @objc func videoTapped() { openVideo(with: model, viewController: self) }
 
+    fileprivate func addViews() {
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.isHidden = true
+        
+        view.backgroundColor = Colors.NasaBlue
+        view.addSubview(imageView)
+        view.addSubview(titleLabel)
+        view.addSubview(dateLabel)
+        view.addSubview(explanation)
+        
+//        view.addSubview(sidebar)
+//
+//        sidebar.addSubview(share)
+//        share.addTarget(self, action: #selector(sharePhoto), for: .touchUpInside)
+//
+//        sidebar.addSubview(download)
+//        download.addTarget(self, action: #selector(downloadPhoto), for: .touchUpInside)
+        
+        view.addSubview(exitButton)
+        exitButton.addTarget(self, action: #selector(tappedBackground), for: .touchUpInside)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPhoto))
+        tap.numberOfTapsRequired = 1
+        imageView.addGestureRecognizer(tap)
+    }
     
     fileprivate func constrainViews() {
         NSLayoutConstraint.activate([
@@ -215,6 +243,61 @@ class DetailViewController: UIViewController {
             dateLabel.centerYAnchor.constraint(equalTo: exitButton.centerYAnchor, constant: 0)
         ])
         
+//        NSLayoutConstraint.activate([
+//            sidebar.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+//            sidebar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+////            sidebar.heightAnchor.constraint(equalToConstant: imageView.frame.height - 30),
+//            sidebar.widthAnchor.constraint(equalToConstant: 50)
+//        ])
+//
+//        NSLayoutConstraint.activate([
+//            share.widthAnchor.constraint(equalToConstant: 40),
+//            share.heightAnchor.constraint(equalToConstant: 40),
+//            share.centerXAnchor.constraint(equalTo: sidebar.centerXAnchor),
+//            share.centerYAnchor.constraint(equalTo: sidebar.centerYAnchor, constant: -30)
+//        ])
+//
+//        NSLayoutConstraint.activate([
+//            download.widthAnchor.constraint(equalToConstant: 40),
+//            download.heightAnchor.constraint(equalToConstant: 40),
+//            download.centerXAnchor.constraint(equalTo: sidebar.centerXAnchor),
+//            download.centerYAnchor.constraint(equalTo: sidebar.centerYAnchor, constant: 30)
+//        ])
+        
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+            imageView.bottomAnchor.constraint(equalTo: explanation.topAnchor, constant: -10),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
+        ])
     }
 
+}
+
+extension DetailViewController: UIActivityItemSource {
+    
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return UIImage(named: "Image")!
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        
+        if model.image != nil {
+            return [model.image!, "\(model.title): \(model.date)"]
+            
+        } else { return nil }
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
+        return model.title
+    }
+    
+    @objc func sharePhoto() {
+        let shareSheet = UIActivityViewController(activityItems: [imageView.image!], applicationActivities: nil)
+        present(shareSheet, animated: true, completion: nil)
+    }
+    
+    @objc func downloadPhoto() {
+        print("download the photo bruhhhhhhhhhhh")
+    }
 }

@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 
 
-class CellLongPressViewController: UIViewController {
+class FloatingDetailViewController: UIViewController {
 
     let cell: CollectionViewCell
     
@@ -288,9 +288,9 @@ class CellLongPressViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 10),
+            scrollView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: -10),
             scrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0),
-            scrollView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
+            scrollView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 10),
             scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -30)
         ])
         
@@ -299,7 +299,7 @@ class CellLongPressViewController: UIViewController {
             explanation.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
 //            explanation.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             explanation.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            explanation.widthAnchor.constraint(equalToConstant: container.frame.width - 10),
+            explanation.widthAnchor.constraint(equalToConstant: container.frame.width),
             explanation.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0)
         ])
         
@@ -319,7 +319,7 @@ class CellLongPressViewController: UIViewController {
     }
 }
 
-extension CellLongPressViewController: CloserDelegate, UIScrollViewDelegate {
+extension FloatingDetailViewController: CloserDelegate, UIScrollViewDelegate {
     func shouldClose() {
         UIView.animate(withDuration: 0.5) {
             self.view.alpha = 0

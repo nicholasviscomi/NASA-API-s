@@ -8,8 +8,36 @@
 
 import UIKit
 
+struct keys {
+    static let firstDate = "firstDate"
+}
+
 final class CacheManager {
     let defaults = UserDefaults.standard
+    
+    public func checkForClear(completion: @escaping (Bool) -> Void) {
+        print(currentDate().addingTimeInterval(TimeInterval(86400 * -7)))
+        
+        if let firstOpened = defaults.string(forKey: keys.firstDate) {
+            let weekAgoDate = string(from: currentDate().addingTimeInterval(TimeInterval(86400 * -1)))
+            
+            if weekAgoDate == firstOpened {
+                print("should clear cache. It has been 1 week since openeing the app")
+                clearCache { (_) in }
+                defaults.setValue(currentDateString(), forKey: keys.firstDate)
+            } else {
+                print("not a week ago yet")
+                completion(true)
+            }
+            completion(true)
+            return
+        } else {
+            print("set the date of first time the app was opened")
+            defaults.setValue(currentDateString(), forKey: keys.firstDate)
+            completion(true)
+            return
+        }
+    }
     
     ///cache an image
     public func cache(apod: APOD, date: String) {
@@ -52,6 +80,7 @@ final class CacheManager {
         guard let domain = Bundle.main.bundleIdentifier else { completion(false); return }
         defaults.removePersistentDomain(forName: domain)
         defaults.synchronize()
+        print("clearing cache")
         completion(true)
     }
     

@@ -65,7 +65,7 @@ final class APIMethods {
     //make start and end date and count parameters; when checking cache for apods if you find one remove it from array of dates and then send those dates in this funciton below
     public func getMultipleAPOD() {
         var start = datesFor(count: 7).last!
-        var end = currentDate()
+        var end = currentDateString()
         var dates = datesFor(count: 7)
 //        print("original \(dates)")
         
@@ -73,12 +73,14 @@ final class APIMethods {
         var cachedApods =  [APOD]()
         
         dispatch.enter()
-        for date in dates {
-            if cache.isCached(date: date) {
-                if let apod = cache.retrieveCachedAPOD(date: date) {
-                    cachedApods.append(apod)
-                    //remove the date that was found
-                    dates = dates.filter { $0 != apod.date }
+        cache.checkForClear { [self] (done) in
+            for date in dates {
+                if cache.isCached(date: date) {
+                    if let apod = cache.retrieveCachedAPOD(date: date) {
+                        cachedApods.append(apod)
+                        //remove the date that was found
+                        dates = dates.filter { $0 != apod.date }
+                    }
                 }
             }
         }
@@ -86,7 +88,7 @@ final class APIMethods {
 //        print("Cached apods: \(cachedApods)")
         
         if cachedApods.count == 7 {
-            //cached apods is full (count == 7)
+//            cached apods is full (count == 7)
             print("fully cached apods")
             dataDelegate?.isFinishedLoadingAPOD()
             dataDelegate?.retrievedWeekOfAPOD(apods: [cachedApods])
@@ -94,7 +96,7 @@ final class APIMethods {
         }
         
         start = dates.last ?? datesFor(count: 7).last!
-        end = dates.first ?? currentDate()
+        end = dates.first ?? currentDateString()
         print("new start: \(start)")
         print("new end: \(end)")
         
@@ -114,9 +116,13 @@ final class APIMethods {
                     dispatch.leave()
                     print("just left")
                     
-                    for apod in apods {
-                        if !cache.isCached(date: apod.date) {
-                            cache.cache(apod: apod, date: apod.date)
+                    cache.checkForClear { (done) in
+                        if done {
+                            for apod in apods {
+                                if !cache.isCached(date: apod.date) {
+                                    cache.cache(apod: apod, date: apod.date)
+                                }
+                            }
                         }
                     }
                     
@@ -129,23 +135,23 @@ final class APIMethods {
     
         dispatch.notify(queue: .main) { [self] in
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                if apods.count == 7 {
-                    //cache was empty && apods are full (count == 7)
-                    print("cache was empty: got all the stuff")
-                    dataDelegate?.retrievedWeekOfAPOD(apods: [reverseArray(array: apods)])
-                    dataDelegate?.isFinishedLoadingAPOD()
-                } else if apods.count == 0 && cachedApods.count == 0 {
-                    print("got nothing from cache nor api")
-                    dataDelegate?.noDataReceived()
-                } else {
-                    let combined = apods + cachedApods
-                    let filtered = Array(Set(combined))
-                    let sorted = filtered.sorted(by: { $0.date > $1.date })
-                    print("some of it was cached")
-                    dataDelegate?.retrievedWeekOfAPOD(apods: [sorted])
-                    dataDelegate?.isFinishedLoadingAPOD()
-                }
-//            }
+            if apods.count == 7 {
+                //cache was empty && apods are full (count == 7)
+                print("cache was empty: got all the stuff")
+                dataDelegate?.retrievedWeekOfAPOD(apods: [reverseArray(array: apods)])
+                dataDelegate?.isFinishedLoadingAPOD()
+            } else if apods.count == 0 && cachedApods.count == 0 {
+                print("got nothing from cache nor api")
+                dataDelegate?.noDataReceived()
+            } else {
+                let combined = apods + cachedApods
+                let filtered = Array(Set(combined))
+                let sorted = filtered.sorted(by: { $0.date > $1.date })
+                print("some of it was cached")
+                dataDelegate?.retrievedWeekOfAPOD(apods: [sorted])
+                dataDelegate?.isFinishedLoadingAPOD()
+            }
+            //            }
         }
     }
     

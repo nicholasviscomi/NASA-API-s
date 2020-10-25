@@ -10,7 +10,7 @@ import UIKit
 
 class PhotoViewerViewController: UIViewController {
 
-    let imageView: UIImageView = {
+    fileprivate let imageView: UIImageView = {
         let field = UIImageView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFit
@@ -20,7 +20,7 @@ class PhotoViewerViewController: UIViewController {
         return field
     }()
     
-    let scrollView: UIScrollView = {
+    fileprivate let scrollView: UIScrollView = {
         let field = UIScrollView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.minimumZoomScale = 1.0
@@ -29,8 +29,40 @@ class PhotoViewerViewController: UIViewController {
         return field
     }()
     
+    fileprivate lazy var share: UIButton = {
+        let field = UIButton()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.setBackgroundImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+        field.tintColor = .link
+        field.backgroundColor = .clear
+        field.layer.cornerRadius = 15
+        return field
+    }()
+    
+    fileprivate lazy var download: UIButton = {
+        let field = UIButton()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.setBackgroundImage(UIImage(named: "downloadImage"), for: .normal)
+        field.tintColor = .link
+        field.backgroundColor = .clear
+        field.layer.cornerRadius = 15
+        return field
+    }()
+    
+    fileprivate lazy var bg: UIView = {
+        let field = UIView()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = .label
+        field.layer.cornerRadius = 35
+        return field
+    }()
+        
     let model: APOD
     var image: UIImage
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .allButUpsideDown
+    }
     
     init(model: APOD) {
         self.imageView.image = model.image!
@@ -45,9 +77,8 @@ class PhotoViewerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        configureRotation()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(sharePhoto))
+//        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(sharePhoto))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(close))
     }
     
@@ -56,8 +87,17 @@ class PhotoViewerViewController: UIViewController {
         let blur = blurBackground(for: view, style: style)
         blur.alpha = 1
         view.insertSubview(blur, at: 0)
-        view.backgroundColor = .secondarySystemBackground
+        view.backgroundColor = .systemBackground
+        
         view.addSubview(scrollView)
+        view.addSubview(bg)
+        
+        view.addSubview(download)
+        download.addTarget(self, action: #selector(downloadImage), for: .touchUpInside)
+        
+        view.addSubview(share)
+        share.addTarget(self, action: #selector(sharePhoto), for: .touchUpInside)
+        
         scrollView.delegate = self
         scrollView.addSubview(imageView)
         
@@ -74,12 +114,27 @@ class PhotoViewerViewController: UIViewController {
             imageView.widthAnchor.constraint(equalToConstant: view.frame.width),
             imageView.heightAnchor.constraint(equalToConstant: view.frame.height)
         ])
-    }
-    
-    fileprivate func configureRotation() {
-        if imageView.frame.width > imageView.frame.height {
-            imageView.transform = CGAffineTransform(rotationAngle: .pi)
-        }
+        
+        NSLayoutConstraint.activate([
+            download.heightAnchor.constraint(equalToConstant: 60),
+            download.widthAnchor.constraint(equalToConstant: 60),
+            download.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -80),
+            download.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
+        ])
+        
+        NSLayoutConstraint.activate([
+            share.heightAnchor.constraint(equalToConstant: 60),
+            share.widthAnchor.constraint(equalToConstant: 60),
+            share.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 80),
+            share.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
+        ])
+        
+        NSLayoutConstraint.activate([
+            bg.topAnchor.constraint(equalTo: share.topAnchor, constant: -7.5),
+            bg.bottomAnchor.constraint(equalTo: share.bottomAnchor, constant: 7.5),
+            bg.leadingAnchor.constraint(equalTo: download.leadingAnchor, constant: -20),
+            bg.trailingAnchor.constraint(equalTo: share.trailingAnchor, constant: 20)
+        ])
     }
     
     @objc func close() {
@@ -101,10 +156,7 @@ extension PhotoViewerViewController: UIActivityItemSource {
     }
     
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-        if activityType == .postToTwitter {
-            
-        }
-        return image
+        return [image, "\(model.title): \(model.date)"]
     }
     
     func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
@@ -114,5 +166,23 @@ extension PhotoViewerViewController: UIActivityItemSource {
     @objc func sharePhoto() {
         let shareSheet = UIActivityViewController(activityItems: [imageView.image!], applicationActivities: nil)
         present(shareSheet, animated: true, completion: nil)
+    }
+    
+    @objc func downloadImage() {
+        print("download image bruhhhhhhhhhhh")
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+    
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            // we got back an error!
+            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
     }
 }
