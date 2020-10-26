@@ -23,16 +23,7 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         field.clipsToBounds = false
         return field
     }()
-    
-    let backgroundImage: UIImageView = {
-        let field = UIImageView()
-        field.translatesAutoresizingMaskIntoConstraints = false
-        field.contentMode = .scaleAspectFill
-        field.image = UIImage(named: "photo2")!
-        field.clipsToBounds = true
-        return field
-    }()
-    
+
     var data = [APOD]()
     
     var detailViewDelegate: DetailViewDelegate?
@@ -65,13 +56,6 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
         ])
-        
-//        NSLayoutConstraint.activate([
-//            backgroundImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-//            backgroundImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
-//            backgroundImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            backgroundImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-//        ])
     }
     
     fileprivate func conform() {

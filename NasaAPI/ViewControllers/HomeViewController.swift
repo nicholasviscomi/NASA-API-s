@@ -23,8 +23,8 @@ class HomeViewController: UIViewController {
     var data = [[APOD]]()
     var weekCount = 7
     
-    let APICalls = APIMethods()
-    let cache = CacheManager()
+    fileprivate let APICalls = APIManager()
+    fileprivate let cache = CacheManager()
     
     var isFinishedLoading = false
     

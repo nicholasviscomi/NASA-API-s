@@ -20,7 +20,7 @@
 		7B245C8E253688A5008E2977 /* nasaAPIWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7B245C7D253688A1008E2977 /* nasaAPIWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7B28C6FD253E45C100CF2529 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAAF667253A953F00FA5CB3 /* CacheManager.swift */; };
 		7B28C708253E77C500CF2529 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCB85E625198CB900311897 /* Helper.swift */; };
-		7B28C70D253E77ED00CF2529 /* UIKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B28C70C253E77ED00CF2529 /* UIKitHelper.swift */; };
+		7B28C70D253E77ED00CF2529 /* Helper2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B28C70C253E77ED00CF2529 /* Helper2.swift */; };
 		7B2D115D25393EB40096A3CE /* SystemSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2D115C25393EB40096A3CE /* SystemSmallView.swift */; };
 		7B2D116225393ED00096A3CE /* SystemMediumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2D116125393ED00096A3CE /* SystemMediumView.swift */; };
 		7B2D116825393EDA0096A3CE /* SystemLargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2D116725393EDA0096A3CE /* SystemLargeView.swift */; };
@@ -32,7 +32,7 @@
 		7B875CD225151BAE00CB2A6C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CD125151BAE00CB2A6C /* HomeViewController.swift */; };
 		7B875CD725151BAF00CB2A6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B875CD625151BAF00CB2A6C /* Assets.xcassets */; };
 		7B875CDA25151BAF00CB2A6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B875CD825151BAF00CB2A6C /* LaunchScreen.storyboard */; };
-		7B875CE225151BDD00CB2A6C /* APIMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CE125151BDD00CB2A6C /* APIMethods.swift */; };
+		7B875CE225151BDD00CB2A6C /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CE125151BDD00CB2A6C /* APIManager.swift */; };
 		7B8817042545191A001EA066 /* ShimmerLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8817032545191A001EA066 /* ShimmerLayer.swift */; };
 		7B8AB246251FF57B0061AF7D /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8AB245251FF57B0061AF7D /* Protocols.swift */; };
 		7B8AB253252009220061AF7D /* FloatingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8AB252252009220061AF7D /* FloatingDetailViewController.swift */; };
@@ -83,7 +83,7 @@
 		7B245C86253688A1008E2977 /* nasaAPIWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = nasaAPIWidget.intentdefinition; sourceTree = "<group>"; };
 		7B245C87253688A5008E2977 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7B245C89253688A5008E2977 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7B28C70C253E77ED00CF2529 /* UIKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitHelper.swift; sourceTree = "<group>"; };
+		7B28C70C253E77ED00CF2529 /* Helper2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper2.swift; sourceTree = "<group>"; };
 		7B2D115C25393EB40096A3CE /* SystemSmallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSmallView.swift; sourceTree = "<group>"; };
 		7B2D116125393ED00096A3CE /* SystemMediumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMediumView.swift; sourceTree = "<group>"; };
 		7B2D116725393EDA0096A3CE /* SystemLargeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemLargeView.swift; sourceTree = "<group>"; };
@@ -96,7 +96,7 @@
 		7B875CD625151BAF00CB2A6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7B875CD925151BAF00CB2A6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7B875CDB25151BAF00CB2A6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7B875CE125151BDD00CB2A6C /* APIMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIMethods.swift; sourceTree = "<group>"; };
+		7B875CE125151BDD00CB2A6C /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		7B8817032545191A001EA066 /* ShimmerLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerLayer.swift; sourceTree = "<group>"; };
 		7B8AB245251FF57B0061AF7D /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		7B8AB252252009220061AF7D /* FloatingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingDetailViewController.swift; sourceTree = "<group>"; };
@@ -165,8 +165,10 @@
 			isa = PBXGroup;
 			children = (
 				7BCB85E625198CB900311897 /* Helper.swift */,
-				7B28C70C253E77ED00CF2529 /* UIKitHelper.swift */,
+				7B28C70C253E77ED00CF2529 /* Helper2.swift */,
 				7B8817032545191A001EA066 /* ShimmerLayer.swift */,
+				7B245C55253651BA008E2977 /* Colors.swift */,
+				7BCB85E8251994FE00311897 /* Constants.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -245,11 +247,9 @@
 			isa = PBXGroup;
 			children = (
 				7B8AB244251FF56E0061AF7D /* Protocols */,
-				7B875CE125151BDD00CB2A6C /* APIMethods.swift */,
+				7B875CE125151BDD00CB2A6C /* APIManager.swift */,
 				7BAAF667253A953F00FA5CB3 /* CacheManager.swift */,
-				7BCB85E8251994FE00311897 /* Constants.swift */,
 				7B28C70B253E77D500CF2529 /* Helpers */,
-				7B245C55253651BA008E2977 /* Colors.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -387,7 +387,7 @@
 				7B875CD225151BAE00CB2A6C /* HomeViewController.swift in Sources */,
 				7B245C8B253688A5008E2977 /* nasaAPIWidget.intentdefinition in Sources */,
 				7BD3FEA12524342A009933D8 /* APOD.swift in Sources */,
-				7B875CE225151BDD00CB2A6C /* APIMethods.swift in Sources */,
+				7B875CE225151BDD00CB2A6C /* APIManager.swift in Sources */,
 				7B245C56253651BA008E2977 /* Colors.swift in Sources */,
 				7B1109AF251C3D0B008F11B2 /* CollectionViewCell.swift in Sources */,
 				7BCB85E725198CB900311897 /* Helper.swift in Sources */,
@@ -404,7 +404,7 @@
 				7BCB85E9251994FE00311897 /* Constants.swift in Sources */,
 				7B1109AB251C3AFF008F11B2 /* Model.swift in Sources */,
 				7B67A843252806E1006505C2 /* DetailViewController.swift in Sources */,
-				7B28C70D253E77ED00CF2529 /* UIKitHelper.swift in Sources */,
+				7B28C70D253E77ED00CF2529 /* Helper2.swift in Sources */,
 				7B8817042545191A001EA066 /* ShimmerLayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

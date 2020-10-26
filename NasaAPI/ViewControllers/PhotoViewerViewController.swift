@@ -52,7 +52,7 @@ class PhotoViewerViewController: UIViewController {
     fileprivate lazy var bg: UIView = {
         let field = UIView()
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.backgroundColor = .label
+        field.backgroundColor = .secondarySystemBackground
         field.layer.cornerRadius = 35
         return field
     }()
@@ -82,7 +82,61 @@ class PhotoViewerViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(close))
     }
     
-    func configure() {
+    @objc fileprivate func close() {
+        self.dismiss(animated: true, completion: nil)
+    }
+
+}
+
+extension PhotoViewerViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
+    }
+}
+
+extension PhotoViewerViewController: UIActivityItemSource {
+    
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return UIImage(named: "Image")!
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        return [image, "\(model.title): \(model.date)"]
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
+        return model.title
+    }
+    
+    @objc fileprivate func sharePhoto() {
+        let shareSheet = UIActivityViewController(activityItems: [imageView.image!], applicationActivities: nil)
+        present(shareSheet, animated: true, completion: nil)
+    }
+    
+    @objc fileprivate func downloadImage() {
+        print("download image bruhhhhhhhhhhh")
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+    
+    @objc fileprivate func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            // we got back an error!
+            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+            
+        } else {
+            
+            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+            
+        }
+    }
+}
+
+extension PhotoViewerViewController {
+    fileprivate func configure() {
         let style: UIBlurEffect.Style = traitCollection.userInterfaceStyle == .dark ? .systemUltraThinMaterialLight : .systemUltraThinMaterialDark
         let blur = blurBackground(for: view, style: style)
         blur.alpha = 1
@@ -135,54 +189,5 @@ class PhotoViewerViewController: UIViewController {
             bg.leadingAnchor.constraint(equalTo: download.leadingAnchor, constant: -20),
             bg.trailingAnchor.constraint(equalTo: share.trailingAnchor, constant: 20)
         ])
-    }
-    
-    @objc func close() {
-        self.dismiss(animated: true, completion: nil)
-    }
-
-}
-
-extension PhotoViewerViewController: UIScrollViewDelegate {
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imageView
-    }
-}
-
-extension PhotoViewerViewController: UIActivityItemSource {
-    
-    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        return UIImage(named: "Image")!
-    }
-    
-    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-        return [image, "\(model.title): \(model.date)"]
-    }
-    
-    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
-        return model.title
-    }
-    
-    @objc func sharePhoto() {
-        let shareSheet = UIActivityViewController(activityItems: [imageView.image!], applicationActivities: nil)
-        present(shareSheet, animated: true, completion: nil)
-    }
-    
-    @objc func downloadImage() {
-        print("download image bruhhhhhhhhhhh")
-        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
-    }
-    
-    @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
-        if let error = error {
-            // we got back an error!
-            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
-        } else {
-            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
-        }
     }
 }

@@ -41,7 +41,7 @@ class CollectionViewCell: UICollectionViewCell {
         return field
     }()
     
-    let bg: UIView = {
+    fileprivate let bg: UIView = {
         let field = UIView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = .tertiarySystemBackground
@@ -52,7 +52,7 @@ class CollectionViewCell: UICollectionViewCell {
     
     var model: APOD?
     
-    var shimmer = ShimmerLayer()
+    fileprivate var shimmer = ShimmerLayer()
     
     override init(frame: CGRect) {
         super.init(frame: .zero)

@@ -31,18 +31,17 @@ func canOpenUrl(url: URL) -> Bool {
     return UIApplication.shared.canOpenURL(url)
 }
 
-func reverseArray(array: [APOD]) -> [APOD] {
-    var arr = [APOD]()
+func reverseArray<T>(array: [T]) -> [T] {
+    var arr = [T]()
     
-    for apod in array {
-        arr.insert(apod, at: 0)
+    for item in array {
+        arr.insert(item, at: 0)
     }
     
     return arr
 }
 
 extension CALayer {
-    
     func removeLayerIfExists(_ view: UIView) {
         if let lastLayer = view.layer.sublayers?.last {
             let isPresent = lastLayer is ShimmerLayer

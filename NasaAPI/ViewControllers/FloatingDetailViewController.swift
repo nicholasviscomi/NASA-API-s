@@ -14,7 +14,7 @@ class FloatingDetailViewController: UIViewController {
 
     let cell: CollectionViewCell
     
-    let imageView: UIImageView = {
+    fileprivate let imageView: UIImageView = {
         let field = UIImageView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFit
@@ -22,7 +22,7 @@ class FloatingDetailViewController: UIViewController {
         return field
     }()
     
-    let titleLabel: UILabel = {
+    fileprivate let titleLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 20, weight: .bold)
@@ -33,7 +33,7 @@ class FloatingDetailViewController: UIViewController {
         return field
     }()
     
-    let explanation: UILabel = {
+    fileprivate let explanation: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 16, weight: .regular)
@@ -44,7 +44,7 @@ class FloatingDetailViewController: UIViewController {
         return field
     }()
     
-    let dateLabel: UILabel = {
+    fileprivate let dateLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 20, weight: .bold)
@@ -54,7 +54,7 @@ class FloatingDetailViewController: UIViewController {
         return field
     }()
     
-    let playButton: UIButton = {
+    fileprivate let playButton: UIButton = {
         let field = UIButton()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
@@ -64,7 +64,7 @@ class FloatingDetailViewController: UIViewController {
         return field
     }()
     
-    let bgView: UIView = {
+    fileprivate let bgView: UIView = {
         let field = UIView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = .systemBackground
@@ -72,7 +72,7 @@ class FloatingDetailViewController: UIViewController {
         return field
     }()
     
-    let readMore: UIButton = {
+    fileprivate let readMore: UIButton = {
         let field = UIButton()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.setTitle("Read More", for: .normal)
@@ -81,25 +81,25 @@ class FloatingDetailViewController: UIViewController {
         return field
     }()
     
-    let scrollView: UIScrollView = {
+    fileprivate let scrollView: UIScrollView = {
         let field = UIScrollView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.isScrollEnabled = true
         return field
     }()
     
-    let container = UIView()
-    let location: CGPoint
+    fileprivate let container = UIView()
+    fileprivate let location: CGPoint
     
-    var imageViewWidth: NSLayoutConstraint!
-    var imageViewHeight: NSLayoutConstraint!
+    fileprivate var imageViewWidth: NSLayoutConstraint!
+    fileprivate var imageViewHeight: NSLayoutConstraint!
     
-    var titleWidth: NSLayoutConstraint!
-    var titleHeight: NSLayoutConstraint!
+    fileprivate var titleWidth: NSLayoutConstraint!
+    fileprivate var titleHeight: NSLayoutConstraint!
     
-    var dateLabelWidth: NSLayoutConstraint!
+    fileprivate var dateLabelWidth: NSLayoutConstraint!
     
-    var cardIsOpen = false
+    fileprivate var cardIsOpen = false
     
 //    static var reloadDelegate: ReloadDelegate?
     var model: APOD
@@ -196,7 +196,7 @@ class FloatingDetailViewController: UIViewController {
     
     @objc func videoTapped() { openVideo(with: model, viewController: self) }
     
-    var blur: UIVisualEffectView!
+    fileprivate var blur: UIVisualEffectView!
     
     fileprivate func addViews() {
         let style: UIBlurEffect.Style = traitCollection.userInterfaceStyle == .dark ? .systemUltraThinMaterialLight : .systemUltraThinMaterialDark
@@ -263,9 +263,19 @@ class FloatingDetailViewController: UIViewController {
         
         scrollView.delegate = self
     }
-    
+}
+
+extension FloatingDetailViewController: CloserDelegate, UIScrollViewDelegate {
+    func shouldClose() {
+        UIView.animate(withDuration: 0.5) {
+            self.view.alpha = 0
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension FloatingDetailViewController {
     fileprivate func constrainViews() {
-        
         container.frame = CGRect(origin: CGPoint(x: location.x - cell.frame.width/2, y: location.y - cell.frame.height/2), size: CGSize(width: cell.frame.width, height: cell.frame.height))
         
         imageViewHeight = imageView.heightAnchor.constraint(equalToConstant: self.container.frame.height - self.container.frame.height/3)
@@ -316,14 +326,5 @@ class FloatingDetailViewController: UIViewController {
             readMore.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: 0),
             readMore.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10)
         ])
-    }
-}
-
-extension FloatingDetailViewController: CloserDelegate, UIScrollViewDelegate {
-    func shouldClose() {
-        UIView.animate(withDuration: 0.5) {
-            self.view.alpha = 0
-        }
-        self.dismiss(animated: true, completion: nil)
     }
 }

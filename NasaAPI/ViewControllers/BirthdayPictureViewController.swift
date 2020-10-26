@@ -10,7 +10,7 @@ import UIKit
 
 class BirthdayPictureViewController: UIViewController {
 
-    let picker: UIDatePicker = {
+    fileprivate let picker: UIDatePicker = {
         let field = UIDatePicker()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.datePickerMode = .date
@@ -20,7 +20,7 @@ class BirthdayPictureViewController: UIViewController {
         return field
     }()
     
-    let getPhotoButton: UIButton = {
+    fileprivate let getPhotoButton: UIButton = {
         let field = UIButton()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = Colors.NasaBlue
@@ -31,7 +31,7 @@ class BirthdayPictureViewController: UIViewController {
         return field
     }()
     
-    let helpLabel: UILabel = {
+    fileprivate let helpLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.numberOfLines = 1
@@ -43,8 +43,8 @@ class BirthdayPictureViewController: UIViewController {
     
     var selectedDate: Date?
     
-    let APICalls = APIMethods()
-    let cache = CacheManager()
+    fileprivate let APICalls = APIManager()
+    fileprivate let cache = CacheManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()

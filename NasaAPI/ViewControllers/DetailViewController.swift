@@ -12,7 +12,7 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-    let imageView: UIImageView = {
+    fileprivate let imageView: UIImageView = {
         let field = UIImageView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFit
@@ -23,7 +23,7 @@ class DetailViewController: UIViewController {
         return field
     }()
     
-    let titleLabel: UILabel = {
+    fileprivate let titleLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 28, weight: .bold)
@@ -36,7 +36,7 @@ class DetailViewController: UIViewController {
         return field
     }()
     
-    let dateLabel: UILabel = {
+    fileprivate let dateLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 24, weight: .semibold)
@@ -49,7 +49,7 @@ class DetailViewController: UIViewController {
         return field
     }()
     
-    let explanation: UILabel = {
+    fileprivate let explanation: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 18, weight: .regular)
@@ -61,7 +61,7 @@ class DetailViewController: UIViewController {
         return field
     }()
 
-    let exitButton: UIButton = {
+    fileprivate let exitButton: UIButton = {
         let field = UIButton(type: .close)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.titleLabel?.textColor = .link
@@ -71,7 +71,7 @@ class DetailViewController: UIViewController {
         return field
     }()
     
-    let playButton: UIButton = {
+    fileprivate let playButton: UIButton = {
         let field = UIButton()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
@@ -80,7 +80,7 @@ class DetailViewController: UIViewController {
         return field
     }()
     
-    let bgView: UIView = {
+    fileprivate let bgView: UIView = {
         let field = UIView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = .systemBackground
@@ -167,7 +167,7 @@ class DetailViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    func checkForVideo() {
+    fileprivate func checkForVideo() {
         if model.media_type == "video" {
             view.addSubview(bgView)
             view.addSubview(playButton)
@@ -217,7 +217,37 @@ class DetailViewController: UIViewController {
         tap.numberOfTapsRequired = 1
         imageView.addGestureRecognizer(tap)
     }
+}
+
+extension DetailViewController: UIActivityItemSource {
     
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return UIImage(named: "Image")!
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        
+        if model.image != nil {
+            return [model.image!, "\(model.title): \(model.date)"]
+            
+        } else { return nil }
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
+        return model.title
+    }
+    
+    @objc fileprivate func sharePhoto() {
+        let shareSheet = UIActivityViewController(activityItems: [imageView.image!], applicationActivities: nil)
+        present(shareSheet, animated: true, completion: nil)
+    }
+    
+    @objc fileprivate func downloadPhoto() {
+        print("download the photo bruhhhhhhhhhhh")
+    }
+}
+
+extension DetailViewController {
     fileprivate func constrainViews() {
         NSLayoutConstraint.activate([
             exitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
@@ -270,34 +300,5 @@ class DetailViewController: UIViewController {
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
         ])
-    }
-
-}
-
-extension DetailViewController: UIActivityItemSource {
-    
-    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        return UIImage(named: "Image")!
-    }
-    
-    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-        
-        if model.image != nil {
-            return [model.image!, "\(model.title): \(model.date)"]
-            
-        } else { return nil }
-    }
-    
-    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
-        return model.title
-    }
-    
-    @objc func sharePhoto() {
-        let shareSheet = UIActivityViewController(activityItems: [imageView.image!], applicationActivities: nil)
-        present(shareSheet, animated: true, completion: nil)
-    }
-    
-    @objc func downloadPhoto() {
-        print("download the photo bruhhhhhhhhhhh")
     }
 }
