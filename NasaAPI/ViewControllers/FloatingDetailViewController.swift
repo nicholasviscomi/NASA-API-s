@@ -124,6 +124,7 @@ class FloatingDetailViewController: UIViewController {
         addViews()
         styleViews()
         constrainViews()
+        blur.alpha = 0
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
 
@@ -132,7 +133,7 @@ class FloatingDetailViewController: UIViewController {
                 view.layoutIfNeeded()
             } completion: { [self] (_) in
 
-                UIView.animate(withDuration: 0.60) { [self] in
+                UIView.animate(withDuration: 0.60, animations: { [self] in
                     container.frame = CGRect(x: 40, y: 125, width: view.frame.width - 80, height: view.frame.height - 250)
 //                    view.layoutIfNeeded()
 
@@ -147,6 +148,10 @@ class FloatingDetailViewController: UIViewController {
                     view.layoutIfNeeded()
 
                     cardIsOpen = true
+                }) { (_) in
+                    UIView.animate(withDuration: 0.3) {
+                        self.blur.alpha = 1
+                    }
                 }
 
             }
@@ -160,6 +165,7 @@ class FloatingDetailViewController: UIViewController {
         let vc = DetailViewController(model: model)
         vc.modalPresentationStyle = .fullScreen
         vc.closer = self
+        
         present(vc, animated: true, completion: nil)
     }
     

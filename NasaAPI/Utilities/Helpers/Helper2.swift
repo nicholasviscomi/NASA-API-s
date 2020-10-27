@@ -51,3 +51,11 @@ extension CALayer {
         }
     }
 }
+
+func addBG(color: UIColor, VCView: UIView, view: UIView, padding: CGFloat) {
+    let bg = UIView()
+    bg.backgroundColor = color
+    bg.frame = CGRect(x: view.frame.origin.x - padding, y: view.frame.origin.y - padding, width: view.frame.width + padding, height: view.frame.height + padding)
+
+    VCView.addSubview(bg)
+}

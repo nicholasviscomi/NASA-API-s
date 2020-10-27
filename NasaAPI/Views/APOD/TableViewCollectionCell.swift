@@ -101,13 +101,13 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         guard let cell = collectionView.cellForItem(at: indexPath) as? CollectionViewCell else { return }
-        guard let layoutAttributes = collectionView.layoutAttributesForItem(at: indexPath) else { return }
+//        guard let layoutAttributes = collectionView.layoutAttributesForItem(at: indexPath) else { return }
         guard let window = UIApplication.shared.windows.first else { return }
         
         let touchedLocationInWindow = collectionView.convert(cell.center, to: window)
-        let cPoint = layoutAttributes.center
+//        let cPoint = layoutAttributes.center
 //        let tappedLocationInWindow = collectionView.convert(cPoint, to: window)
-        print(cPoint, touchedLocationInWindow)
+//        print(cPoint, touchedLocationInWindow)
         
         if cell.imageView.image != nil {
             detailViewDelegate?.cellWasTapped(cell: cell, location: touchedLocationInWindow, model: data[indexPath.row])

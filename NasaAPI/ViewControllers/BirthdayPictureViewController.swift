@@ -77,7 +77,6 @@ class BirthdayPictureViewController: UIViewController {
             if let apod = cache.retrieveCachedAPOD(date: formatter.string(from: picker.date)) {
                 DispatchQueue.main.async { [self] in
                     let vc = DetailViewController(model: apod)
-                    vc.navigationController?.navigationBar.isHidden = true
                     navigationController?.pushViewController(vc, animated: true)
                     return
                 }
@@ -89,7 +88,6 @@ class BirthdayPictureViewController: UIViewController {
             if let apod = apod {
                 DispatchQueue.main.async {
                     let vc = DetailViewController(model: apod)
-                    vc.navigationController?.navigationBar.isHidden = true
                     navigationController?.pushViewController(vc, animated: true)
                 }
             } else {

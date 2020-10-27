@@ -260,8 +260,8 @@
 				7B875CD125151BAE00CB2A6C /* HomeViewController.swift */,
 				7B8AB252252009220061AF7D /* FloatingDetailViewController.swift */,
 				7B67A842252806E1006505C2 /* DetailViewController.swift */,
-				7BA28D6125290FE800CADEC0 /* BirthdayPictureViewController.swift */,
 				7B5B6D842532A956002DE605 /* PhotoViewerViewController.swift */,
+				7BA28D6125290FE800CADEC0 /* BirthdayPictureViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
