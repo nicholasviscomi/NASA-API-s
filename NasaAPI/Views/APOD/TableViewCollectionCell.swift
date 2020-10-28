@@ -47,6 +47,10 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         backgroundColor = Colors.NasaBlue
         contentView.backgroundColor = Colors.NasaBlue
         
+//        let gradient = GradientBackground(colors: [.white, .blue])
+//        gradient.frame = contentView.bounds
+//        contentView.layer.insertSublayer(gradient, at: 0)
+        
     }
         
     fileprivate func constrainViews() {

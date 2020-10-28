@@ -52,7 +52,7 @@ class PhotoViewerViewController: UIViewController {
     fileprivate lazy var bg: UIView = {
         let field = UIView()
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.backgroundColor = .secondarySystemBackground
+        field.backgroundColor = .tertiarySystemBackground
         field.layer.cornerRadius = 35
         return field
     }()

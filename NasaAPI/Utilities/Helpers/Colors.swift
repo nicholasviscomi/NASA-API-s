@@ -15,4 +15,5 @@ struct Colors {
 
 extension UIColor {
     static let NasaBlue = Colors.NasaBlue
+    static let textNasaBlue = Colors.textNasaBlue
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B07980C2549169A00D594CB /* GradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B07980B2549169A00D594CB /* GradientBackground.swift */; };
 		7B1109A7251C3A1B008F11B2 /* TableViewCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1109A6251C3A1B008F11B2 /* TableViewCollectionCell.swift */; };
 		7B1109AB251C3AFF008F11B2 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1109AA251C3AFF008F11B2 /* Model.swift */; };
 		7B1109AF251C3D0B008F11B2 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1109AE251C3D0B008F11B2 /* CollectionViewCell.swift */; };
@@ -72,6 +73,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7B07980B2549169A00D594CB /* GradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBackground.swift; sourceTree = "<group>"; };
 		7B1109A6251C3A1B008F11B2 /* TableViewCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCollectionCell.swift; sourceTree = "<group>"; };
 		7B1109AA251C3AFF008F11B2 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		7B1109AE251C3D0B008F11B2 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
@@ -129,6 +131,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B07980F254916A400D594CB /* Layers */ = {
+			isa = PBXGroup;
+			children = (
+				7B8817032545191A001EA066 /* ShimmerLayer.swift */,
+				7B07980B2549169A00D594CB /* GradientBackground.swift */,
+			);
+			path = Layers;
+			sourceTree = "<group>";
+		};
 		7B09F48B2526B98600434C6D /* APOD */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,9 +175,9 @@
 		7B28C70B253E77D500CF2529 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				7B07980F254916A400D594CB /* Layers */,
 				7BCB85E625198CB900311897 /* Helper.swift */,
 				7B28C70C253E77ED00CF2529 /* Helper2.swift */,
-				7B8817032545191A001EA066 /* ShimmerLayer.swift */,
 				7B245C55253651BA008E2977 /* Colors.swift */,
 				7BCB85E8251994FE00311897 /* Constants.swift */,
 			);
@@ -406,6 +417,7 @@
 				7B67A843252806E1006505C2 /* DetailViewController.swift in Sources */,
 				7B28C70D253E77ED00CF2529 /* Helper2.swift in Sources */,
 				7B8817042545191A001EA066 /* ShimmerLayer.swift in Sources */,
+				7B07980C2549169A00D594CB /* GradientBackground.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,11 +17,12 @@ class DetailViewController: UIViewController {
         field.alpha = 0
         field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFit
-        field.backgroundColor = UIColor.quaternaryLabel.withAlphaComponent(0.2)
+        field.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(1)
 //        field.backgroundColor = .clear
         field.clipsToBounds = true
         field.isUserInteractionEnabled = true
-        field.alpha = 0
+        field.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        field.layer.cornerRadius = 25
         return field
     }()
     
@@ -82,8 +83,8 @@ class DetailViewController: UIViewController {
         let field = UIView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.alpha = 0
-        field.backgroundColor = .tertiarySystemBackground
-        field.layer.cornerRadius = 25
+        field.backgroundColor = .NasaBlue
+//        field.layer.cornerRadius = 25
         return field
     }()
         
@@ -100,6 +101,15 @@ class DetailViewController: UIViewController {
 //        field.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
 //        field.layer.borderWidth = 2
 //        field.layer.borderColor = UIColor.black.cgColor
+        return field
+    }()
+    
+    fileprivate let topBG: UIView = {
+        let field = UIView()
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = UIColor.black
+        field.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        field.layer.cornerRadius = 25
         return field
     }()
     
@@ -179,6 +189,7 @@ class DetailViewController: UIViewController {
             animateIn()
         }
         shouldNotAniamte = false
+        view.sendSubviewToBack(bottomView)
         
     }
     
@@ -225,6 +236,8 @@ class DetailViewController: UIViewController {
     @objc func videoTapped() { openVideo(with: model, viewController: self) }
 
     fileprivate func animateIn() {
+        
+        //MARK: MAKE THE VIEWS ANIMATE IN FROM THE TOP LIKE THE BANNERS THEY ARE
         bottomView.transform = CGAffineTransform(translationX: 0, y: bottomView.frame.height + 25)
         explanation.transform = CGAffineTransform(translationX: 0, y: bottomView.frame.height + 25)
         
@@ -236,9 +249,11 @@ class DetailViewController: UIViewController {
             explanation.alpha = 1
             //            dragButton.alpha = 1
         }, completion: { [self] (done) in
+            view.sendSubviewToBack(bottomView)
+            
             NSLayoutConstraint.activate([
-                imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-                imageView.bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: -10),
+                imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: -15),
+                imageView.bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: 10),
                 imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
                 imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
             ])
@@ -252,48 +267,21 @@ class DetailViewController: UIViewController {
         })
     }
     
-    fileprivate func addViews() {
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.isHidden = true
-        
-        view.backgroundColor = Colors.NasaBlue
-        view.addSubview(imageView)
-        view.addSubview(titleLabel)
-        view.addSubview(dateLabel)
-        
-        view.addSubview(bottomView)
-        bottomView.addSubview(explanation)
-        let drag = UIPanGestureRecognizer(target: self, action: #selector(panBottomView(_:)))
-        bottomView.addGestureRecognizer(drag)
-        
-//        view.addSubview(sidebar)
-//
-//        sidebar.addSubview(share)
-//        share.addTarget(self, action: #selector(sharePhoto), for: .touchUpInside)
-//
-//        sidebar.addSubview(download)
-//        download.addTarget(self, action: #selector(downloadPhoto), for: .touchUpInside)
-        
-        view.addSubview(exitButton)
-        exitButton.addTarget(self, action: #selector(tappedBackground), for: .touchUpInside)
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPhoto))
-        tap.numberOfTapsRequired = 1
-        imageView.addGestureRecognizer(tap)
-    }
-    
     var viewTranslation = CGPoint()
     @objc fileprivate func panBottomView(_ sender: UIPanGestureRecognizer) {
         switch sender.state {
         case .changed:
             viewTranslation = sender.translation(in: view)
             print(viewTranslation)
+            
             if viewTranslation.y < 0 {
                 break
             }
+            
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.bottomView.transform = CGAffineTransform(translationX: 0, y: self.viewTranslation.y)
             })
+            
         case .ended:
             print("ended: \(viewTranslation.y)")
             print("close bottom")
@@ -336,6 +324,32 @@ extension DetailViewController: UIActivityItemSource {
 }
 
 extension DetailViewController {
+    fileprivate func addViews() {
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.isHidden = true
+        
+        view.backgroundColor = .NasaBlue
+        
+        view.addSubview(imageView)
+        
+        view.addSubview(topBG)
+        view.addSubview(titleLabel)
+        view.addSubview(dateLabel)
+        
+        view.addSubview(bottomView)
+        bottomView.addSubview(explanation)
+        
+//        let drag = UIPanGestureRecognizer(target: self, action: #selector(panBottomView(_:)))
+//        bottomView.addGestureRecognizer(drag)
+        
+        view.addSubview(exitButton)
+        exitButton.addTarget(self, action: #selector(tappedBackground), for: .touchUpInside)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPhoto))
+        tap.numberOfTapsRequired = 1
+        imageView.addGestureRecognizer(tap)
+    }
+    
     fileprivate func constrainViews() {
         NSLayoutConstraint.activate([
             exitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
@@ -354,13 +368,20 @@ extension DetailViewController {
             bottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 10),
-            bottomView.topAnchor.constraint(equalTo: explanation.topAnchor, constant: -15)
+            bottomView.topAnchor.constraint(equalTo: explanation.topAnchor, constant: -20)
         ])
         
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 20),
             titleLabel.topAnchor.constraint(equalTo: exitButton.bottomAnchor, constant: 10)
+        ])
+        
+        NSLayoutConstraint.activate([
+            topBG.topAnchor.constraint(equalTo: view.topAnchor),
+            topBG.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            topBG.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            topBG.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10)
         ])
         
         NSLayoutConstraint.activate([
