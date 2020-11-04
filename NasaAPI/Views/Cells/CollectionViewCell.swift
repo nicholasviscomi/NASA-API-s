@@ -79,6 +79,9 @@ class CollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //------------------------------------------------------------------
+    //MARK: Constrain
+    //------------------------------------------------------------------
     
     fileprivate func setFrames() {
         NSLayoutConstraint.activate([
@@ -108,6 +111,10 @@ class CollectionViewCell: UICollectionViewCell {
         
     }
     
+    //------------------------------------------------------------------
+    //MARK: configureSelf
+    //------------------------------------------------------------------
+    
     fileprivate func configureSelf() {
         self.clipsToBounds = false
         contentView.addSubview(imageView)
@@ -123,12 +130,17 @@ class CollectionViewCell: UICollectionViewCell {
     
     let days = ["Today", "Yesterday", "2 Days Ago", "3 Days Ago", "4 Days Ago", "5 Days Ago", "6 Days Ago"]
     
+    //------------------------------------------------------------------
+    //MARK: Initialize
+    //------------------------------------------------------------------
+    
     func configure(model: APOD, indexPath: IndexPath) {
 //        contentView.isUserInteractionEnabled = true
         isUserInteractionEnabled = true
         if model.media_type == "video" {
             //            print("video type found")
             //            playVideo(model: model)
+            print(model.videoUrl ?? "no video url")
             self.imageView.image = model.image
         } else {
             self.imageView.image = model.image

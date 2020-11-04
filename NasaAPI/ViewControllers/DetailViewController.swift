@@ -106,6 +106,7 @@ class DetailViewController: UIViewController {
     
     fileprivate let topBG: UIView = {
         let field = UIView()
+        field.alpha = 0
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = UIColor.black
         field.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
@@ -115,13 +116,13 @@ class DetailViewController: UIViewController {
     
     fileprivate let tommorrowBtn: UIButton = {
         let field = UIButton()
-        
+        field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
     
     fileprivate let yesterdayBtn: UIButton = {
         let field = UIButton()
-        
+        field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
     
@@ -158,19 +159,26 @@ class DetailViewController: UIViewController {
     var closer: CloserDelegate?
     
     var shouldNotAniamte = false
+    var previous: UIViewController!
     
-    init(model: APOD) {
+    init(model: APOD, previous: UIViewController) {
         self.model = model
         self.imageView.image = model.image
         self.titleLabel.text = model.title
         self.explanation.text = model.explanation
         self.dateLabel.text = model.date
+        
+        self.previous = previous
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //------------------------------------------------------------------
+    //MARK: View lifecycle
+    //------------------------------------------------------------------
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -193,6 +201,10 @@ class DetailViewController: UIViewController {
         
     }
     
+    //------------------------------------------------------------------
+    //MARK: Open photo
+    //------------------------------------------------------------------
+    
     @objc func didTapPhoto() {
         print("was tapped")
         shouldNotAniamte = true
@@ -209,6 +221,10 @@ class DetailViewController: UIViewController {
         }
         navigationController?.popViewController(animated: true)
     }
+    
+    //------------------------------------------------------------------
+    //MARK: Check for video
+    //------------------------------------------------------------------
     
     fileprivate func checkForVideo() {
         if model.media_type == "video" {
@@ -233,20 +249,30 @@ class DetailViewController: UIViewController {
         }
     }
     
-    @objc func videoTapped() { openVideo(with: model, viewController: self) }
+    @objc func videoTapped() {
+        openVideo(with: model, viewController: self)
+        shouldNotAniamte = true
+    }
 
+    //------------------------------------------------------------------
+    //MARK: Animations
+    //------------------------------------------------------------------
+    
     fileprivate func animateIn() {
         
         //MARK: MAKE THE VIEWS ANIMATE IN FROM THE TOP LIKE THE BANNERS THEY ARE
+        topBG.transform = CGAffineTransform(translationX: 0, y: -topBG.frame.height - 10)
         bottomView.transform = CGAffineTransform(translationX: 0, y: bottomView.frame.height + 25)
         explanation.transform = CGAffineTransform(translationX: 0, y: bottomView.frame.height + 25)
         
         UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: { [self] in
             bottomView.transform = .identity
             explanation.transform = .identity
+            topBG.transform = .identity
             
             bottomView.alpha = 1
             explanation.alpha = 1
+            topBG.alpha = 1
             //            dragButton.alpha = 1
         }, completion: { [self] (done) in
             view.sendSubviewToBack(bottomView)
@@ -260,40 +286,46 @@ class DetailViewController: UIViewController {
             
             imageView.transform = CGAffineTransform(translationX: -view.frame.width, y: 0)
             
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.3, animations: {
                 imageView.transform = .identity
                 imageView.alpha = 1
+            }) { (done) in
+//                closer?.shouldClose()
             }
         })
     }
     
-    var viewTranslation = CGPoint()
-    @objc fileprivate func panBottomView(_ sender: UIPanGestureRecognizer) {
-        switch sender.state {
-        case .changed:
-            viewTranslation = sender.translation(in: view)
-            print(viewTranslation)
-            
-            if viewTranslation.y < 0 {
-                break
-            }
-            
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                self.bottomView.transform = CGAffineTransform(translationX: 0, y: self.viewTranslation.y)
-            })
-            
-        case .ended:
-            print("ended: \(viewTranslation.y)")
-            print("close bottom")
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                self.bottomView.transform = .identity
-            })
-            
-        default:
-            break
-        }
-    }
+//    var viewTranslation = CGPoint()
+//    @objc fileprivate func panBottomView(_ sender: UIPanGestureRecognizer) {
+//        switch sender.state {
+//        case .changed:
+//            viewTranslation = sender.translation(in: view)
+//            print(viewTranslation)
+//
+//            if viewTranslation.y < 0 {
+//                break
+//            }
+//
+//            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+//                self.bottomView.transform = CGAffineTransform(translationX: 0, y: self.viewTranslation.y)
+//            })
+//
+//        case .ended:
+//            print("ended: \(viewTranslation.y)")
+//            print("close bottom")
+//            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+//                self.bottomView.transform = .identity
+//            })
+//
+//        default:
+//            break
+//        }
+//    }
 }
+
+//------------------------------------------------------------------
+//MARK: share sheet
+//------------------------------------------------------------------
 
 extension DetailViewController: UIActivityItemSource {
     
@@ -323,6 +355,10 @@ extension DetailViewController: UIActivityItemSource {
     }
 }
 
+//------------------------------------------------------------------
+//MARK: ADD and CONSTRAIN views
+//------------------------------------------------------------------
+
 extension DetailViewController {
     fileprivate func addViews() {
         navigationController?.navigationBar.prefersLargeTitles = false
@@ -333,8 +369,8 @@ extension DetailViewController {
         view.addSubview(imageView)
         
         view.addSubview(topBG)
-        view.addSubview(titleLabel)
-        view.addSubview(dateLabel)
+        topBG.addSubview(titleLabel)
+        topBG.addSubview(dateLabel)
         
         view.addSubview(bottomView)
         bottomView.addSubview(explanation)

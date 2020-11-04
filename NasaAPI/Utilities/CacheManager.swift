@@ -15,6 +15,10 @@ struct keys {
 final class CacheManager {
     let defaults = UserDefaults.standard
     
+    //------------------------------------------------------------------
+    //MARK: Check for clear
+    //------------------------------------------------------------------
+    
     public func checkForClear(completion: @escaping (Bool) -> Void) {
         print(currentDate().addingTimeInterval(TimeInterval(86400 * -7)))
         
@@ -39,7 +43,10 @@ final class CacheManager {
         }
     }
     
-    ///cache an image
+    //------------------------------------------------------------------
+    //MARK: cache an image
+    //------------------------------------------------------------------
+    
     public func cache(apod: APOD, date: String) {
         guard let image = apod.image, let data = imageData(from: image) else { return }
         defaults.set(apod.date, forKey: date + Extensions.date.rawValue)
@@ -52,11 +59,18 @@ final class CacheManager {
         defaults.set(apod.videoUrl, forKey: date + Extensions.videoUrl.rawValue)
     }
 
-    ///check for cached item
+    //------------------------------------------------------------------
+    //MARK: check for cached item
+    //------------------------------------------------------------------
+    
     public func isCached(date: String) -> Bool {
         let result = defaults.string(forKey: date + Extensions.title.rawValue)
         return result != nil
     }
+    
+    //------------------------------------------------------------------
+    //MARK: retrieve apod
+    //------------------------------------------------------------------
     
     public func retrieveCachedAPOD(date: String) -> APOD? {
         
@@ -75,6 +89,10 @@ final class CacheManager {
         }
         return (imageFrom(data: data) != nil) ? APOD(date: imageDate, explanation: explanation, hdurl: hdurl, media_type: media_type, title: title, url: url, image: imageFrom(data: data)!, videoUrl: nil) : nil
     }
+    
+    //------------------------------------------------------------------
+    //MARK: Clear cache
+    //------------------------------------------------------------------
     
     public func clearCache(completion: (Bool) -> Void) {
         guard let domain = Bundle.main.bundleIdentifier else { completion(false); return }

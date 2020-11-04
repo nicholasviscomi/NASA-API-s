@@ -74,6 +74,11 @@ class PhotoViewerViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError()
     }
+    
+    //------------------------------------------------------------------
+    //MARK: View Lifecycle
+    //------------------------------------------------------------------
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -88,11 +93,19 @@ class PhotoViewerViewController: UIViewController {
 
 }
 
+//------------------------------------------------------------------
+//MARK: Scroll view delegate
+//------------------------------------------------------------------
+
 extension PhotoViewerViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
 }
+
+//------------------------------------------------------------------
+//MARK: Share sheet
+//------------------------------------------------------------------
 
 extension PhotoViewerViewController: UIActivityItemSource {
     
@@ -134,6 +147,10 @@ extension PhotoViewerViewController: UIActivityItemSource {
         }
     }
 }
+
+//------------------------------------------------------------------
+//MARK: Configure
+//------------------------------------------------------------------
 
 extension PhotoViewerViewController {
     fileprivate func configure() {

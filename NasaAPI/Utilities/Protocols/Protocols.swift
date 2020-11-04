@@ -16,7 +16,7 @@ protocol DetailViewDelegate {
 protocol DataDelegate {
     func isFinishedLoadingAPOD()
     ///notifies home vc that is got all the data it needs for APOD
-    func retrievedWeekOfAPOD(apods: [[APOD]])
+    func retrievedWeekOfAPOD(apods: [APOD])
     
     func noDataReceived()
 }

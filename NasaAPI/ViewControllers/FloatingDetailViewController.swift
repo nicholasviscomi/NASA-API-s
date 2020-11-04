@@ -25,7 +25,7 @@ class FloatingDetailViewController: UIViewController {
     fileprivate let titleLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.font = .systemFont(ofSize: 20, weight: .bold)
+        field.font = .systemFont(ofSize: 25, weight: .bold)
         field.textColor = .label
         field.backgroundColor = .tertiarySystemBackground
         field.textAlignment = .center
@@ -47,7 +47,7 @@ class FloatingDetailViewController: UIViewController {
     fileprivate let dateLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.font = .systemFont(ofSize: 20, weight: .bold)
+        field.font = .systemFont(ofSize: 23, weight: .bold)
         field.textColor = .label
         field.backgroundColor = .tertiarySystemBackground
         field.textAlignment = .center
@@ -119,6 +119,10 @@ class FloatingDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //------------------------------------------------------------------
+    //MARK: view lifecycle
+    //------------------------------------------------------------------
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
@@ -126,6 +130,15 @@ class FloatingDetailViewController: UIViewController {
         constrainViews()
         blur.alpha = 0
         
+        animateIn()
+    }
+    
+    
+    //------------------------------------------------------------------
+    //MARK: animate in
+    //------------------------------------------------------------------
+    
+    fileprivate func animateIn() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
 
             UIView.animate(withDuration: 0.25) { [self] in
@@ -143,7 +156,7 @@ class FloatingDetailViewController: UIViewController {
 //                    titleHeight.constant = container.frame.height/3.5
 
                     imageViewWidth.constant = container.frame.width
-                    imageViewHeight.constant = container.frame.height - titleHeight.constant - container.frame.height/3
+                    imageViewHeight.constant = container.frame.height - titleHeight.constant - container.frame.height/2
 
                     view.layoutIfNeeded()
 
@@ -156,28 +169,72 @@ class FloatingDetailViewController: UIViewController {
 
             }
         }
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(openDetail))
-        container.addGestureRecognizer(tap)
     }
     
+    //------------------------------------------------------------------
+    //MARK: open detail
+    //------------------------------------------------------------------
+    
     @objc func openDetail() {
-        let vc = DetailViewController(model: model)
+        let vc = DetailViewController(model: model, previous: self)
         vc.modalPresentationStyle = .fullScreen
         vc.closer = self
         
+        UIView.animate(withDuration: 0.8) {
+            self.view.alpha = 0
+        }
         present(vc, animated: true, completion: nil)
     }
+        
+    @objc fileprivate func videoTapped() { openVideo(with: model, viewController: self) }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        self.view.alpha = 0
-//        UIView.animate(withDuration: 0.2) {
-//            self.view.alpha = 1
-//        }
+    //------------------------------------------------------------------
+    //MARK: add & style views
+    //------------------------------------------------------------------
+    
+    fileprivate var blur: UIVisualEffectView!
+    fileprivate func addViews() {
+        let style: UIBlurEffect.Style = traitCollection.userInterfaceStyle == .dark ? .systemUltraThinMaterialLight : .systemUltraThinMaterialDark
+        blur = blurBackground(for: self.view, style: style)
+        blur.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedBackground)))
+        blur.alpha = 0
+        UIView.animate(withDuration: 0.5) {
+            self.blur.alpha = 0.9
+        }
+        view.insertSubview(blur, at: 0)
+        view.addSubview(container)
+        container.addSubview(imageView)
+        container.addSubview(titleLabel)
+        
+        container.addSubview(scrollView)
+        scrollView.addSubview(explanation)
+        
+        container.addSubview(dateLabel)
+        container.addSubview(readMore)
+        readMore.addTarget(self, action: #selector(openDetail), for: .touchUpInside)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(openDetail))
+        container.addGestureRecognizer(tap)
+        
+        checkForVideo()
     }
     
-    func checkForVideo() {
+    fileprivate func styleViews() {
+        imageView.removeConstraints(imageView.constraints)
+        titleLabel.removeConstraints(titleLabel.constraints)
+
+        container.layer.cornerRadius = 15
+        container.clipsToBounds = true
+        container.backgroundColor = .secondarySystemBackground
+        
+        scrollView.delegate = self
+    }
+    
+    //------------------------------------------------------------------
+    //MARK: Check for video
+    //------------------------------------------------------------------
+    
+    fileprivate func checkForVideo() {
         if model.media_type == "video" {
             container.addSubview(bgView)
             container.addSubview(playButton)
@@ -200,31 +257,9 @@ class FloatingDetailViewController: UIViewController {
         }
     }
     
-    @objc func videoTapped() { openVideo(with: model, viewController: self) }
-    
-    fileprivate var blur: UIVisualEffectView!
-    
-    fileprivate func addViews() {
-        let style: UIBlurEffect.Style = traitCollection.userInterfaceStyle == .dark ? .systemUltraThinMaterialLight : .systemUltraThinMaterialDark
-        blur = blurBackground(for: self.view, style: style)
-        blur.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedBackground)))
-        blur.alpha = 0
-        UIView.animate(withDuration: 0.5) {
-            self.blur.alpha = 0.9
-        }
-        view.insertSubview(blur, at: 0)
-        view.addSubview(container)
-        container.addSubview(imageView)
-        container.addSubview(titleLabel)
-        
-        container.addSubview(scrollView)
-        scrollView.addSubview(explanation)
-        
-        container.addSubview(dateLabel)
-        container.addSubview(readMore)
-        readMore.addTarget(self, action: #selector(openDetail), for: .touchUpInside)
-        checkForVideo()
-    }
+    //------------------------------------------------------------------
+    //MARK: Tapped Background
+    //------------------------------------------------------------------
     
     @objc func tappedBackground() {
         UIView.animate(withDuration: 0.55) { [self] in
@@ -259,48 +294,36 @@ class FloatingDetailViewController: UIViewController {
         }
     }
     
-    fileprivate func styleViews() {
-        imageView.removeConstraints(imageView.constraints)
-        titleLabel.removeConstraints(titleLabel.constraints)
-
-        container.layer.cornerRadius = 15
-        container.clipsToBounds = true
-        container.backgroundColor = .secondarySystemBackground
-        
-        scrollView.delegate = self
-    }
 }
+
+//------------------------------------------------------------------
+//MARK: Closer Delegate
+//------------------------------------------------------------------
 
 extension FloatingDetailViewController: CloserDelegate, UIScrollViewDelegate {
     func shouldClose() {
         UIView.animate(withDuration: 0.5) {
             self.view.alpha = 0
+            self.dismiss(animated: true, completion: nil)
         }
-        self.dismiss(animated: true, completion: nil)
     }
 }
+
+//------------------------------------------------------------------
+//MARK: Cosntrain
+//------------------------------------------------------------------
 
 extension FloatingDetailViewController {
     fileprivate func constrainViews() {
         container.frame = CGRect(origin: CGPoint(x: location.x - cell.frame.width/2, y: location.y - cell.frame.height/2), size: CGSize(width: cell.frame.width, height: cell.frame.height))
         
-        imageViewHeight = imageView.heightAnchor.constraint(equalToConstant: self.container.frame.height - self.container.frame.height/3)
+        imageViewHeight = imageView.heightAnchor.constraint(equalToConstant: container.frame.height/2/*self.container.frame.height - self.container.frame.height/3*/)
         imageViewWidth = imageView.widthAnchor.constraint(equalToConstant: self.container.frame.width)
 
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: container.topAnchor),
             imageView.centerXAnchor.constraint(equalTo: container.centerXAnchor),
             imageViewWidth, imageViewHeight
-        ])
-        
-        titleWidth = titleLabel.widthAnchor.constraint(equalToConstant: self.container.frame.width)
-        titleHeight = titleLabel.heightAnchor.constraint(equalToConstant: 30)
-        
-        NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 0),
-            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor),
-//            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
-            titleWidth
         ])
         
         NSLayoutConstraint.activate([
@@ -311,12 +334,20 @@ extension FloatingDetailViewController {
         ])
         
         NSLayoutConstraint.activate([
-//            explanation.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             explanation.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
-//            explanation.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             explanation.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             explanation.widthAnchor.constraint(equalToConstant: container.frame.width),
             explanation.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0)
+        ])
+        
+        titleWidth = titleLabel.widthAnchor.constraint(equalToConstant: self.container.frame.width)
+        titleHeight = titleLabel.heightAnchor.constraint(equalToConstant: 30)
+        
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 0),
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor),
+//            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
+            titleWidth
         ])
         
         dateLabelWidth = dateLabel.widthAnchor.constraint(equalToConstant: container.frame.width)

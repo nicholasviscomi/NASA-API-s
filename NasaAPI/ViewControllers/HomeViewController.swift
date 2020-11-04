@@ -13,6 +13,7 @@ class HomeViewController: UIViewController {
     fileprivate lazy var tableView: UITableView = {
         let field = UITableView()
         field.register(TableViewCollectionCell.self, forCellReuseIdentifier: Constants.homeCellIdentifier)
+        field.register(HeaderTableViewCell.self, forCellReuseIdentifier: Constants.headerCellIdentifier)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = .clear
         field.separatorStyle = .none
@@ -30,8 +31,14 @@ class HomeViewController: UIViewController {
     
     var navController: UINavigationController?
     
+    //------------------------------------------------------------------
+    //MARK: View Life Cycle
+    //------------------------------------------------------------------
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        data.append([APOD]())
+        
         conform()
         addViews()
         constrainViews()
@@ -49,6 +56,10 @@ class HomeViewController: UIViewController {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
+    
+    //------------------------------------------------------------------
+    //MARK: Add & Constrain & Style
+    //------------------------------------------------------------------
     
     fileprivate func addViews() {
         view.addSubview(UIView(frame: .zero))
@@ -80,6 +91,10 @@ class HomeViewController: UIViewController {
 
 }
 
+//------------------------------------------------------------------
+//MARK: DetailViewDelegate
+//------------------------------------------------------------------
+
 extension HomeViewController: DetailViewDelegate {
     
     func cellWasTapped(cell: CollectionViewCell, location: CGPoint, model: APOD) {
@@ -96,9 +111,13 @@ extension HomeViewController: DetailViewDelegate {
     
 }
 
+//------------------------------------------------------------------
+//MARK: DataDelegate
+//------------------------------------------------------------------
+
 extension HomeViewController: DataDelegate {
-    func retrievedWeekOfAPOD(apods: [[APOD]]) {
-        data = apods
+    func retrievedWeekOfAPOD(apods: [APOD]) {
+        data.append(apods)
     }
     
     func isFinishedLoadingAPOD() {
@@ -117,9 +136,13 @@ extension HomeViewController: DataDelegate {
     }
 }
 
+//------------------------------------------------------------------
+//MARK: TableViewDelegate/DataSource
+//------------------------------------------------------------------
+
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return data.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -136,37 +159,74 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 45
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.homeCellIdentifier, for: indexPath) as! TableViewCollectionCell
-        
-        if data.isEmpty {
-            cell.configure(with: [APOD]())
-        } else {
-            cell.configure(with: data[indexPath.section])
+        if indexPath.section == 0 {
+            //header table view cell of todays photo
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.headerCellIdentifier, for: indexPath) as! HeaderTableViewCell
+            
+            return cell
+        } else if indexPath.section == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.homeCellIdentifier, for: indexPath) as! TableViewCollectionCell
+            
+            if data.isEmpty {
+                cell.configure(with: [APOD]())
+            } else {
+                cell.configure(with: data[indexPath.section])
+            }
+            
+            return cell
         }
         
-        return cell
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (view.frame.height/4) + 20
+        if indexPath.section == 0 {
+            //header cell
+            return (view.frame.height/5) + 30
+        } else if indexPath.section == 1 {
+            //week of apod
+            return (view.frame.height/4) + 20
+        } else {
+            //default case (should never be hit)
+            return (view.frame.height/4) + 20
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 0
+        } else if section == 1 {
+            return 45
+        } else {
+            return 0
+        }
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let container = UIView()
-        container.backgroundColor = .clear
+        container.backgroundColor = UIColor.secondarySystemBackground.withAlphaComponent(0.4)
         container.clipsToBounds = true
         
+        if section == 0 {
+            return topDisplayHeader(for: container)
+        } else if section == 1 {
+            return weekOfAPODHeader(for: container)
+        }
+        
+        return nil
+    }
+    
+    fileprivate func topDisplayHeader(for contaainer: UIView) -> UIView? {
+        return nil
+    }
+    
+    fileprivate func weekOfAPODHeader(for container: UIView) -> UIView? {
         let label: UILabel = {
             let field = UILabel()
             field.translatesAutoresizingMaskIntoConstraints = false

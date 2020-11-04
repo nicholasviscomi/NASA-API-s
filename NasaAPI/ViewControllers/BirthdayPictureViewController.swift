@@ -46,6 +46,10 @@ class BirthdayPictureViewController: UIViewController {
     fileprivate let APICalls = APIManager()
     fileprivate let cache = CacheManager()
     
+    //------------------------------------------------------------------
+    //MARK: View lifecycle
+    //------------------------------------------------------------------
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
@@ -60,6 +64,10 @@ class BirthdayPictureViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
     }
     
+    //------------------------------------------------------------------
+    //MARK: Add views
+    //------------------------------------------------------------------
+    
     fileprivate func addViews() {
         view.addSubview(picker)
         view.addSubview(getPhotoButton)
@@ -67,16 +75,20 @@ class BirthdayPictureViewController: UIViewController {
         view.addSubview(helpLabel)
     }
     
+    //------------------------------------------------------------------
+    //MARK: get photo
+    //------------------------------------------------------------------
+    
     @objc fileprivate func getPhoto() {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         view.isUserInteractionEnabled = false
-        view.alpha = 0.7
+        view.alpha = 0.8
         
         if cache.isCached(date: formatter.string(from: picker.date)) {
             if let apod = cache.retrieveCachedAPOD(date: formatter.string(from: picker.date)) {
                 DispatchQueue.main.async { [self] in
-                    let vc = DetailViewController(model: apod)
+                    let vc = DetailViewController(model: apod, previous: self)
                     navigationController?.pushViewController(vc, animated: true)
                     return
                 }
@@ -87,7 +99,7 @@ class BirthdayPictureViewController: UIViewController {
         APICalls.getAPOD(date: formatter.string(from: picker.date)) { [self] (apod) in
             if let apod = apod {
                 DispatchQueue.main.async {
-                    let vc = DetailViewController(model: apod)
+                    let vc = DetailViewController(model: apod, previous: self)
                     navigationController?.pushViewController(vc, animated: true)
                 }
             } else {
@@ -99,6 +111,10 @@ class BirthdayPictureViewController: UIViewController {
             }
         }
     }
+    
+    //------------------------------------------------------------------
+    //MARK: Style & Constrain
+    //------------------------------------------------------------------
     
     fileprivate func style() {
         view.backgroundColor = .secondarySystemBackground

@@ -16,6 +16,10 @@ final class APIManager {
     
     let key = "W3O3phtX3OakhV5sLHZarWTYsjFUJFGcK8iKzd5o"
     
+    //------------------------------------------------------------------
+    //MARK: get single APOD
+    //------------------------------------------------------------------
+    
     public func getAPOD(date: String, completion: @escaping (APOD?) -> Void) {
         
         let date = date
@@ -41,8 +45,8 @@ final class APIManager {
                     let isCached = cache.isCached(date: apod.date)
                     print("is cached = \(isCached)")
                     if !isCached {
-                        cache.cache(apod: apod, date: apod.date)
-                        print("caching \(apod.date)")
+//                        cache.cache(apod: apod, date: apod.date)
+//                        print("caching \(apod.date)")
                     }
                     
                     completion(apod)
@@ -62,7 +66,11 @@ final class APIManager {
         dataTask.resume()
     }
     
+    //------------------------------------------------------------------
     //make start and end date and count parameters; when checking cache for apods if you find one remove it from array of dates and then send those dates in this funciton below
+    //MARK: get multiple apod
+    //------------------------------------------------------------------
+    
     public func getMultipleAPOD() {
         var start = datesFor(count: 7).last!
         var end = currentDateString()
@@ -88,17 +96,17 @@ final class APIManager {
 //            cached apods is full (count == 7)
             print("fully cached apods")
             dataDelegate?.isFinishedLoadingAPOD()
-            dataDelegate?.retrievedWeekOfAPOD(apods: [cachedApods])
+            dataDelegate?.retrievedWeekOfAPOD(apods: cachedApods)
             return
         }
         
-        start = dates.last ?? datesFor(count: 7).last!
-        end = dates.first ?? currentDateString()
+        start = datesFor(count: 7).last!
+        end = currentDateString()
         print("new start: \(start)")
         print("new end: \(end)")
         
         let urlString = "https://api.nasa.gov/planetary/apod?api_key=\(key)&start_date=\(start)&end_date=\(end)"
-        print(urlString)
+        
         guard let url = URL(string: urlString), canOpenUrl(url: url) else { return }
         
         URLSession.shared.dataTask(with: url) { [self] (data, response, error) in
@@ -135,7 +143,7 @@ final class APIManager {
             if apods.count == 7 {
                 //cache was empty && apods are full (count == 7)
                 print("cache was empty: got all the stuff")
-                dataDelegate?.retrievedWeekOfAPOD(apods: [reverseArray(array: apods)])
+                dataDelegate?.retrievedWeekOfAPOD(apods: reverseArray(array: apods))
                 dataDelegate?.isFinishedLoadingAPOD()
             } else if apods.count == 0 && cachedApods.count == 0 {
                 print("got nothing from cache nor api")
@@ -145,12 +153,16 @@ final class APIManager {
                 let filtered = Array(Set(combined))
                 let sorted = filtered.sorted(by: { $0.date > $1.date })
                 print("some of it was cached")
-                dataDelegate?.retrievedWeekOfAPOD(apods: [sorted])
+                dataDelegate?.retrievedWeekOfAPOD(apods: sorted)
                 dataDelegate?.isFinishedLoadingAPOD()
             }
 //            }
         }
     }
+    
+    //------------------------------------------------------------------
+    //MARK: num of calls left
+    //------------------------------------------------------------------
     
     public func getNumOfCallsLeft(response: URLResponse?, completion: @escaping (Int) -> Void) {
         if let httpResponse = response as? HTTPURLResponse {
@@ -162,6 +174,10 @@ final class APIManager {
             print("failed to make http resoponse")
         }
     }
+    
+    //------------------------------------------------------------------
+    //MARK: dates for count
+    //------------------------------------------------------------------
     
     public func datesFor(count: Int) -> [String] {
         let formatter = DateFormatter()

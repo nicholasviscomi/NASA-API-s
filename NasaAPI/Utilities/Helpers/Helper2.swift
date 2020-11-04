@@ -16,6 +16,7 @@ func openVideo(with model: APOD, viewController: UIViewController) {
             viewController.present(vc, animated: true, completion: nil)
         } else {
             showAlert(title: "Invalid URL", message: "Video URL was unable to be opened", view: viewController)
+            print("cannot open URL: \(model.videoUrl ?? "error")")
         }
     }
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
+class TableViewCollectionCell: UITableViewCell {
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -29,9 +29,15 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     var detailViewDelegate: DetailViewDelegate?
     
     func configure(with data: [APOD]) {
-        print(data.count, self.data.count)
+        print("Configuring",data.count, self.data.count)
+        
         self.data = data
         collectionView.reloadData()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.collectionView.scrollToItem(at: IndexPath(row: 1, section: 0), at: .centeredHorizontally, animated: true)
+        }
+
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -50,9 +56,13 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
 //        let gradient = GradientBackground(colors: [.white, .blue])
 //        gradient.frame = contentView.bounds
 //        contentView.layer.insertSublayer(gradient, at: 0)
-        
+
     }
         
+    //------------------------------------------------------------------
+    //MARK: Constrain
+    //------------------------------------------------------------------
+    
     fileprivate func constrainViews() {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
@@ -77,6 +87,13 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
         fatalError("init(coder:) has not been implemented")
     }
     
+}
+
+//------------------------------------------------------------------
+//MARK: Collection View
+//------------------------------------------------------------------
+
+extension TableViewCollectionCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: contentView.frame.width - 130, height: contentView.frame.height - 30)
     }
@@ -84,10 +101,14 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
     func numberOfSections(in collectionView: UICollectionView) -> Int { return 1 }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 7 //data.count
+        if !data.isEmpty {
+            return data.count
+        } else {
+            return 7 //data.count
+        }
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {        
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         
         if data.count == 0 {
@@ -96,6 +117,8 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
             cell.configure(model: data[indexPath.row], indexPath: indexPath)
             cell.removeShimmer()
         }
+        
+        print("\(data[indexPath.row].title): type = \(data[indexPath.row].media_type)")
         
         self.detailViewDelegate = HomeViewController()
         
@@ -117,8 +140,6 @@ class TableViewCollectionCell: UITableViewCell, UICollectionViewDelegateFlowLayo
             detailViewDelegate?.cellWasTapped(cell: cell, location: touchedLocationInWindow, model: data[indexPath.row])
         }
     }
-    
-    
 }
 
 extension TableViewCollectionCell: UIScrollViewDelegate {
