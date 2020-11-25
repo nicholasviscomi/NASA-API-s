@@ -11,4 +11,5 @@ import Foundation
 struct Constants {
     static let homeCellIdentifier = "cell"
     static let headerCellIdentifier = "cell2"
+    static let viewMoreCellIdentifier = "viewMore"
 }

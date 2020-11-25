@@ -17,7 +17,7 @@ class DetailViewController: UIViewController {
         field.alpha = 0
         field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFit
-        field.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(1)
+        field.backgroundColor = UIColor.cellBg.withAlphaComponent(1)
 //        field.backgroundColor = .clear
         field.clipsToBounds = true
         field.isUserInteractionEnabled = true
@@ -66,7 +66,7 @@ class DetailViewController: UIViewController {
         let field = UIButton()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
-        field.tintColor = .NasaBlue
+        field.tintColor = .cellBg
         field.backgroundColor = .clear
         return field
     }()
@@ -83,7 +83,7 @@ class DetailViewController: UIViewController {
         let field = UIView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.alpha = 0
-        field.backgroundColor = .NasaBlue
+        field.backgroundColor = .softBg
 //        field.layer.cornerRadius = 25
         return field
     }()
@@ -117,12 +117,20 @@ class DetailViewController: UIViewController {
     fileprivate let tommorrowBtn: UIButton = {
         let field = UIButton()
         field.translatesAutoresizingMaskIntoConstraints = false
+        field.setBackgroundImage(UIImage(systemName: "chevron.right"), for: .normal)
+//        field.layer.cornerRadius = 15
+        field.backgroundColor = .clear
+        field.tintColor = .cellBg
         return field
     }()
     
     fileprivate let yesterdayBtn: UIButton = {
         let field = UIButton()
         field.translatesAutoresizingMaskIntoConstraints = false
+        field.setBackgroundImage(UIImage(systemName: "chevron.left"), for: .normal)
+//        field.layer.cornerRadius = 15
+        field.backgroundColor = .clear
+        field.tintColor = .cellBg
         return field
     }()
     
@@ -170,6 +178,10 @@ class DetailViewController: UIViewController {
         
         self.previous = previous
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    fileprivate func reinit(model: APOD) {
+        //clear all the text and eveything and then do the initializer again
     }
     
     required init?(coder: NSCoder) {
@@ -364,13 +376,15 @@ extension DetailViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.isHidden = true
         
-        view.backgroundColor = .NasaBlue
+        view.backgroundColor = .softBg
         
         view.addSubview(imageView)
         
         view.addSubview(topBG)
         topBG.addSubview(titleLabel)
         topBG.addSubview(dateLabel)
+        topBG.addSubview(tommorrowBtn)
+        topBG.addSubview(yesterdayBtn)
         
         view.addSubview(bottomView)
         bottomView.addSubview(explanation)
@@ -425,26 +439,19 @@ extension DetailViewController {
             dateLabel.centerYAnchor.constraint(equalTo: exitButton.centerYAnchor, constant: 0)
         ])
         
-//        addBG(color: .secondarySystemBackground, VCView: view, view: explanation, padding: 10)
-//        NSLayoutConstraint.activate([
-//            sidebar.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-//            sidebar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-////            sidebar.heightAnchor.constraint(equalToConstant: imageView.frame.height - 30),
-//            sidebar.widthAnchor.constraint(equalToConstant: 50)
-//        ])
-//
-//        NSLayoutConstraint.activate([
-//            share.widthAnchor.constraint(equalToConstant: 40),
-//            share.heightAnchor.constraint(equalToConstant: 40),
-//            share.centerXAnchor.constraint(equalTo: sidebar.centerXAnchor),
-//            share.centerYAnchor.constraint(equalTo: sidebar.centerYAnchor, constant: -30)
-//        ])
-//
-//        NSLayoutConstraint.activate([
-//            download.widthAnchor.constraint(equalToConstant: 40),
-//            download.heightAnchor.constraint(equalToConstant: 40),
-//            download.centerXAnchor.constraint(equalTo: sidebar.centerXAnchor),
-//            download.centerYAnchor.constraint(equalTo: sidebar.centerYAnchor, constant: 30)
-//        ])
+        NSLayoutConstraint.activate([
+            tommorrowBtn.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
+            tommorrowBtn.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 15),
+            tommorrowBtn.widthAnchor.constraint(equalToConstant: 25),
+            tommorrowBtn.heightAnchor.constraint(equalToConstant: 25)
+        ])
+        
+        NSLayoutConstraint.activate([
+            yesterdayBtn.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
+            yesterdayBtn.trailingAnchor.constraint(equalTo: dateLabel.leadingAnchor, constant: -15),
+            yesterdayBtn.widthAnchor.constraint(equalToConstant: 25),
+            yesterdayBtn.heightAnchor.constraint(equalToConstant: 25)
+        ])
+        
     }
 }

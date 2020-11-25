@@ -58,7 +58,7 @@ class FloatingDetailViewController: UIViewController {
         let field = UIButton()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
-        field.tintColor = .NasaBlue
+        field.tintColor = .cellBg
         field.backgroundColor = .clear
 //        field.layer.cornerRadius = 15
         return field
@@ -141,11 +141,9 @@ class FloatingDetailViewController: UIViewController {
     fileprivate func animateIn() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
 
-            UIView.animate(withDuration: 0.25) { [self] in
+            UIView.animate(withDuration: 0.45) { [self] in
+                
                 container.center = view.center
-                view.layoutIfNeeded()
-            } completion: { [self] (_) in
-
                 UIView.animate(withDuration: 0.60, animations: { [self] in
                     container.frame = CGRect(x: 40, y: 125, width: view.frame.width - 80, height: view.frame.height - 250)
 //                    view.layoutIfNeeded()

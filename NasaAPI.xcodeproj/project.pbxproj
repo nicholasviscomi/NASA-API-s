@@ -28,6 +28,8 @@
 		7B5B6D852532A956002DE605 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5B6D842532A956002DE605 /* PhotoViewerViewController.swift */; };
 		7B641694253CF8670041018D /* APOD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD3FEA02524342A009933D8 /* APOD.swift */; };
 		7B67A843252806E1006505C2 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B67A842252806E1006505C2 /* DetailViewController.swift */; };
+		7B8137272562263100D2D0D8 /* ViewMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8137262562263100D2D0D8 /* ViewMoreViewController.swift */; };
+		7B81372D256227F800D2D0D8 /* ViewMoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B81372C256227F800D2D0D8 /* ViewMoreCollectionViewCell.swift */; };
 		7B875CCE25151BAE00CB2A6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CCD25151BAE00CB2A6C /* AppDelegate.swift */; };
 		7B875CD025151BAE00CB2A6C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CCF25151BAE00CB2A6C /* SceneDelegate.swift */; };
 		7B875CD225151BAE00CB2A6C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CD125151BAE00CB2A6C /* HomeViewController.swift */; };
@@ -92,6 +94,8 @@
 		7B2D116725393EDA0096A3CE /* SystemLargeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemLargeView.swift; sourceTree = "<group>"; };
 		7B5B6D842532A956002DE605 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
 		7B67A842252806E1006505C2 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		7B8137262562263100D2D0D8 /* ViewMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreViewController.swift; sourceTree = "<group>"; };
+		7B81372C256227F800D2D0D8 /* ViewMoreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreCollectionViewCell.swift; sourceTree = "<group>"; };
 		7B875CCA25151BAE00CB2A6C /* NasaAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NasaAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B875CCD25151BAE00CB2A6C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7B875CCF25151BAE00CB2A6C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -187,6 +191,24 @@
 			path = SystemViews;
 			sourceTree = "<group>";
 		};
+		7B81372A2562279700D2D0D8 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				7B1109AE251C3D0B008F11B2 /* CollectionViewCell.swift */,
+				7B1109A6251C3A1B008F11B2 /* TableViewCollectionCell.swift */,
+				7B9305DA25511D7F001830B6 /* HeaderTableViewCell.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		7B81372B256227A400D2D0D8 /* ViewMore */ = {
+			isa = PBXGroup;
+			children = (
+				7B81372C256227F800D2D0D8 /* ViewMoreCollectionViewCell.swift */,
+			);
+			path = ViewMore;
+			sourceTree = "<group>";
+		};
 		7B875CC125151BAE00CB2A6C = {
 			isa = PBXGroup;
 			children = (
@@ -233,9 +255,8 @@
 		7B9305D925511D50001830B6 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				7B1109AE251C3D0B008F11B2 /* CollectionViewCell.swift */,
-				7B1109A6251C3A1B008F11B2 /* TableViewCollectionCell.swift */,
-				7B9305DA25511D7F001830B6 /* HeaderTableViewCell.swift */,
+				7B81372A2562279700D2D0D8 /* Home */,
+				7B81372B256227A400D2D0D8 /* ViewMore */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -272,10 +293,11 @@
 			isa = PBXGroup;
 			children = (
 				7B875CD125151BAE00CB2A6C /* HomeViewController.swift */,
+				7B8137262562263100D2D0D8 /* ViewMoreViewController.swift */,
+				7BA28D6125290FE800CADEC0 /* BirthdayPictureViewController.swift */,
 				7B8AB252252009220061AF7D /* FloatingDetailViewController.swift */,
 				7B67A842252806E1006505C2 /* DetailViewController.swift */,
 				7B5B6D842532A956002DE605 /* PhotoViewerViewController.swift */,
-				7BA28D6125290FE800CADEC0 /* BirthdayPictureViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -406,6 +428,7 @@
 				7B1109AF251C3D0B008F11B2 /* CollectionViewCell.swift in Sources */,
 				7BCB85E725198CB900311897 /* Helper.swift in Sources */,
 				7BED4A982538EF2900E7107A /* WidgetAPI.swift in Sources */,
+				7B8137272562263100D2D0D8 /* ViewMoreViewController.swift in Sources */,
 				7B5B6D852532A956002DE605 /* PhotoViewerViewController.swift in Sources */,
 				7B8AB253252009220061AF7D /* FloatingDetailViewController.swift in Sources */,
 				7B9034C32537762300688117 /* WidgetModel.swift in Sources */,
@@ -415,6 +438,7 @@
 				7B875CCE25151BAE00CB2A6C /* AppDelegate.swift in Sources */,
 				7B875CD025151BAE00CB2A6C /* SceneDelegate.swift in Sources */,
 				7B9305DB25511D80001830B6 /* HeaderTableViewCell.swift in Sources */,
+				7B81372D256227F800D2D0D8 /* ViewMoreCollectionViewCell.swift in Sources */,
 				7BAAF668253A953F00FA5CB3 /* CacheManager.swift in Sources */,
 				7BCB85E9251994FE00311897 /* Constants.swift in Sources */,
 				7B1109AB251C3AFF008F11B2 /* Model.swift in Sources */,

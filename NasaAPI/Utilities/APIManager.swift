@@ -43,7 +43,6 @@ final class APIManager {
                     let apod = try decoder.decode(APOD.self, from: data!)
                     
                     let isCached = cache.isCached(date: apod.date)
-                    print("is cached = \(isCached)")
                     if !isCached {
 //                        cache.cache(apod: apod, date: apod.date)
 //                        print("caching \(apod.date)")

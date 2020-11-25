@@ -21,6 +21,7 @@ class TableViewCollectionCell: UITableViewCell {
         field.backgroundColor = .clear
         field.showsHorizontalScrollIndicator = false
         field.clipsToBounds = false
+//        field.isPagingEnabled = true
         return field
     }()
 
@@ -28,9 +29,13 @@ class TableViewCollectionCell: UITableViewCell {
     
     var detailViewDelegate: DetailViewDelegate?
     
-    func configure(with data: [APOD]) {
+    var home: HomeViewController?
+    
+    var indexOfCellBeforeDragging = 0
+    
+    func configure(with data: [APOD], home: HomeViewController) {
         print("Configuring",data.count, self.data.count)
-        
+        self.home = home
         self.data = data
         collectionView.reloadData()
         
@@ -50,8 +55,8 @@ class TableViewCollectionCell: UITableViewCell {
         conform()
         constrainViews()
         
-        backgroundColor = Colors.NasaBlue
-        contentView.backgroundColor = Colors.NasaBlue
+        backgroundColor = .cellBg
+        contentView.backgroundColor = .cellBg
         
 //        let gradient = GradientBackground(colors: [.white, .blue])
 //        gradient.frame = contentView.bounds
@@ -112,15 +117,18 @@ extension TableViewCollectionCell: UICollectionViewDelegateFlowLayout, UICollect
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         
         if data.count == 0 {
+            print("configure skeleton loading")
             cell.configureSkeletonLoading()
         } else {
             cell.configure(model: data[indexPath.row], indexPath: indexPath)
             cell.removeShimmer()
         }
         
-        print("\(data[indexPath.row].title): type = \(data[indexPath.row].media_type)")
+//        print("\(data[indexPath.row].title): type = \(data[indexPath.row].media_type)")
         
-        self.detailViewDelegate = HomeViewController()
+        guard let home = home else { return UICollectionViewCell() }
+        self.detailViewDelegate = home
+        home.scrollDelegate = self
         
         return cell
     }
@@ -138,6 +146,16 @@ extension TableViewCollectionCell: UICollectionViewDelegateFlowLayout, UICollect
         
         if cell.imageView.image != nil {
             detailViewDelegate?.cellWasTapped(cell: cell, location: touchedLocationInWindow, model: data[indexPath.row])
+        }
+    }
+}
+
+extension TableViewCollectionCell: ScrollDelegate {
+    func shouldScrollTo(indexPath: IndexPath) {
+        print("should scroll to new index")
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [self] in
+            collectionView(collectionView, didSelectItemAt: indexPath)
         }
     }
 }

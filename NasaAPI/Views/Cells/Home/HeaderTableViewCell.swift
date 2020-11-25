@@ -10,10 +10,10 @@ import UIKit
 
 class HeaderTableViewCell: UITableViewCell {
 
-    let cache = CacheManager()
-    let api = APIManager()
+    fileprivate let cache = CacheManager()
+    fileprivate let api = APIManager()
     
-    let contentImageView: UIImageView = {
+    fileprivate let contentImageView: UIImageView = {
         let field = UIImageView()
 //        field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFill
@@ -21,7 +21,7 @@ class HeaderTableViewCell: UITableViewCell {
         return field
     }()
     
-    let titleLabel: UILabel = {
+    fileprivate let titleLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 20, weight: .bold)
@@ -35,7 +35,7 @@ class HeaderTableViewCell: UITableViewCell {
         return field
     }()
     
-    let dateLabel: UILabel = {
+    fileprivate let dateLabel: UILabel = {
         let field = UILabel()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.font = .systemFont(ofSize: 20, weight: .semibold)
@@ -48,19 +48,31 @@ class HeaderTableViewCell: UITableViewCell {
         return field
     }()
     
-    let bgContainer: UIView = {
+    fileprivate let bgContainer: UIView = {
         let field = UIView()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(0.6)
         field.layer.cornerRadius = 15
+        field.clipsToBounds = true
         return field
     }()
     
 //    var apod: APOD!
     
+    fileprivate var shimmer = ShimmerLayer()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-            
+        
+        DispatchQueue.main.async { [unowned self] in
+            shimmer.removeLayerIfExists(self)
+            shimmer = ShimmerLayer(for: contentView, cornerRadius: 12)
+            self.layer.addSublayer(shimmer)
+        }
+        
+        contentView.clipsToBounds = true
+        contentView.backgroundColor = .tertiarySystemBackground
+        
         if let apod = cache.retrieveCachedAPOD(date: currentDateString()) {
 //            self.apod = apod
             
@@ -71,6 +83,9 @@ class HeaderTableViewCell: UITableViewCell {
                 
                 addViews()
                 constrainViews()
+                
+                shimmer.removeAnimation()
+                shimmer.removeFromSuperlayer()
             }
             
         } else {
@@ -85,6 +100,9 @@ class HeaderTableViewCell: UITableViewCell {
                     
                     addViews()
                     constrainViews()
+                    
+                    shimmer.removeAnimation()
+                    shimmer.removeFromSuperlayer()
                 }
             }
         }

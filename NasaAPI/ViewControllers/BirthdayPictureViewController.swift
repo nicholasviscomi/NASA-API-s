@@ -62,6 +62,7 @@ class BirthdayPictureViewController: UIViewController {
         view.alpha = 1
         view.isUserInteractionEnabled = true
         navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.label]
     }
     
     //------------------------------------------------------------------

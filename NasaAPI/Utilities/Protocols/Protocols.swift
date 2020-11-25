@@ -24,3 +24,7 @@ protocol DataDelegate {
 protocol CloserDelegate {
     func shouldClose()
 }
+
+protocol ScrollDelegate {
+    func shouldScrollTo(indexPath: IndexPath)
+}

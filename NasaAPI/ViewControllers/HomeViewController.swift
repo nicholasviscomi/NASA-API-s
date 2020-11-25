@@ -17,7 +17,6 @@ class HomeViewController: UIViewController {
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = .clear
         field.separatorStyle = .none
-        field.allowsSelection = false
         return field
     }()
     
@@ -31,13 +30,18 @@ class HomeViewController: UIViewController {
     
     var navController: UINavigationController?
     
+    var scrollDelegate: ScrollDelegate?
+    
     //------------------------------------------------------------------
     //MARK: View Life Cycle
     //------------------------------------------------------------------
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        data.append([APOD]())
         
         conform()
         addViews()
@@ -50,11 +54,14 @@ class HomeViewController: UIViewController {
 //            }
 //        }
         APICalls.getMultipleAPOD()
+        print("view did load: \(data.count)")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
+        
+        styleUI()
     }
     
     //------------------------------------------------------------------
@@ -67,8 +74,11 @@ class HomeViewController: UIViewController {
     }
     
     fileprivate func styleUI() {
-        view.backgroundColor = .tertiarySystemBackground
+//        view.backgroundColor = .tertiarySystemBackground
+        view.backgroundColor = .softBg
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
         title = "Space Flix"
         
         navController = navigationController
@@ -117,6 +127,7 @@ extension HomeViewController: DetailViewDelegate {
 
 extension HomeViewController: DataDelegate {
     func retrievedWeekOfAPOD(apods: [APOD]) {
+        print("append retrieved apods")
         data.append(apods)
     }
     
@@ -142,7 +153,7 @@ extension HomeViewController: DataDelegate {
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return data.count
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -153,10 +164,16 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
     
     @objc func viewMore() {
-        let vc = BirthdayPictureViewController()
-        vc.title = "Birthday Picture"
+        //instead of going to the bday vc go to the view more vc and make a separate cell that allows you to select your bday inline (shows the date picke in the cell)
+//        let vc = BirthdayPictureViewController()
+//        vc.title = "Birthday Picture"
+//        vc.navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationController?.pushViewController(vc, animated: true)
+        let vc = ViewMoreViewController()
         vc.navigationController?.navigationBar.prefersLargeTitles = true
+        vc.title = "Last 3 Months"
         navigationController?.pushViewController(vc, animated: true)
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -168,11 +185,14 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.homeCellIdentifier, for: indexPath) as! TableViewCollectionCell
+            print("data count = \(data.count)")
             
             if data.isEmpty {
-                cell.configure(with: [APOD]())
+                print("configuring empty data: Home")
+                cell.configure(with: [APOD](), home: self)
             } else {
-                cell.configure(with: data[indexPath.section])
+                print("configuring real data: Home")
+                cell.configure(with: data[0], home: self)
             }
             
             return cell
@@ -196,6 +216,13 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        if let cell = tableView.cellForRow(at: indexPath) {
+            if type(of: cell) == HeaderTableViewCell.self {
+                print("header cell tapped")
+                scrollDelegate?.shouldScrollTo(indexPath: IndexPath(row: 0, section: 0))
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -210,7 +237,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let container = UIView()
-        container.backgroundColor = UIColor.secondarySystemBackground.withAlphaComponent(0.4)
+        container.backgroundColor = UIColor.softBg.withAlphaComponent(0.4)
         container.clipsToBounds = true
         
         if section == 0 {
@@ -231,7 +258,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             let field = UILabel()
             field.translatesAutoresizingMaskIntoConstraints = false
             field.font = .systemFont(ofSize: 28, weight: .bold)
-            field.textColor = .label
+//            field.textColor = .label
+            field.textColor = .white
             field.backgroundColor = .clear
             field.textAlignment = .center
             field.numberOfLines = 0
@@ -243,9 +271,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             
             field.translatesAutoresizingMaskIntoConstraints = false
             field.tintColor = .link
-            field.setTitleColor(Colors.textNasaBlue, for: .normal)
+            field.setTitleColor(.white, for: .normal)
             field.setTitle("View More", for: .normal)
-            field.titleLabel?.font = .systemFont(ofSize: 22, weight: .semibold)
+            field.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
             field.titleLabel?.textAlignment = .left
 //            field.setImage(UIImage(systemName: "chevron.right.circle.fill"), for: .normal)
             return field
@@ -269,6 +297,18 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         ])
         
         return container
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        
+        guard UIApplication.shared.applicationState == .inactive else { return }
+        
+        print("changing trait collection broooooooo")
+        if var textAttributes = navigationController?.navigationBar.titleTextAttributes {
+            textAttributes[NSAttributedString.Key.foregroundColor] = UIColor.white
+            navigationController?.navigationBar.titleTextAttributes = textAttributes
+        }
+        
     }
 }
 
