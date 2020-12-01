@@ -70,9 +70,9 @@ final class APIManager {
     //MARK: get multiple apod
     //------------------------------------------------------------------
     
-    public func getMultipleAPOD() {
-        var start = datesFor(count: 7).last!
-        var end = currentDateString()
+    public func getMultipleAPOD(startDate: String, endDate: String) {
+//        var start = datesFor(count: 7).last!
+//        var end = currentDateString()
         var dates = datesFor(count: 7)
         
         var apods = [APOD]()
@@ -99,12 +99,12 @@ final class APIManager {
             return
         }
         
-        start = datesFor(count: 7).last!
-        end = currentDateString()
-        print("new start: \(start)")
-        print("new end: \(end)")
+//        start = datesFor(count: 7).last!
+//        end = currentDateString()
+//        print("new start: \(start)")
+//        print("new end: \(end)")
         
-        let urlString = "https://api.nasa.gov/planetary/apod?api_key=\(key)&start_date=\(start)&end_date=\(end)"
+        let urlString = "https://api.nasa.gov/planetary/apod?api_key=\(key)&start_date=\(startDate)&end_date=\(endDate)"
         
         guard let url = URL(string: urlString), canOpenUrl(url: url) else { return }
         
@@ -178,17 +178,4 @@ final class APIManager {
     //MARK: dates for count
     //------------------------------------------------------------------
     
-    public func datesFor(count: Int) -> [String] {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        
-        var result = [String]()
-        
-        for i in 0..<count {
-            let date = Date().addingTimeInterval(TimeInterval(86400 * (i * -1)))
-            result.append(formatter.string(from: date))
-        }
-        
-        return result
-    }
 }

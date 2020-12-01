@@ -60,3 +60,43 @@ func addBG(color: UIColor, VCView: UIView, view: UIView, padding: CGFloat) {
 
     VCView.addSubview(bg)
 }
+
+func datesFor(count: Int) -> [String] {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    
+    var result = [String]()
+    
+    for i in 0..<count {
+        let date = Date().addingTimeInterval(TimeInterval(86400 * (i * -1)))
+        result.append(formatter.string(from: date))
+    }
+    
+    return result
+}
+
+func numOfDaysInMonth(date: Date) -> Int {
+//    let dateComponents = DateComponents(year: 2015, month: 7)
+    let calendar = Calendar.current
+
+    let range = calendar.range(of: .day, in: .month, for: date)!
+    let numDays = range.count
+
+    return numDays
+}
+
+func lastThreeMonths() -> [String]? {
+    guard let current = Calendar.current.date(byAdding: .month, value: 0, to: Date()),
+          let previous = Calendar.current.date(byAdding: .month, value: -1, to: Date()),
+          let prevPrevious = Calendar.current.date(byAdding: .month, value: -2, to: Date())
+    else { return nil }
+    
+    let fmt = DateFormatter()
+    fmt.dateStyle = .long
+    let currMonth = fmt.string(from: current).split(separator: " ")[0]
+    let prevMonth = fmt.string(from: previous).split(separator: " ")[0]
+    let prevPrevMonth = fmt.string(from: prevPrevious).split(separator: " ")[0]
+
+    return [String(currMonth), String(prevMonth), String(prevPrevMonth)]
+    
+}

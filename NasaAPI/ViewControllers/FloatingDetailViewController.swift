@@ -58,7 +58,7 @@ class FloatingDetailViewController: UIViewController {
         let field = UIButton()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
-        field.tintColor = .cellBg
+        field.tintColor = .accent
         field.backgroundColor = .clear
 //        field.layer.cornerRadius = 15
         return field

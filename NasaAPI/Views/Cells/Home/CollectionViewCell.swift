@@ -13,7 +13,7 @@ class CollectionViewCell: UICollectionViewCell {
     let imageView: UIImageView = {
         let field = UIImageView()
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.contentMode = .scaleAspectFit
+        field.contentMode = .scaleAspectFill
         field.image = nil
         return field
     }()

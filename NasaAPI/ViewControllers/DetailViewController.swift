@@ -17,7 +17,7 @@ class DetailViewController: UIViewController {
         field.alpha = 0
         field.translatesAutoresizingMaskIntoConstraints = false
         field.contentMode = .scaleAspectFit
-        field.backgroundColor = UIColor.cellBg.withAlphaComponent(1)
+        field.backgroundColor = UIColor.accent.withAlphaComponent(1)
 //        field.backgroundColor = .clear
         field.clipsToBounds = true
         field.isUserInteractionEnabled = true
@@ -66,7 +66,7 @@ class DetailViewController: UIViewController {
         let field = UIButton()
         field.translatesAutoresizingMaskIntoConstraints = false
         field.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
-        field.tintColor = .cellBg
+        field.tintColor = .accent
         field.backgroundColor = .clear
         return field
     }()
@@ -120,7 +120,7 @@ class DetailViewController: UIViewController {
         field.setBackgroundImage(UIImage(systemName: "chevron.right"), for: .normal)
 //        field.layer.cornerRadius = 15
         field.backgroundColor = .clear
-        field.tintColor = .cellBg
+        field.tintColor = .accent
         return field
     }()
     
@@ -130,7 +130,7 @@ class DetailViewController: UIViewController {
         field.setBackgroundImage(UIImage(systemName: "chevron.left"), for: .normal)
 //        field.layer.cornerRadius = 15
         field.backgroundColor = .clear
-        field.tintColor = .cellBg
+        field.tintColor = .accent
         return field
     }()
     

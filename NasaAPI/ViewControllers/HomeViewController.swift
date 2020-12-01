@@ -50,11 +50,10 @@ class HomeViewController: UIViewController {
         
 //        cache.clearCache { (done) in
 //            if done {
-//                APICalls.getMultipleAPOD()
+//                APICalls.getMultipleAPOD(startDate: datesFor(count: 7).last!, endDate: currentDateString())
 //            }
 //        }
-        APICalls.getMultipleAPOD()
-        print("view did load: \(data.count)")
+        APICalls.getMultipleAPOD(startDate: datesFor(count: 7).last!, endDate: currentDateString())
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -164,12 +163,13 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
     
     @objc func viewMore() {
+        guard !data.isEmpty, data[0].count != 0 else { print("trying to access view more to early"); return }
         //instead of going to the bday vc go to the view more vc and make a separate cell that allows you to select your bday inline (shows the date picke in the cell)
 //        let vc = BirthdayPictureViewController()
 //        vc.title = "Birthday Picture"
 //        vc.navigationController?.navigationBar.prefersLargeTitles = true
 //        navigationController?.pushViewController(vc, animated: true)
-        let vc = ViewMoreViewController()
+        let vc = ViewMoreViewController(currentWeek: data[0])
         vc.navigationController?.navigationBar.prefersLargeTitles = true
         vc.title = "Last 3 Months"
         navigationController?.pushViewController(vc, animated: true)

@@ -55,8 +55,8 @@ class TableViewCollectionCell: UITableViewCell {
         conform()
         constrainViews()
         
-        backgroundColor = .cellBg
-        contentView.backgroundColor = .cellBg
+        backgroundColor = .accent
+        contentView.backgroundColor = .accent
         
 //        let gradient = GradientBackground(colors: [.white, .blue])
 //        gradient.frame = contentView.bounds
@@ -131,6 +131,10 @@ extension TableViewCollectionCell: UICollectionViewDelegateFlowLayout, UICollect
         home.scrollDelegate = self
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

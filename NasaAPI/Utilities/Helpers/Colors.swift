@@ -38,7 +38,7 @@ func semanticColor(light: UIColor, dark: UIColor) -> UIColor {
 }
 
 extension UIColor {
-    static let cellBg = semanticColor(light: Colors.lightGray, dark: Colors.skyPink)
+    static let accent = semanticColor(light: Colors.lightGray, dark: Colors.skyPink)
     static let textNasaBlue = Colors.textNasaBlue
     static let contrastBlue = Colors.contrastBlue
     static let skyBrown = Colors.skyBrown

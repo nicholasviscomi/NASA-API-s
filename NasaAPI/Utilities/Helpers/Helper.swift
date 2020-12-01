@@ -52,14 +52,3 @@ func string(from: Date) -> String? {
 func imageData(from image: UIImage) -> Data? {
     if let data = image.jpegData(compressionQuality: 0.5) { return data } else { return nil }
 }
-
-func numOfDaysInCurrentMonth() -> Int {
-//    let dateComponents = DateComponents(year: 2015, month: 7)
-//    let calendar = Calendar.current
-//    let date = calendar.date(from: dateComponents)!
-//
-//    let range = calendar.range(of: .day, in: .month, for: date)!
-//    let numDays = range.count
-//
-    return 7//numDays
-}

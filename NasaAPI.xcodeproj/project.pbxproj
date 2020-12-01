@@ -28,6 +28,7 @@
 		7B5B6D852532A956002DE605 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5B6D842532A956002DE605 /* PhotoViewerViewController.swift */; };
 		7B641694253CF8670041018D /* APOD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD3FEA02524342A009933D8 /* APOD.swift */; };
 		7B67A843252806E1006505C2 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B67A842252806E1006505C2 /* DetailViewController.swift */; };
+		7B6B5E8D25747C8E00149DBD /* CollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6B5E8C25747C8E00149DBD /* CollectionHeader.swift */; };
 		7B8137272562263100D2D0D8 /* ViewMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8137262562263100D2D0D8 /* ViewMoreViewController.swift */; };
 		7B81372D256227F800D2D0D8 /* ViewMoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B81372C256227F800D2D0D8 /* ViewMoreCollectionViewCell.swift */; };
 		7B875CCE25151BAE00CB2A6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B875CCD25151BAE00CB2A6C /* AppDelegate.swift */; };
@@ -94,6 +95,7 @@
 		7B2D116725393EDA0096A3CE /* SystemLargeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemLargeView.swift; sourceTree = "<group>"; };
 		7B5B6D842532A956002DE605 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
 		7B67A842252806E1006505C2 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		7B6B5E8C25747C8E00149DBD /* CollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionHeader.swift; sourceTree = "<group>"; };
 		7B8137262562263100D2D0D8 /* ViewMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreViewController.swift; sourceTree = "<group>"; };
 		7B81372C256227F800D2D0D8 /* ViewMoreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreCollectionViewCell.swift; sourceTree = "<group>"; };
 		7B875CCA25151BAE00CB2A6C /* NasaAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NasaAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -205,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				7B81372C256227F800D2D0D8 /* ViewMoreCollectionViewCell.swift */,
+				7B6B5E8C25747C8E00149DBD /* CollectionHeader.swift */,
 			);
 			path = ViewMore;
 			sourceTree = "<group>";
@@ -423,6 +426,7 @@
 				7B875CD225151BAE00CB2A6C /* HomeViewController.swift in Sources */,
 				7B245C8B253688A5008E2977 /* nasaAPIWidget.intentdefinition in Sources */,
 				7BD3FEA12524342A009933D8 /* APOD.swift in Sources */,
+				7B6B5E8D25747C8E00149DBD /* CollectionHeader.swift in Sources */,
 				7B875CE225151BDD00CB2A6C /* APIManager.swift in Sources */,
 				7B245C56253651BA008E2977 /* Colors.swift in Sources */,
 				7B1109AF251C3D0B008F11B2 /* CollectionViewCell.swift in Sources */,
